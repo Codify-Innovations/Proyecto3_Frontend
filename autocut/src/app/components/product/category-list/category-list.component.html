@@ -1,0 +1,37 @@
+<div class="row category-list-container">
+  @for (item of categoriesList; track $index) {
+    <div class="col-12 col-md-3 category-list-item">
+      <div class="row">
+        <div class="col-8 d-flex align-items-center">
+          <p class="title mb-0">{{ item.nombre }}</p>
+        </div>
+
+        <div class="col-4 d-flex gap-2 justify-content-end align-items-start">
+          @if (authService.areActionsAvailable(['ROLE_SUPER_ADMIN', 'ADMIN_ROLE'])) {
+            <button 
+              type="button"
+              (click)="callEditMethod.emit(item)"
+              class="btn btn-sm btn-success">
+              <i class="fas fa-pencil-alt"></i>
+            </button>
+
+            <button 
+              type="button"
+              (click)="callDeleteMethod.emit(item)"
+              class="btn btn-sm btn-danger">
+              <i class="fas fa-trash"></i>
+            </button>
+          } @else {
+            <i class="text-muted small">Sin permisos</i>
+          }
+        </div>
+      </div>
+
+      <div class="row mt-1">
+        <div class="col-12">
+          <small class="text-muted">{{ item.descripcion }}</small>
+        </div>
+      </div>
+    </div>
+  }
+</div>

@@ -1,0 +1,67 @@
+<form [formGroup]="form">
+  <div>
+    <h2 class="mb-0">{{ isEdit ? 'Editar Producto' : 'Agregar Producto a Categoría' }}</h2>
+  </div>
+  <div class="row">
+    <div class="col-md-6">
+      <div class="mb-2">
+        <label class="mb-1" for="nombre">Nombre*</label>
+        <input id="nombre" formControlName="nombre" type="text" class="form-control">
+        @if (form.controls['nombre'].invalid && (form.controls['nombre'].dirty || form.controls['nombre'].touched)) {
+          <p class="text-danger my-1 p-absolute">El nombre es obligatorio</p>
+        }
+      </div>
+    </div>
+    <div class="col-md-3">
+      <div class="mb-2">
+        <label class="mb-1" for="precio">Precio</label>
+        <input id="precio" formControlName="precio" type="number" step="0.01" class="form-control">
+      </div>
+    </div>
+
+    <div class="col-md-3">
+      <div class="mb-2">
+        <label class="mb-1" for="stock">Stock</label>
+        <input id="stock" formControlName="stock" type="number" class="form-control">
+      </div>
+    </div>
+  </div>
+
+  @if (showCategorySelector) {
+    <div class="row">
+      <div class="col-md-12">
+        <div class="mb-2">
+          <label class="mb-1" for="categoryId">Categoría*</label>
+          <select id="categoryId" formControlName="categoryId" class="form-control">
+            <option value="">Seleccione una categoría</option>
+            @for (category of categories; track category.id) {
+              <option [value]="category.id">{{ category.nombre }}</option>
+            }
+          </select>
+          @if (form.controls['categoryId'].invalid && (form.controls['categoryId'].dirty || form.controls['categoryId'].touched)) {
+            <p class="text-danger my-1 p-absolute">Debe seleccionar una categoría</p>
+          }
+        </div>
+      </div>
+    </div>
+  }
+
+  <div class="row">
+    <div class="col-md-12">
+      <div class="mb-2">
+        <label class="mb-1" for="descripcion">Descripción</label>
+        <textarea id="descripcion" formControlName="descripcion" class="form-control" rows="3"></textarea>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-12 d-flex justify-content-end mt-3">
+      <div>
+        <button (click)="callSaveMethod.emit(form.value)" [disabled]="form.invalid" class="btn btn-primary" type="button">
+          {{ isEdit ? 'Actualizar' : 'Agregar Producto' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</form>
