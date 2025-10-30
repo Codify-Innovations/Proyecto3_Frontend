@@ -1,0 +1,17 @@
+<div class="bg-white rounded-xl shadow-lg p-8 mx-4 h-full flex flex-col">
+  <!-- Person Info -->
+  <div class="flex items-center space-x-3 mb-6">
+    <div class="w-10 h-10 bg-[#424242] rounded-full flex items-center justify-center">
+      <span class="text-white font-bold text-sm">{{ authorLogo }}</span>
+    </div>
+    <div class="flex items-center h-10">
+      <h3 class="text-xl font-bold text-[#1C1C1C]">{{ authorName }}</h3>
+    </div>
+  </div>
+
+  <!-- Testimonial Text -->
+  <p class="text-[#424242] leading-relaxed flex-grow" *ngIf="testimonial">
+    {{ testimonial }}
+  </p>
+</div>
+

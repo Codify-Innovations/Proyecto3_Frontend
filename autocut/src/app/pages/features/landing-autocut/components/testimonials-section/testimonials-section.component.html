@@ -1,0 +1,42 @@
+<section id="testimonials" class="bg-[#F5F5F5] py-20">
+  <div class="container mx-auto px-6">
+    <!-- Section Title -->
+    <div class="text-center mb-16">
+      <h2 class="text-4xl md:text-5xl font-bold text-[#1C1C1C]">
+        Testimonials
+      </h2>
+    </div>
+
+    <!-- Testimonials Carousel -->
+    <div class="relative">
+      <!-- Previous Button -->
+      <button 
+        (click)="previousTestimonial()"
+        class="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 md:-translate-x-12 z-10 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-[#F5F5F5] transition-colors">
+        <svg class="w-6 h-6 text-[#1C1C1C]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
+      </button>
+
+      <!-- Testimonials Grid -->
+      <div class="grid md:grid-cols-2 gap-8">
+        <app-testimonial-card
+          *ngFor="let testimonial of visibleTestimonials"
+          [authorName]="testimonial.authorName"
+          [authorLogo]="testimonial.authorLogo"
+          [testimonial]="testimonial.testimonial">
+        </app-testimonial-card>
+      </div>
+
+      <!-- Next Button -->
+      <button 
+        (click)="nextTestimonial()"
+        class="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 md:translate-x-12 z-10 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-[#F5F5F5] transition-colors">
+        <svg class="w-6 h-6 text-[#1C1C1C]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</section>
+
