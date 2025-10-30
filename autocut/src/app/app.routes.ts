@@ -11,7 +11,8 @@ import { IRoleType } from './core/interfaces';
 import { ProductComponent } from './pages/product/product.component';
 import { CategoryComponent } from './pages/category/category.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
-import { UserPrivacyComponent } from './pages/user-privacy/user-privacy.component'; 
+import { UserPrivacyComponent } from './pages/user-privacy/user-privacy.component';
+import { UserProfileUpdateComponent } from './pages/user-profile-update/user-profile-update.component'; // Agregado el link aquí
 
 export const routes: Routes = [
   {
@@ -93,6 +94,20 @@ export const routes: Routes = [
           showInSidebar: true,
         },
       },
+      {
+        path: 'profile/update', // Nuevo path para la actualización de perfil
+        component: UserProfileUpdateComponent,
+        data: {
+          authorities: [
+            IRoleType.admin,
+            IRoleType.superAdmin,
+            IRoleType.user,
+          ],
+          name: 'Actualizar perfil',
+          showInSidebar: true,
+        },
+      },
     ],
   },
 ];
+

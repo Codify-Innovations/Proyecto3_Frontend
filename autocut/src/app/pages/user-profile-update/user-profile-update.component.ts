@@ -30,7 +30,7 @@ export class UserProfileUpdateComponent implements OnInit {
         '',
         [
           Validators.minLength(8),
-          Validators.pattern(/^(?=.*[A-Z])(?=.*\d).+$/), // al menos una mayúscula y un número
+          Validators.pattern(/^(?=.*[A-Z])(?=.*\d).+$/), 
         ],
       ],
     });
