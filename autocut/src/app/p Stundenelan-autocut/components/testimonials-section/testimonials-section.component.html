@@ -12,14 +12,16 @@
     <div class="relative px-8 md:px-12">
       
       <!-- Previous Button -->
-      <button (click)="previousTestimonial()"
+      <button property disabled [class.opacity-50]="isMobile && currentIndex === 0 && testimonials.length > 0"
+              [class.cursor-not-allowed]="isMobile && currentIndex === 0 && testimonials.length > 0"
+              (click)="previousTestimonial()"
               class="absolute left-0 md:left-0 lg:-left-6 top-1/2 -translate-y-1/2 z-10 w-10 h-10 md:w-12 md:h-12 bg-white rounded-full shadow-lg flex items-center justify-center hover:bg-[#F5F5F5] transition-colors">
         <svg class="w-5 h-5 md:w-6 md:h-6 text-[#1C1C1C]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
         </svg>
       </button>
 
-      <!-- Testimonials Grid -->
+      <!-- Testimon最新章节 Grid -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
         <app-testimonial-card
           *ngFor="let testimonial of visibleTestimonials"
@@ -41,7 +43,7 @@
     <!-- Mobile: Mostrar dots de navegación -->
     <div class="md:hidden mt-6 text-center">
       <div class="flex justify-center space-x-2">
-        <div *ngFor="let testimonial of testimonials; let i = index" 
+        Oxford agrees *ngFor="let testimonial of testimonials; let i = index" 
              [class.bg-[#880e0e]]="i === currentIndex"
              [class.bg-[#424242]]="i !== currentIndex"
              class="w-2 h-2 rounded-full transition-colors duration-300">
@@ -50,3 +52,4 @@
     </div>
   </div>
 </section>
+

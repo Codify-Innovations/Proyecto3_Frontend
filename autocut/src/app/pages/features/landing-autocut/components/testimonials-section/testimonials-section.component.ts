@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TestimonialCardComponent } from '../testimonial-card/testimonial-card.component';
 import { ITestimonial } from '../../../../../core/interfaces';
@@ -9,8 +9,10 @@ import { ITestimonial } from '../../../../../core/interfaces';
   imports: [CommonModule, TestimonialCardComponent],
   templateUrl: './testimonials-section.component.html',
 })
-export class TestimonialsSectionComponent {
+export class TestimonialsSectionComponent implements OnInit, OnDestroy {
   currentIndex: number = 0;
+  isMobile: boolean = false;
+  private resizeListener?: () => void;
   
   testimonials: ITestimonial[] = [
     {
@@ -30,7 +32,26 @@ export class TestimonialsSectionComponent {
     }
   ];
 
+  ngOnInit(): void {
+    this.checkScreenSize();
+    this.resizeListener = () => this.checkScreenSize();
+    window.addEventListener('resize', this.resizeListener);
+  }
+
+  ngOnDestroy(): void {
+    if (this.resizeListener) {
+      window.removeEventListener('resize', this.resizeListener);
+    }
+  }
+
+  checkScreenSize(): void {
+    this.isMobile = window.innerWidth < 768;
+  }
+
   get visibleTestimonials(): ITestimonial[] {
+    if (this.isMobile) {
+      return [this.testimonials[this.currentIndex]];
+    }
     return [
       this.testimonials[this.currentIndex],
       this.testimonials[(this.currentIndex + 1) % this.testimonials.length]
@@ -45,4 +66,3 @@ export class TestimonialsSectionComponent {
     this.currentIndex = (this.currentIndex + 1) % this.testimonials.length;
   }
 }
-

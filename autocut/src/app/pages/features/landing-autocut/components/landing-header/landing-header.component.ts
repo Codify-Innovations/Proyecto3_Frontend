@@ -10,13 +10,19 @@ import { RouterModule, Router } from '@angular/router';
 })
 export class LandingHeaderComponent {
   @Input() AutoCutLogo: string = '';
+  isMenuOpen: boolean = false;
 
   constructor(private router: Router) {}
+
+  toggleMenu(): void {
+    this.isMenuOpen = !this.isMenuOpen;
+  }
 
   scrollToSection(sectionId: string): void {
     const element = document.getElementById(sectionId);
     if (element) {
       element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      this.isMenuOpen = false; // Cerrar menú al navegar
     }
   }
 
