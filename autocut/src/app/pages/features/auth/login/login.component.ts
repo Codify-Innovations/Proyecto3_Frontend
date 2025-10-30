@@ -1,15 +1,15 @@
 import { CommonModule } from '@angular/common';
 import { Component, ViewChild } from '@angular/core';
-import { FormsModule, NgModel } from '@angular/forms';
+import { FormsModule, NgModel, NgForm } from '@angular/forms';
 import { Router, RouterLink } from '@angular/router';
 import { AuthService } from '../../../../services/auth.service';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  styleUrls: ['./login.component.scss']
 })
 export class LoginComponent {
   public loginError!: string;
@@ -25,20 +25,23 @@ export class LoginComponent {
     private router: Router, 
     private authService: AuthService
   ) {}
+  
+  public handleLogin(frm: NgForm) {
+    if (frm.invalid) {
+      if (!this.emailModel.valid) {
+        this.emailModel.control.markAsTouched();
+      }
 
-  public handleLogin(event: Event) {
-    event.preventDefault();
-    if (!this.emailModel.valid) {
-      this.emailModel.control.markAsTouched();
+      if (!this.passwordModel.valid) {
+        this.passwordModel.control.markAsTouched();
+      }
+
+      return;
     }
-    if (!this.passwordModel.valid) {
-      this.passwordModel.control.markAsTouched();
-    }
-    if (this.emailModel.valid && this.passwordModel.valid) {
-      this.authService.login(this.loginForm).subscribe({
-        next: () => this.router.navigateByUrl('/app/dashboard'),
-        error: (err: any) => (this.loginError = err.error.description),
-      });
-    }
+
+    this.authService.login(this.loginForm).subscribe({
+      next: () => this.router.navigateByUrl('/app/dashboard'),
+      error: (err: any) => (this.loginError = err.error.description),
+    });
   }
 }

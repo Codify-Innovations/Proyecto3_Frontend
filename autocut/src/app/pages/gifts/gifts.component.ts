@@ -18,7 +18,6 @@ import { ActivatedRoute } from '@angular/router';
     CommonModule,
     GiftFormComponent,
     GiftsTableComponent,
-    LoaderComponent,
     PaginationComponent
   ],
   templateUrl: './gifts.component.html',

@@ -1,65 +1,76 @@
-<div class="login-container">
-  <div class="d-flex align-items-center justify-content-center h-100">
-    <div class="login-card">
-      <div class="w-100">
-        <div class="text-center">
-          <a class="logo text-center" routerLink="/">
-            <img
-              width="250"
-              class="img-fluid mb-4"
-              src="../../../../assets/icons/logo@2x.png"
-              alt="Logo"
-            />
-          </a>
-        </div>
-        <div class="login-main">
-          <form (ngSubmit)="handleLogin($event)" autocomplete="off" #frm="ngForm">
-            <div class="mb-3">
-              <h4>Sign in to account</h4>
-              <small style="color: #4f4f4f">
-                Enter your email & password to login
-              </small>
-            </div>
+<div class="flex items-center justify-center min-h-screen bg-[#F5F5F5] p-4">
+  <div class="bg-white shadow-xl rounded-2xl w-full max-w-xl p-8">
+    <div class="w-100">
 
-            <div class="form-group mb-3">
-              <label for="email" class="form-label mb-2">
-                Email Address
-              </label>
-              <input #email="ngModel" type="text" class="form-control" id="email" name="email"
-                placeholder="agent@gmail.com" [(ngModel)]="loginForm.email" [ngClass]="{
-                  'is-invalid': email.invalid && email.touched,
-                  'is-valid': email.valid && email.touched
-                }" required />
-              <div *ngIf="email.invalid" class="invalid-feedback">
-                Please add a valid email
-              </div>
-            </div>
+      <!-- Formulario de Login -->
+      <div class="login-main">
+        <form (ngSubmit)="handleLogin(frm)" autocomplete="off" #frm="ngForm">
+          <div class="mb-3">
+            <h2 class="text-3xl text-center font-semibold text-[#1C1C1C] mt-2 mb-2">Welcome Back</h2>
+            <p class="text-gray-500 text-center mb-6 text-sm">Please log in to continue</p>
+          </div>
 
-            <div class="form-group mb-4">
-              <label for="password" class="form-label mb-2">Password</label>
-              <div class="form-input position-relative">
-                <input #password="ngModel" type="password" class="form-control" id="password" name="password"
-                placeholder="*****" [(ngModel)]="loginForm.password" [ngClass]="{
-                  'is-invalid': password.invalid && password.touched,
-                  'is-valid': password.valid && password.touched
-                }" required />
-                <div *ngIf="password.invalid" class="invalid-feedback">
-                  Please add a valid password
-                </div>
-              </div>
+          <!-- Email -->
+          <div class="form-group mb-4">
+            <label for="email" class="text-sm font-medium text-[#424242]">Email Address</label>
+            <input #email="ngModel" type="email" id="email" name="email" placeholder="your-email@example.com"
+              class="mt-1 block w-full px-4 py-2 border border-[#424242] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#1C1C1C] focus:border-[#1C1C1C] transition duration-150 ease-in-out"
+              [(ngModel)]="loginForm.email" required email /> <div *ngIf="email.invalid && email.touched" class="text-[#D32F2F] text-sm mt-1">
+              <div *ngIf="email.errors?.['required']">Email is required.</div>
+              <div *ngIf="email.errors?.['email']">Please enter a valid email address.</div>
             </div>
+          </div>
 
-            <div class="form-group mb-0">
-              <button class="btn btn-primary btn-block w-100" type="submit">
-                Sign in
-              </button>
-              @if(loginError) {
-                <p class="text-danger">{{loginError}}</p>
-              }
+          <!-- Password -->
+          <div class="form-group mb-4">
+            <label for="password" class="text-sm font-medium text-[#424242]">Password</label>
+            <input #password="ngModel" type="password" id="password" name="password" placeholder="••••••••"
+              class="mt-1 block w-full px-4 py-2 border border-[#424242] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#1C1C1C] focus:border-[#1C1C1C] transition duration-150 ease-in-out"
+              [(ngModel)]="loginForm.password" required minlength="8" />
+            <div *ngIf="password.invalid && password.touched" class="text-[#D32F2F] text-sm mt-1">
+              <div *ngIf="password.errors?.['required']">Password is required.</div>
+              <div *ngIf="password.errors?.['minlength']">Password must be at least 8 characters.</div>
             </div>
-            <a href="/signup">Go SignUp</a>
-          </form>
-        </div>
+          </div>
+
+          <!-- Forgot Password -->
+          <div class="text-right mb-6">
+            <a href="/forgot-password" class="text-sm text-[#1C1C1C] hover:text-[#1C1C1C]">Forgot Password?</a>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="mb-6">
+            <button type="submit" [disabled]="frm.invalid"
+              class="w-full bg-[#D32F2F] text-white py-3 px-4 rounded-lg shadow-md hover:bg-[#880e0e] disabled:cursor-not-allowed disabled:opacity-50 transition duration-150 ease-in-out">
+              Log In
+            </button>
+          </div>
+
+          <!-- Or log in with -->
+          <div class="text-center mb-6">
+            <span class="text-sm text-[#424242]">Or log in with:</span>
+          </div>
+
+          <!-- Google Login -->
+          <div class="flex justify-center mb-6">
+            <button type="button"
+              class="flex items-center justify-center w-full bg-white border border-[#424242] rounded-lg py-3 px-4 text-[#424242] font-medium shadow-sm hover:bg-[#F5F5F5] transition duration-150 ease-in-out">
+              <svg class="w-5 h-5 mr-3" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                <path fill="#4285F4" d="M22 12c0-.62-.05-1.22-.16-1.79H12v3.58h5.88a4.34 4.34 0 0 1-1.89 2.89v2.33h3.01c1.76-1.62 2.77-4 2.77-6.57z" />
+                <path fill="#34A853" d="M12 22c3.24 0 5.92-1.07 7.9-2.9l-3.01-2.33c-.83.56-1.89.89-3.9.89-3.32 0-6.14-2.22-7.14-5.26H1.9v2.33c1.98 3.93 6.03 6.57 10.1 6.57z" />
+                <path fill="#FBBC05" d="M4.86 14.1c-.2-.56-.32-1.15-.32-1.79s.12-1.23.32-1.79V8.24H1.9C1.17 9.8 1 11.8 1 12s.17 2.2.9 3.76l2.96-2.96z" />
+                <path fill="#EA4335" d="M12 4.1a6.3 6.3 0 0 1 4.54 1.77L19.4 3.7a9.23 9.23 0 0 0-7.4-3.7 10.9 10.9 0 0 0-10.1 6.57l2.96 2.33c1-.7 2.1-1.07 3.32-1.07z" />
+              </svg>
+              <span>Google</span>
+            </button>
+          </div>
+
+          <!-- Sign Up Link -->
+          <p class="text-center text-sm text-[#424242] mt-6">
+            No account yet?
+              <a href="/signup" class="text-[#1C1C1C] font-medium hover:text-[#1C1C1C] transition duration-150">Sign Up</a>
+          </p>
+        </form>
       </div>
     </div>
   </div>

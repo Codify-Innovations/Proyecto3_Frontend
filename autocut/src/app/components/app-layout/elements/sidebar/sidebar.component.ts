@@ -12,8 +12,7 @@ import { routes } from '../../../../app.routes';
   imports: [
     CommonModule,
     RouterLink,
-    RouterLinkActive,
-    SvgIconComponent
+    RouterLinkActive
   ],
   templateUrl: './sidebar.component.html',
 })
