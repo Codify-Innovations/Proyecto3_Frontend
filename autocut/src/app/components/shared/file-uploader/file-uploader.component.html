@@ -1,6 +1,5 @@
 <div
   class="max-w-md mx-auto mt-12 p-8 bg-white border border-gray-200 rounded-2xl shadow-sm hover:shadow-md transition-all duration-300">
-  <!-- Titulo -->
   <div class="flex justify-center items-center mb-8 relative">
     <h2 class="text-2xl font-semibold text-gray-800 absolute">Sube tus archivos</h2>
     <div class="relative ml-auto" (mouseenter)="mostrarTooltip()" (mouseleave)="ocultarTooltip()">
@@ -24,7 +23,6 @@
     </div>
   </div>
 
-  <!-- Zona de arrastrar y soltar archivos -->
   <div
     class="group flex flex-col items-center justify-center w-full border-2 border-dashed border-gray-300 rounded-xl py-10 px-6 text-center transition-all duration-300 hover:border-[#880e0e] hover:bg-[blue-50]"
     [class.border-blue-500]="dragging" [class.bg-blue-50]="dragging" (drop)="onDrop($event)"
@@ -41,7 +39,6 @@
     </label>
   </div>
 
-  <!-- Archivos seleccionados y previsualización -->
   <div *ngIf="fileNames.length > 0 && !uploaderService.uploaded()" class="mt-6">
     <div *ngFor="let file of fileNames; let i = index"
       class="flex items-center justify-between gap-3 p-3 mt-1 border border-gray-200 rounded-xl bg-gray-50 hover:bg-gray-100 transition-all duration-200 relative">
@@ -57,8 +54,7 @@
         </span>
       </div>
 
-      <!-- X Roja para eliminar el archivo -->
-      <button (click)="removeFile(i)" class="absolute top-1 right-1 p-1 text-red-600 hover:text-red-800">
+      <button (click)="removeFile(i)" class="absolute top-1 right-1 p-1 text-[#B71C1C] hover:text-red-800">
         <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
         </svg>
@@ -68,7 +64,7 @@
 
   <div class="flex justify-center items-center">
     <button type="button"
-      class="px-4 py-2 mt-2 bg-green-600 text-white text-sm  rounded hover:bg-green-700 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+      class="px-4 py-2 mt-2 bg-[#8BC34A] text-white text-sm  rounded hover:bg-green-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
       (click)="onUploadClick()" [disabled]="uploaderService.isUploading()">
       {{ uploaderService.isUploading() ? 'Subiendo...' : 'Subir' }}
     </button>
