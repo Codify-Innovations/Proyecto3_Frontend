@@ -1,57 +1,60 @@
 <div class="min-h-screen flex items-center justify-center bg-[#F5F5F5]">
-  <div
-    class="w-full max-w-md bg-white rounded-2xl shadow-md p-8 border border-gray-200"
-  >
+  <div class="w-full max-w-md bg-[#FFFFFF] rounded-2xl shadow-md p-8 border border-[#E0E0E0]">
     <h2 class="text-3xl font-semibold text-center text-[#1C1C1C] mb-8">
       Configuración de Privacidad
     </h2>
 
-    <form [formGroup]="form" (ngSubmit)="updatePrivacySetting()" class="space-y-5">
+    <form [formGroup]="form" (ngSubmit)="updatePrivacySetting()" class="space-y-6">
       
+      <!-- Sección: Visibilidad del perfil -->
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-2">
+        <label class="block text-sm font-medium text-[#424242] mb-3">
           Visibilidad del perfil
         </label>
 
         <div class="flex gap-4 justify-between">
+          <!-- Opción Público -->
           <label
-            class="flex-1 flex items-center justify-center gap-2 border border-[#424242] bg-[#F5F5F5] rounded-md py-3 cursor-pointer hover:bg-[#880E0E10]"
+            class="flex-1 flex items-center justify-center gap-2 border border-[#424242] bg-[#F5F5F5] rounded-lg py-3 cursor-pointer transition-all hover:bg-[#880E0E15] hover:border-[#880E0E]"
           >
             <input
               type="radio"
               formControlName="visibility"
               value="public"
-              class="accent-[#B71C1C]"
+              class="accent-[#B71C1C] w-4 h-4"
             />
             <span class="text-[#1C1C1C] font-medium">Público</span>
           </label>
 
+          <!-- Opción Privado -->
           <label
-            class="flex-1 flex items-center justify-center gap-2 border border-[#424242] bg-[#F5F5F5] rounded-md py-3 cursor-pointer hover:bg-[#880E0E10]"
+            class="flex-1 flex items-center justify-center gap-2 border border-[#424242] bg-[#F5F5F5] rounded-lg py-3 cursor-pointer transition-all hover:bg-[#880E0E15] hover:border-[#880E0E]"
           >
             <input
               type="radio"
               formControlName="visibility"
               value="private"
-              class="accent-[#B71C1C]"
+              class="accent-[#B71C1C] w-4 h-4"
             />
             <span class="text-[#1C1C1C] font-medium">Privado</span>
           </label>
         </div>
       </div>
 
+      <!-- Botón Guardar -->
       <button
         type="submit"
         [disabled]="isLoading"
-        class="w-full bg-[#1C1C1C] text-white font-bold rounded-md py-3 hover:bg-[#424242] transition"
+        class="w-full bg-[#1C1C1C] text-white font-bold rounded-lg py-3 hover:bg-[#424242] transition-all duration-200 shadow-sm hover:shadow-md disabled:opacity-70"
       >
         {{ isLoading ? 'Guardando...' : 'Guardar Cambios' }}
       </button>
 
-   
-      <div *ngIf="message" [ngClass]="{'text-[#8BC34A]': success, 'text-[#D32F2F]': !success}" class="text-center mt-2">
-        {{ message }}
-      </div>
+      <!-- Mensaje de carga -->
+      <p *ngIf="isLoading" class="text-center text-sm text-[#424242] mt-2">
+        Aplicando cambios, por favor espere...
+      </p>
     </form>
   </div>
 </div>
+

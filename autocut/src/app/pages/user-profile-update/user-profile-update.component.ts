@@ -17,8 +17,6 @@ export class UserProfileUpdateComponent implements OnInit {
 
   form!: FormGroup;
   isLoading = false;
-  message: string | null = null;
-  success = false;
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -68,19 +66,17 @@ export class UserProfileUpdateComponent implements OnInit {
 
     this.userService.updateUserProfile(this.form.value).subscribe({
       next: () => {
-        this.message = 'Datos actualizados correctamente.';
-        this.success = true;
+        const message = 'Datos actualizados correctamente.';
+        this.alertService.success(message);
         this.isLoading = false;
-        this.alertService.success(this.message);
       },
       error: (err) => {
         console.error('Error:', err);
         const duplicate = err?.error?.message?.includes('Duplicate entry');
-        this.message = duplicate
+        const message = duplicate
           ? 'El correo ya está en uso por otro usuario.'
           : 'Error al actualizar los datos.';
-        this.success = false;
-        this.alertService.error(this.message);
+        this.alertService.error(message);
         this.isLoading = false;
       },
     });

@@ -17,17 +17,15 @@ export class UserPrivacyComponent implements OnInit {
 
   form!: FormGroup;
   isLoading = false;
-  message: string | null = null;
-  success = false;
 
   ngOnInit(): void {
     this.form = this.fb.group({
       visibility: ['public'],
     });
-
     this.loadPrivacySetting();
   }
 
+  /** Carga la configuración actual desde el backend */
   loadPrivacySetting(): void {
     this.isLoading = true;
     this.userService.getPrivacySetting().subscribe({
@@ -36,19 +34,18 @@ export class UserPrivacyComponent implements OnInit {
         this.isLoading = false;
       },
       error: () => {
-        this.message = 'Error al cargar configuración de privacidad.';
-        this.success = false;
+        this.alertService.error('Error al cargar configuración de privacidad.');
         this.isLoading = false;
       },
     });
   }
 
+  /** Actualiza la configuración de privacidad en el backend */
   updatePrivacySetting(): void {
     const visibility = this.form.value.visibility;
 
     if (!['public', 'private'].includes(visibility)) {
-      this.message = 'Valor inválido. Solo se permite público o privado.';
-      this.success = false;
+      this.alertService.error('Valor inválido. Solo se permite público o privado.');
       return;
     }
 
@@ -56,15 +53,14 @@ export class UserPrivacyComponent implements OnInit {
 
     this.userService.updatePrivacySetting(visibility).subscribe({
       next: () => {
-        this.message = 'Configuración actualizada correctamente.';
-        this.success = true;
+        this.alertService.success('Configuración actualizada correctamente.');
         this.isLoading = false;
       },
       error: () => {
-        this.message = 'Error al actualizar configuración.';
-        this.success = false;
+        this.alertService.error('Error al actualizar configuración.');
         this.isLoading = false;
       },
     });
   }
 }
+
