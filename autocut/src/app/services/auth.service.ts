@@ -1,70 +1,54 @@
 import { inject, Injectable } from '@angular/core';
-import { IAuthority, ILoginResponse, IResponse, IRoleType, IUser } from '../core/interfaces';
-import { Observable, firstValueFrom, of, tap } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { OAuthService } from 'angular-oauth2-oidc';
+import { Observable, tap } from 'rxjs';
+import { googleAuthConfig } from '../core/config/auth.config';
+import { IAuthority, ILoginResponse, IRoleType, IUser } from '../core/interfaces';
 
 @Injectable({
   providedIn: 'root',
 })
 export class AuthService {
+  private http = inject(HttpClient);
+  private oauthService = inject(OAuthService);
+
   private accessToken!: string;
   private expiresIn!: number;
   private user: IUser = { email: '', authorities: [] };
-  private http: HttpClient = inject(HttpClient);
 
   constructor() {
-    this.load();
+    // Solo configuración inicial, NO HTTP
+    this.oauthService.configure(googleAuthConfig);
   }
 
-  // Guardar los datos en el localStorage
-  public save(): void {
-    if (this.user) localStorage.setItem('auth_user', JSON.stringify(this.user));
-    if (this.accessToken) localStorage.setItem('access_token', JSON.stringify(this.accessToken));
-    if (this.expiresIn) localStorage.setItem('expiresIn', JSON.stringify(this.expiresIn));
+  /** Inicializa OAuth2 y carga sesión desde localStorage */
+  public async init(): Promise<void> {
+    try {
+      await this.oauthService.loadDiscoveryDocumentAndTryLogin();
+      this.load();
+    } catch (error) {
+      console.warn('AuthService init error:', error);
+    }
   }
 
-  // Cargar los datos desde el localStorage
-  private load(): void {
-    let token = localStorage.getItem('access_token');
-    if (token) this.accessToken = JSON.parse(token);
-    let exp = localStorage.getItem('expiresIn');
-    if (exp) this.expiresIn = JSON.parse(exp);
-    const user = localStorage.getItem('auth_user');
-    if (user) this.user = JSON.parse(user);
-  }
+  // ==========================================================
+  // ================= AUTENTICACIÓN =========================
+  // ==========================================================
 
-  // Obtener el usuario actual
-  public getUser(): IUser | undefined {
-    return this.user;
-  }
-
-  // Obtener el token de acceso
-  public getAccessToken(): string | null {
-    return this.accessToken;
-  }
-
-  // Verificar si el usuario está autenticado
-  public check(): boolean {
-    return !!this.accessToken;
-  }
-
-  // Autenticación normal (con email y contraseña)
   public login(credentials: { email: string; password: string }): Observable<ILoginResponse> {
     return this.http.post<ILoginResponse>('auth/login', credentials).pipe(
-      tap((response: ILoginResponse) => {
+      tap((response) => {
         this.accessToken = response.token;
-        this.user.email = credentials.email;
         this.expiresIn = response.expiresIn;
         this.user = response.authUser;
         this.save();
       })
     );
   }
-  
-  // Autenticación con Google (usando el idToken de Google)
+
   public loginWithGoogle(idToken: string): Observable<ILoginResponse> {
     return this.http.post<ILoginResponse>('auth/google', { idToken }).pipe(
-      tap((response: ILoginResponse) => {
+      tap((response) => {
         this.accessToken = response.token;
         this.expiresIn = response.expiresIn;
         this.user = response.authUser;
@@ -73,70 +57,123 @@ export class AuthService {
     );
   }
 
-  // Verificar si el usuario tiene un rol específico
-  public hasRole(role: string): boolean {
-    return this.user.authorities ? this.user?.authorities.some(authority => authority.authority == role) : false;
-  }
-
-  // Verificar si el usuario es un superadmin
-  public isSuperAdmin(): boolean {
-    return this.user.authorities ? this.user?.authorities.some(authority => authority.authority == IRoleType.superAdmin) : false;
-  }
-
-  // Verificar si el usuario tiene alguno de los roles proporcionados
-  public hasAnyRole(roles: any[]): boolean {
-    return roles.some(role => this.hasRole(role));
-  }
-
-  // Obtener las rutas permitidas según los roles del usuario
-  public getPermittedRoutes(routes: any[]): any[] {
-    let permittedRoutes: any[] = [];
-    for (const route of routes) {
-      if (route.data && route.data.authorities) {
-        if (this.hasAnyRole(route.data.authorities)) {
-          permittedRoutes.unshift(route);
-        }
-      }
+  public async loginWithGooglePopup(): Promise<void> {
+    try {
+      await this.oauthService.loadDiscoveryDocument();
+      const loginResult = await this.oauthService.tryLoginImplicitFlow();
+      const idToken = this.oauthService.getIdToken();
+      if (!idToken) throw new Error('No se obtuvo el ID Token de Google');
+      await this.handleGoogleLoginResponse(idToken);
+    } catch (error) {
+      console.error('Error durante login con Google:', error);
+      throw error;
     }
-    return permittedRoutes;
   }
 
-  // Registrar un nuevo usuario
+  private async handleGoogleLoginResponse(idToken: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.loginWithGoogle(idToken).subscribe({
+        next: () => resolve(),
+        error: (err) => reject(err),
+      });
+    });
+  }
+
   public signup(user: IUser): Observable<ILoginResponse> {
-    return this.http.post<ILoginResponse>('auth/signup', user);
+    return this.http.post<ILoginResponse>('auth/signup', user).pipe(
+      tap((response) => {
+        this.accessToken = response.token;
+        this.expiresIn = response.expiresIn;
+        this.user = response.authUser;
+        this.save();
+      })
+    );
   }
 
-  // Cerrar sesión
-  public logout() {
+  public logout(): void {
     this.accessToken = '';
     localStorage.removeItem('access_token');
     localStorage.removeItem('expiresIn');
     localStorage.removeItem('auth_user');
+
+    try {
+      this.oauthService.logOut();
+    } catch (e) {
+      console.warn('Error cerrando sesión con Google:', e);
+    }
   }
 
-  // Obtener las autoridades del usuario
-  public getUserAuthorities(): IAuthority[] | undefined {
-    return this.getUser()?.authorities ? this.getUser()?.authorities : [];
+  // ==========================================================
+  // ================= SESIÓN LOCAL ==========================
+  // ==========================================================
+
+  public save(): void {
+    localStorage.setItem('auth_user', JSON.stringify(this.user));
+    if (this.accessToken) localStorage.setItem('access_token', JSON.stringify(this.accessToken));
+    if (this.expiresIn) localStorage.setItem('expiresIn', JSON.stringify(this.expiresIn));
   }
 
-  // Verificar si las acciones están disponibles según las autoridades de la ruta
-  public areActionsAvailable(routeAuthorities: string[]): boolean {
-    let allowedUser: boolean = false;
-    let isAdmin: boolean = false;
+  private load(): void {
+    const token = localStorage.getItem('access_token');
+    if (token) this.accessToken = JSON.parse(token);
 
-    let userAuthorities = this.getUserAuthorities();
+    const exp = localStorage.getItem('expiresIn');
+    if (exp) this.expiresIn = JSON.parse(exp);
 
-    for (const authority of routeAuthorities) {
-      if (userAuthorities?.some(item => item.authority == authority)) {
-        allowedUser = userAuthorities?.some(item => item.authority == authority);
+    const user = localStorage.getItem('auth_user');
+    if (user) this.user = JSON.parse(user);
+  }
+
+  public getUser(): IUser | undefined {
+    return this.user;
+  }
+
+  public getAccessToken(): string | null {
+    return this.accessToken;
+  }
+
+  public check(): boolean {
+    return !!this.accessToken;
+  }
+
+  // ==========================================================
+  // ================= ROLES ================================
+  // ==========================================================
+
+  public hasRole(role: string): boolean {
+    return this.user.authorities?.some((a) => a.authority === role) ?? false;
+  }
+
+  public isSuperAdmin(): boolean {
+    return this.user.authorities?.some((a) => a.authority === IRoleType.superAdmin) ?? false;
+  }
+
+  public hasAnyRole(roles: any[]): boolean {
+    return roles.some((role) => this.hasRole(role));
+  }
+
+  public getPermittedRoutes(routes: any[]): any[] {
+    const permitted: any[] = [];
+    for (const route of routes) {
+      if (route.data?.authorities && this.hasAnyRole(route.data.authorities)) {
+        permitted.unshift(route);
       }
-      if (allowedUser) break;
     }
+    return permitted;
+  }
 
-    if (userAuthorities?.some(item => item.authority == IRoleType.admin || item.authority == IRoleType.superAdmin)) {
-      isAdmin = userAuthorities?.some(item => item.authority == IRoleType.admin || item.authority == IRoleType.superAdmin);
-    }
+  public getUserAuthorities(): IAuthority[] | undefined {
+    return this.user.authorities ?? [];
+  }
 
-    return allowedUser && isAdmin;
+  public areActionsAvailable(routeAuthorities: string[]): boolean {
+    const userAuthorities = this.getUserAuthorities();
+    const hasRole = routeAuthorities.some((ra) =>
+      userAuthorities?.some((ua) => ua.authority === ra)
+    );
+    const isAdmin = userAuthorities?.some(
+      (ua) => ua.authority === IRoleType.admin || ua.authority === IRoleType.superAdmin
+    );
+    return hasRole && !!isAdmin;
   }
 }

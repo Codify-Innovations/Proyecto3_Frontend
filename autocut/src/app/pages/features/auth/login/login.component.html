@@ -91,45 +91,15 @@
             </button>
           </div>
 
-          <!-- Or log in with -->
           <div class="text-center mb-6">
             <span class="text-sm text-[#424242]">Or log in with:</span>
           </div>
 
           <!-- Google Login -->
           <div class="flex justify-center mb-6">
-            <button
-              type="button"
-              (click)="handleGoogleLogin()"
-              class="flex items-center justify-center w-full bg-white border border-[#424242] rounded-lg py-3 px-4 text-[#424242] font-medium shadow-sm hover:bg-[#F5F5F5] transition duration-150 ease-in-out"
-            >
-              <svg
-                class="w-5 h-5 mr-3"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  fill="#4285F4"
-                  d="M22 12c0-.62-.05-1.22-.16-1.79H12v3.58h5.88a4.34 4.34 0 0 1-1.89 2.89v2.33h3.01c1.76-1.62 2.77-4 2.77-6.57z"
-                />
-                <path
-                  fill="#34A853"
-                  d="M12 22c3.24 0 5.92-1.07 7.9-2.9l-3.01-2.33c-.83.56-1.89.89-3.9.89-3.32 0-6.14-2.22-7.14-5.26H1.9v2.33c1.98 3.93 6.03 6.57 10.1 6.57z"
-                />
-                <path
-                  fill="#FBBC05"
-                  d="M4.86 14.1c-.2-.56-.32-1.15-.32-1.79s.12-1.23.32-1.79V8.24H1.9C1.17 9.8 1 11.8 1 12s.17 2.2.9 3.76l2.96-2.96z"
-                />
-                <path
-                  fill="#EA4335"
-                  d="M12 4.1a6.3 6.3 0 0 1 4.54 1.77L19.4 3.7a9.23 9.23 0 0 0-7.4-3.7 10.9 10.9 0 0 0-10.1 6.57l2.96 2.33c1-.7 2.1-1.07 3.32-1.07z"
-                />
-              </svg>
-              <span>Google</span>
-            </button>
+            <div id="googleBtn"></div>
           </div>
-
-          <!-- Sign Up Link -->
+          
           <p class="text-center text-sm text-[#424242] mt-6">
             No account yet?
             <a

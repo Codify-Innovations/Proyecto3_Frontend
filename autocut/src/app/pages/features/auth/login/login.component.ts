@@ -1,11 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild, OnInit } from '@angular/core';
+import { Component, ViewChild, AfterViewInit } from '@angular/core';
 import { FormsModule, NgModel, NgForm } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from '../../../../services/auth.service';
 import { environment } from '../../../../../environments/environment.development';
 
-declare var gapi: any;
+declare const google: any;
 
 @Component({
   selector: 'app-login',
@@ -14,8 +14,8 @@ declare var gapi: any;
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
-export class LoginComponent implements OnInit {
-  public loginError!: string;
+export class LoginComponent implements AfterViewInit {
+  public loginError = '';
   @ViewChild('email') emailModel!: NgModel;
   @ViewChild('password') passwordModel!: NgModel;
 
@@ -25,63 +25,50 @@ export class LoginComponent implements OnInit {
   };
 
   constructor(
-    private router: Router, 
+    private router: Router,
     private authService: AuthService
   ) {}
 
-  ngOnInit() {
-    // Cargar el script de Google API si no está presente
-    if (typeof gapi === 'undefined') {
-      const script = document.createElement('script');
-      script.src = 'https://apis.google.com/js/platform.js';
-      script.async = true;
-      script.defer = true;
-      document.head.appendChild(script);
-
-      script.onload = () => {
-        gapi.load('auth2', () => {
-          gapi.auth2.init({
-            client_id: environment.googleClientId,
-          });
-        });
-      };
-    } else {
-      gapi.load('auth2', () => {
-        gapi.auth2.init({
-          client_id: environment.googleClientId, // Tu Client ID de Google
-        });
-      });
-    }
-  }
-
+  // Login tradicional
   public handleLogin(frm: NgForm) {
     if (frm.invalid) {
-      if (!this.emailModel.valid) {
-        this.emailModel.control.markAsTouched();
-      }
-
-      if (!this.passwordModel.valid) {
-        this.passwordModel.control.markAsTouched();
-      }
-
+      if (!this.emailModel.valid) this.emailModel.control.markAsTouched();
+      if (!this.passwordModel.valid) this.passwordModel.control.markAsTouched();
       return;
     }
 
     this.authService.login(this.loginForm).subscribe({
       next: () => this.router.navigateByUrl('/app/dashboard'),
-      error: (err: any) => (this.loginError = err.error.description),
+      error: (err: any) => (this.loginError = err.error.description || 'Error al iniciar sesión'),
     });
   }
 
-public handleGoogleLogin() {
-  const auth2 = gapi.auth2.getAuthInstance();
+  ngAfterViewInit(): void {
+    google.accounts.id.initialize({
+      client_id: environment.googleClientId,
+      callback: (response: any) => this.handleGoogleResponse(response),
+    });
 
-  auth2.signIn().then((googleUser: any) => {
-    const idToken = googleUser.getAuthResponse().id_token;
-  })
-  .catch((error: any) => {
-    console.error('Google Sign-In Error:', error);
-    this.loginError = 'Google Sign-In failed. Please try again.';
-  });
-}
+    google.accounts.id.renderButton(
+      document.getElementById('googleBtn'),
+      { theme: 'outline', size: 'large', width: 300 }
+    );
+  }
+
+  private handleGoogleResponse(response: any): void {
+    const idToken = response.credential;
+
+    if (!idToken) {
+      this.loginError = 'No se obtuvo el ID Token de Google.';
+      return;
+    }
+
+    this.authService.loginWithGoogle(idToken).subscribe({
+      next: () => this.router.navigateByUrl('/app/dashboard'),
+      error: (err) => {
+        console.error('Error al iniciar sesión con Google:', err);
+        this.loginError = 'No se pudo iniciar sesión con Google.';
+      },
+    });
+  }
 }

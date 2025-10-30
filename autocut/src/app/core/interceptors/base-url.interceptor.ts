@@ -4,6 +4,10 @@ import { environment } from '../../../environments/environment';
 export const baseUrlInterceptor: HttpInterceptorFn = (req, next) => {
   const base: string = environment.apiUrl;
 
+  if (req.url.startsWith('http://') || req.url.startsWith('https://')) {
+    return next(req);
+  }
+
   const clonedRequest = req.clone({
     url: `${base}/${req.url}`,
     setHeaders: {
