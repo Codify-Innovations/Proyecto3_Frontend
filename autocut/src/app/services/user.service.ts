@@ -23,6 +23,17 @@ export class UserService extends BaseService<IUser> {
   public totalItems: any = [];
   private alertService: AlertService = inject(AlertService);
 
+  // Función para obtener los datos del perfil del usuario
+  getUserProfile(): Observable<IUser> {
+    return this.http.get<IUser>(`${this.source}/profile`); // Asumiendo que tu API tiene un endpoint '/profile'
+  }
+
+  // Función para actualizar los datos del perfil del usuario
+  updateUserProfile(user: IUser): Observable<any> {
+    return this.http.put(`${this.source}/profile`, user); // Asumiendo que tu API tiene un endpoint '/profile'
+  }
+
+  // Otros métodos del servicio...
   getAll() {
     this.findAllWithParams({ page: this.search.page, size: this.search.size }).subscribe({
       next: (response: any) => {
@@ -39,7 +50,6 @@ export class UserService extends BaseService<IUser> {
     });
   }
 
-  
   getPrivacySetting(): Observable<any> {
     return this.http.get(`${this.source}/privacy`);
   }
@@ -47,8 +57,6 @@ export class UserService extends BaseService<IUser> {
   updatePrivacySetting(visibility: string): Observable<any> {
     return this.http.put(`${this.source}/privacy`, { visibility });
   }
-
-  
 
   save(user: IUser) {
     this.add(user).subscribe({
@@ -93,3 +101,4 @@ export class UserService extends BaseService<IUser> {
     });
   }
 }
+

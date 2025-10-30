@@ -1,0 +1,116 @@
+<div class="min-h-screen flex items-center justify-center bg-[#F5F5F5]">
+  <div class="w-full max-w-md bg-white rounded-2xl shadow-md p-8 border border-gray-200">
+    <h2 class="text-3xl font-semibold text-center text-[#1C1C1C] mb-8">
+      Actualización de Datos Personales
+    </h2>
+
+    <form [formGroup]="form" (ngSubmit)="updateUserProfile()" class="space-y-5">
+<<<<<<< Updated upstream
+ 
+=======
+      <!-- Nombre -->
+>>>>>>> Stashed changes
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Nombre</label>
+        <input
+          type="text"
+          formControlName="name"
+          class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#B71C1C]"
+        />
+        <small *ngIf="form.get('name')?.touched && form.get('name')?.invalid" class="text-[#D32F2F] text-xs">
+          El nombre es obligatorio.
+        </small>
+      </div>
+
+      <!-- Apellido -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Apellido</label>
+        <input
+          type="text"
+          formControlName="lastname"
+          class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#B71C1C]"
+        />
+        <small *ngIf="form.get('lastname')?.touched && form.get('lastname')?.invalid" class="text-[#D32F2F] text-xs">
+          El apellido es obligatorio.
+        </small>
+      </div>
+
+<<<<<<< Updated upstream
+
+=======
+      <!-- Correo -->
+>>>>>>> Stashed changes
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Correo electrónico</label>
+        <input
+          type="email"
+          formControlName="email"
+          class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#B71C1C]"
+        />
+        <small *ngIf="form.get('email')?.touched && form.get('email')?.invalid" class="text-[#D32F2F] text-xs">
+          Ingresa un correo válido.
+        </small>
+      </div>
+
+<<<<<<< Updated upstream
+
+=======
+      <!-- Biografía -->
+>>>>>>> Stashed changes
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Biografía</label>
+        <textarea
+          formControlName="bio"
+          maxlength="200"
+          rows="3"
+          class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#B71C1C]"
+        ></textarea>
+        <p class="text-xs text-gray-500 text-right">
+          {{ form.value.bio?.length || 0 }}/200
+        </p>
+      </div>
+
+<<<<<<< Updated upstream
+    
+=======
+      <!-- Contraseña -->
+>>>>>>> Stashed changes
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2">Contraseña</label>
+        <input
+          type="password"
+          formControlName="password"
+          class="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-[#B71C1C]"
+        />
+        <p class="text-xs text-gray-500">
+          Debe tener al menos 8 caracteres, una letra mayúscula y un número (solo si deseas cambiarla)
+        </p>
+        <small *ngIf="form.get('password')?.touched && form.get('password')?.invalid" class="text-[#D32F2F] text-xs">
+          La contraseña no cumple con los criterios mínimos.
+        </small>
+      </div>
+
+<<<<<<< Updated upstream
+    
+=======
+      <!-- Botón guardar -->
+>>>>>>> Stashed changes
+      <button
+        type="submit"
+        [disabled]="isLoading"
+        class="w-full bg-[#1C1C1C] text-white font-bold rounded-md py-3 hover:bg-[#424242] transition"
+      >
+        {{ isLoading ? 'Guardando...' : 'Guardar Cambios' }}
+      </button>
+
+<<<<<<< Updated upstream
+ 
+=======
+      <!-- Mensaje -->
+>>>>>>> Stashed changes
+      <div *ngIf="message" [ngClass]="{'text-[#8BC34A]': success, 'text-[#D32F2F]': !success}" class="text-center mt-2">
+        {{ message }}
+      </div>
+    </form>
+  </div>
+</div>
