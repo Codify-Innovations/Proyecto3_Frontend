@@ -13,6 +13,7 @@ import { CategoryComponent } from './pages/category/category.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { GiftsComponent } from './pages/gifts/gifts.component';
 import { GiftListGiftsComponent } from './pages/gift-list-gifts/gift-list-gifts.component';
+import { LandingAutocutPage } from './pages/features/landing-autocut/page/landing.page';
 
 
 export const routes: Routes = [
@@ -32,8 +33,12 @@ export const routes: Routes = [
   },
   {
     path: '',
-    redirectTo: 'login',
+    redirectTo: 'landing-autocut',
     pathMatch: 'full',
+  },
+  {
+    path: 'landing-autocut',
+    component: LandingAutocutPage,
   },
   {
     path: 'app',

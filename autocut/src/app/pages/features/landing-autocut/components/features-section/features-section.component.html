@@ -1,0 +1,46 @@
+<section id="features" class="bg-white py-12 md:py-16 lg:py-20">
+  <div class="container mx-auto px-4 md:px-6">
+    
+    <!-- Section Title -->
+    <div class="text-center mb-8 md:mb-12">
+      <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-[#1C1C1C] mb-4 md:mb-6">
+        Features
+      </h2>
+      <p class="text-sm sm:text-base md:text-lg text-[#424242] max-w-4xl mx-auto leading-relaxed px-2">
+        AutoCut ofrece una plataforma unificada que integra herramientas clave como el
+        reconocimiento de automóviles mediante IA, la evaluación automática de clips y la 
+        optimización de contenido para redes sociales. Esto permite a los creadores de contenido 
+        mejorar la productividad, reducir costos y aumentar el alcance de sus publicaciones, 
+        todo en un solo lugar.
+      </p>
+    </div>
+
+    <!-- Features Grid -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-12 items-center mt-8 md:mt-16">
+      
+      <!-- Chart/Graph Visualization -->
+      <div class="bg-[#F5F5F5] rounded-lg p-4 md:p-8 h-60 md:h-80 order-last lg:order-first">
+        <svg class="w-full h-full" viewBox="0 0 400 300" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M 20 250 Q 60 200, 100 220 T 180 180 T 260 160 T 340 140 T 380 120" 
+                stroke="#424242" stroke-width="2" fill="none"/>
+          <path d="M 20 250 Q 60 230, 100 240 T 180 210 T 260 200 T 340 190 T 380 180" 
+                stroke="#880e0e" stroke-width="2" fill="none"/>
+          <path d="M 20 250 Q 60 245, 100 250 T 180 245 T 260 240 T 340 235 T 380 230" 
+                stroke="#8BC34A" stroke-width="2" fill="none"/>
+          <line x1="20" y1="20" x2="20" y2="260" stroke="#424242" stroke-width="1"/>
+          <line x1="20" y1="260" x2="380" y2="260" stroke="#424242" stroke-width="1"/>
+        </svg>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="grid grid-cols-2 gap-4 md:gap-6">
+        <app-stat-card 
+          *ngFor="let stat of stats"
+          [icon]="stat.icon"
+          [value]="stat.value"
+          [label]="stat.label">
+        </app-stat-card>
+      </div>
+    </div>
+  </div>
+</section>
