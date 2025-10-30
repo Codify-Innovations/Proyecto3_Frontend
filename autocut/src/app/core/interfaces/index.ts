@@ -1,6 +1,7 @@
 export interface ILoginResponse {
-  accessToken: string;
-  expiresIn: number
+  token: string;
+  expiresIn: number; 
+  authUser: IUser; 
 }
 
 export interface IResponse<T> {
@@ -20,11 +21,12 @@ export interface IUser {
   lastname?: string;
   email?: string;
   password?: string;
+  confirmPassword?: string; 
   active?: boolean;
   createdAt?: string;
   updatedAt?: string;
   authorities?: IAuthority[];
-  role?: IRole
+  role?: IRole;
 }
 
 export interface IAuthority {
@@ -45,7 +47,7 @@ export enum IFeedbackStatus {
 export enum IRoleType {
   admin = "ROLE_ADMIN",
   user = "ROLE_USER",
-  superAdmin = 'ROLE_SUPER_ADMIN'
+  superAdmin = 'ROLE_SUPER_ADMIN_ROLE'
 }
 
 export interface IRole {
