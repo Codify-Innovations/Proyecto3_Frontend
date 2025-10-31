@@ -45,7 +45,7 @@ export enum IFeedbackStatus {
 export enum IRoleType {
   admin = "ROLE_ADMIN",
   user = "ROLE_USER",
-  superAdmin = 'ROLE_SUPER_ADMIN'
+  superAdmin = 'ROLE_SUPER_ADMIN_ROLE'
 }
 
 export interface IRole {
@@ -100,4 +100,16 @@ export interface IProduct {
   createdAt?: string;
   updatedAt?: string;
   category?: ICategory;
+}
+
+export interface ITestimonial {
+  authorName: string;
+  authorLogo: string;
+  testimonial: string;
+}
+
+export interface IStat {
+  icon: string;
+  value: string;
+  label: string;
 }
