@@ -103,3 +103,15 @@ export interface IProduct {
   updatedAt?: string;
   category?: ICategory;
 }
+
+export interface ITestimonial {
+  authorName: string;
+  authorLogo: string;
+  testimonial: string;
+}
+
+export interface IStat {
+  icon: string;
+  value: string;
+  label: string;
+}
