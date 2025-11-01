@@ -11,11 +11,18 @@ import { IRoleType } from './core/interfaces';
 import { ProductComponent } from './pages/product/product.component';
 import { CategoryComponent } from './pages/category/category.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
-import { GiftsComponent } from './pages/gifts/gifts.component';
-import { GiftListGiftsComponent } from './pages/gift-list-gifts/gift-list-gifts.component';
+import { LandingPageComponent } from './pages/landing-page/landing-page.component';
 
 
 export const routes: Routes = [
+  {
+    path: '',
+    component: LandingPageComponent,
+  },
+  {
+    path: 'landing',
+    component: LandingPageComponent, 
+  },
   {
     path: 'login',
     component: LoginComponent,
@@ -31,72 +38,38 @@ export const routes: Routes = [
     component: AccessDeniedComponent,
   },
   {
-    path: '',
-    redirectTo: 'login',
-    pathMatch: 'full',
-  },
-  {
     path: 'app',
     component: AppLayoutComponent,
     canActivate: [AuthGuard],
     children: [
       {
-        path: 'app',
-        redirectTo: 'users',
+        path: '',
+        redirectTo: 'dashboard',
         pathMatch: 'full',
       },
       {
         path: 'users',
         component: UsersComponent,
-        canActivate:[AdminRoleGuard],
-        data: { 
-          authorities: [
-            IRoleType.admin, 
-            IRoleType.superAdmin
-          ],
+        canActivate: [AdminRoleGuard],
+        data: {
+          authorities: [IRoleType.admin, IRoleType.superAdmin],
           name: 'Users',
-          showInSidebar: true
-        }
+          showInSidebar: true,
+        },
       },
       {
         path: 'dashboard',
         component: DashboardComponent,
-        data: { 
+        data: {
           authorities: [
-            IRoleType.admin, 
+            IRoleType.admin,
             IRoleType.superAdmin,
-            IRoleType.user
+            IRoleType.user,
           ],
           name: 'Dashboard',
-          showInSidebar: true
-        }
+          showInSidebar: true,
+        },
       },
-      // {
-      //   path: 'gift-list',
-      //   component: GiftListGiftsComponent,
-      //   data: {
-      //     authorities: [
-      //       IRoleType.admin,
-      //       IRoleType.superAdmin,
-      //       IRoleType.user,
-      //     ],
-      //     name: 'Gift Lists',
-      //     showInSidebar: true
-      //   }
-      // },
-      // {
-      //   path: 'gifts',
-      //   component: GiftsComponent,
-      //   data: {
-      //     authorities: [
-      //       IRoleType.admin,
-      //       IRoleType.superAdmin,
-      //       IRoleType.user,
-      //     ],
-      //     name: 'Gifts',
-      //     showInSidebar: true
-      //   }
-      // },
       {
         path: 'product-categories',
         component: CategoryComponent,
@@ -107,8 +80,8 @@ export const routes: Routes = [
             IRoleType.user,
           ],
           name: 'Categories',
-          showInSidebar: true
-        }
+          showInSidebar: true,
+        },
       },
       {
         path: 'products',
@@ -120,9 +93,9 @@ export const routes: Routes = [
             IRoleType.user,
           ],
           name: 'Products',
-          showInSidebar: true
-        }
-      }
+          showInSidebar: true,
+        },
+      },
     ],
   },
 ];
