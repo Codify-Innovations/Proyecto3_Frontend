@@ -28,11 +28,6 @@ jobs:
     - name: Install dependencies
       run: npm install
 
-    - name: Install Chrome for testing
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y google-chrome-stable
-
     - name: Build
       run: npm run build
 
