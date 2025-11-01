@@ -1,0 +1,49 @@
+{
+  "HEADER": {
+    "PRODUCT": "Producto",
+    "FEATURES": "Características",
+    "TESTIMONIALS": "Testimonios",
+    "LOGIN": "Iniciar sesión"
+  },
+  "PRODUCT_SECTION": {
+    "TITLE": "AutoCut",
+    "DESCRIPTION": "Es una plataforma innovadora diseñada para transformar la manera en que los creadores de contenido automotriz producen, editan, publican y analizan su contenido, unificando en un solo espacio herramientas impulsadas por inteligencia artificial.",
+    "BUTTONS": {
+      "SIGNUP": "Registrarse",
+      "LOGIN": "Iniciar sesión"
+    }
+  },
+  "FEATURES_SECTION": {
+    "TITLE": "Características",
+    "DESCRIPTION": "AutoCut ofrece una plataforma unificada que integra herramientas clave como el reconocimiento de automóviles mediante IA, la evaluación automática de clips y la optimización de contenido para redes sociales. Esto permite a los creadores de contenido mejorar la productividad, reducir costos y aumentar el alcance de sus publicaciones, todo en un solo lugar.",
+    "STATS": {
+      "HAPPY_CUSTOMERS": "Clientes satisfechos",
+      "COMPLETED_PROJECTS": "Proyectos completados",
+      "RESOURCES": "Recursos",
+      "SUBSCRIBERS": "Suscriptores"
+    }
+  },
+  "TESTIMONIALS_SECTION": {
+    "TITLE": "Testimonios",
+    "LIST": [
+      {
+        "AUTHOR": "Javier Cruz",
+        "INITIALS": "JC",
+        "TEXT": "AutoCut ha revolucionado mi proceso de creación de contenido. Ahora todo lo que necesito está en una sola plataforma, ¡y la IA hace todo mucho más rápido!"
+      },
+      {
+        "AUTHOR": "María González",
+        "INITIALS": "MG",
+        "TEXT": "Gracias a AutoCut, he logrado optimizar mis publicaciones y aumentar mi alcance en redes sociales sin complicarme con múltiples herramientas."
+      },
+      {
+        "AUTHOR": "Carlos Rodríguez",
+        "INITIALS": "CR",
+        "TEXT": "La integración de IA en AutoCut me ha permitido crear contenido de mejor calidad en menos tiempo. ¡Es la solución perfecta para los creadores de contenido del sector automotriz!"
+      }
+    ]
+  },
+  "FOOTER": {
+    "COPYRIGHT": "AutoCut © {{year}}. Todos los derechos reservados."
+  }
+}

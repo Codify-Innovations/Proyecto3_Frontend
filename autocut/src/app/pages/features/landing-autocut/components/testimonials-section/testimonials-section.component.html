@@ -4,7 +4,7 @@
     <!-- Section Title -->
     <div class="text-center mb-8 md:mb-12 lg:mb-16">
       <h2 class="text-3xl sm:text-4xl md:text-5xl font-bold text-[#1C1C1C]">
-        Testimonials
+        {{ 'TESTIMONIALS_SECTION.TITLE' | translate }}
       </h2>
     </div>
 
@@ -23,9 +23,9 @@
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8">
         <app-testimonial-card
           *ngFor="let testimonial of visibleTestimonials"
-          [authorName]="testimonial.authorName"
-          [authorLogo]="testimonial.authorLogo"
-          [testimonial]="testimonial.testimonial">
+            [authorName]="testimonial.authorName | translate"
+            [authorLogo]="testimonial.authorLogo | translate"
+            [testimonial]="testimonial.testimonial | translate">
         </app-testimonial-card>
       </div>
 

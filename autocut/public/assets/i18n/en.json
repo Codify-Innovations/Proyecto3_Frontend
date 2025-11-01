@@ -1,0 +1,49 @@
+{
+  "HEADER": {
+    "PRODUCT": "Product",
+    "FEATURES": "Features",
+    "TESTIMONIALS": "Testimonials",
+    "LOGIN": "Log In"
+  },
+  "PRODUCT_SECTION": {
+    "TITLE": "AutoCut",
+    "DESCRIPTION": "It is an innovative platform designed to transform the way automotive content creators produce, edit, publish, and analyze their content, bringing together AI-powered tools in one unified space.",
+    "BUTTONS": {
+      "SIGNUP": "Sign Up",
+      "LOGIN": "Log In"
+    }
+  },
+  "FEATURES_SECTION": {
+    "TITLE": "Features",
+    "DESCRIPTION": "AutoCut offers a unified platform that integrates key tools such as AI-based car recognition, automatic clip evaluation, and social media content optimization. This allows content creators to improve productivity, reduce costs, and increase the reach of their posts — all in one place.",
+    "STATS": {
+      "HAPPY_CUSTOMERS": "Happy customers",
+      "COMPLETED_PROJECTS": "Completed projects",
+      "RESOURCES": "Resources",
+      "SUBSCRIBERS": "Subscribers"
+    }
+  },
+  "TESTIMONIALS_SECTION": {
+    "TITLE": "Testimonials",
+    "LIST": [
+      {
+        "AUTHOR": "Javier Cruz",
+        "INITIALS": "JC",
+        "TEXT": "AutoCut has revolutionized my content creation process. Now everything I need is in one platform, and the AI makes everything much faster!"
+      },
+      {
+        "AUTHOR": "María González",
+        "INITIALS": "MG",
+        "TEXT": "Thanks to AutoCut, I’ve optimized my posts and increased my reach on social media without juggling multiple tools."
+      },
+      {
+        "AUTHOR": "Carlos Rodríguez",
+        "INITIALS": "CR",
+        "TEXT": "The AI integration in AutoCut has allowed me to create higher-quality content in less time. It’s the perfect solution for automotive content creators!"
+      }
+    ]
+  },
+  "FOOTER": {
+    "COPYRIGHT": "AutoCut © {{year}}. All rights reserved."
+  }
+}
