@@ -1,0 +1,45 @@
+// Navbar Client Styles
+header {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+}
+
+// Ensure dropdown appears above other content
+.relative {
+  position: relative;
+}
+
+// Smooth transitions
+button {
+  transition: all 0.3s ease;
+}
+
+// Profile icon hover effect
+button svg {
+  transition: transform 0.2s ease;
+}
+
+button:hover svg {
+  transform: scale(1.1);
+}
+
+// Dropdown animation
+.absolute {
+  animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+// Close dropdown when clicking outside
+:host {
+  display: block;
+}
+
