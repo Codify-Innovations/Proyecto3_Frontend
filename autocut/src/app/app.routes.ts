@@ -19,6 +19,9 @@ import { LandingAutocutPage } from './pages/features/landing-autocut/page/landin
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
 import { UserSettingsComponent } from './pages/user-settings/user-settings.component';
 
+// ✅ Nuevo import agregado (soluciona TS2304)
+import { GiftsComponent } from './pages/gifts/gifts.component';
+
 export const routes: Routes = [
   {
     path: '',
@@ -26,7 +29,7 @@ export const routes: Routes = [
   },
   {
     path: 'landing',
-    component: LandingPageComponent, 
+    component: LandingPageComponent,
   },
   {
     path: 'login',
@@ -74,13 +77,9 @@ export const routes: Routes = [
       {
         path: 'dashboard',
         component: DashboardComponent,
+        // ✅ Se eliminó el segundo "authorities" duplicado (soluciona TS1117)
         data: {
           authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
-          authorities: [
-            IRoleType.admin,
-            IRoleType.superAdmin,
-            IRoleType.user,
-          ],
           name: 'Dashboard',
           showInSidebar: true,
         },
