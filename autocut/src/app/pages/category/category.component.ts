@@ -16,7 +16,7 @@ import { AuthService } from '../../services/auth.service';
     CommonModule,
     CategoryFormComponent,
     CategoryListComponent,
-    PaginationComponent,
+    PaginationComponent
   ],
   templateUrl: './category.component.html',
   styleUrls: ['./category.component.scss']
