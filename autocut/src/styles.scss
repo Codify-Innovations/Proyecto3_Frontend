@@ -1,5 +1,9 @@
 @use "tailwindcss" as *;
 
+a {
+    color: #000000 !important;
+    text-decoration: underline;
+}
 
 :root {
   --theme-default: #7366ff;
