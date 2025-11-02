@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { FileUploaderComponent } from '../../components/shared/file-uploader/file-uploader.component';
 import { UploaderService } from '../../services/cloudinary/uploader.service';
 import { AlertService } from '../../services/alert.service';
@@ -12,10 +12,22 @@ import { AlertService } from '../../services/alert.service';
 export class DashboardComponent {
   public uploaderService: UploaderService = inject(UploaderService);
   public alertService: AlertService = inject(AlertService);
+  URLs: string[] = [];
+
+  constructor() {
+    effect(() => {
+      if (this.uploaderService.uploaded$()) {
+        const urls = this.uploaderService.urlSignal$();
+        if (urls && urls.length > 0) {
+          this.URLs = urls;
+        }
+      }
+    });
+  }
 
   onFileUpload(files: File[]) {
     try {
-      const folderName = 'multiples-archivos'; 
+      const folderName = 'multiples-archivos';
       this.uploaderService.uploadFiles(files, folderName);
     } catch (err) {
       console.error('❌ Error inesperado al subir:', err);

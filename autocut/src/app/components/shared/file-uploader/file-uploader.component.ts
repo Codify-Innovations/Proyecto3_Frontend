@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, inject, Output } from '@angular/core';
+import { Component, effect, EventEmitter, inject, Output } from '@angular/core';
 import { validateFiles } from '../../../core/utils/file-validator';
 import { AlertService } from '../../../services/alert.service';
 import { UploaderService } from '../../../services/cloudinary/uploader.service';
@@ -30,14 +30,22 @@ export class FileUploaderComponent {
 
   removeFile(index: number): void {
     this.fileNames.splice(index, 1);
-
     this.selectedFiles.splice(index, 1);
+  }
+
+  constructor() {
+    effect(() => {
+      if (this.uploaderService.uploaded$()) {
+        this.fileNames = [];
+        this.selectedFiles = [];
+      }
+    });
   }
 
   onFileChange(event: any) {
     const input = event.target as HTMLInputElement;
     const files = input.files;
-    this.uploaderService.uploaded.set(false);
+    this.uploaderService.uploaded$.set(false);
     if (!files || files.length === 0) return;
     console.log(files);
     console.log(this.selectedFiles);
@@ -58,7 +66,7 @@ export class FileUploaderComponent {
   onDrop(event: DragEvent) {
     event.preventDefault();
     this.dragging = false;
-    this.uploaderService.uploaded.set(false);
+    this.uploaderService.uploaded$.set(false);
     const files = event.dataTransfer?.files;
     if (!files || files.length === 0) return;
     const filesArray = Array.from(files);
@@ -66,8 +74,6 @@ export class FileUploaderComponent {
     console.log(this.selectedFiles);
     const isValid = validateFiles(filesArray, this.alertService);
     if (!isValid) {
-      this.fileNames = [];
-      this.selectedFiles = [];
       return;
     }
 
@@ -97,11 +103,6 @@ export class FileUploaderComponent {
       );
       return;
     }
-
     this.filesSelected.emit(this.selectedFiles);
-  }
-
-  isUploaded(): boolean {
-    return this.uploaderService.uploaded();
   }
 }
