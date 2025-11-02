@@ -45,5 +45,105 @@
   },
   "FOOTER": {
     "COPYRIGHT": "AutoCut © {{year}}. Todos los derechos reservados."
+  },
+
+  "NAVBAR": {
+    "ABOUT": "Sobre Nosotros",
+    "MISSION": "Misión y Visión",
+    "TEAM": "Equipo",
+    "PROJECTS": "Proyectos"
+  },
+
+  "HERO": {
+    "TITLE": "CODIFY",
+    "SUBTITLE": "Innovations",
+    "DESCRIPTION": "En Codify Innovations desarrollamos soluciones tecnológicas de alto impacto. Creamos plataformas web y móviles con enfoque en rendimiento, seguridad y escalabilidad. Transformamos ideas en productos digitales inteligentes que impulsan la innovación empresarial.",
+    "BUTTON": "Contáctanos"
+  },
+
+  "MISSION": {
+    "TITLE": "Nuestra Misión",
+    "ITEMS": [
+      {
+        "TEXT": "Desarrollar soluciones tecnológicas innovadoras que mejoren la productividad, optimicen procesos y potencien el crecimiento digital de nuestros clientes."
+      },
+      {
+        "TEXT": "Implementar sistemas eficientes, sostenibles y escalables que integren diseño, usabilidad y rendimiento."
+      },
+      {
+        "TEXT": "Fomentar relaciones sólidas con nuestros clientes a través de confianza, transparencia y resultados medibles."
+      },
+      {
+        "TEXT": "Impulsar la transformación digital mediante el uso de inteligencia artificial, automatización y desarrollo ágil."
+      }
+    ]
+  },
+
+  "VISION": {
+    "TITLE": "Nuestra Visión",
+    "ITEMS": [
+      {
+        "ICON": "🌍",
+        "TEXT": "Ser una empresa líder en innovación tecnológica en América Latina, reconocida por su excelencia, calidad y compromiso con el progreso digital."
+      },
+      {
+        "ICON": "🧠",
+        "TEXT": "Consolidar un equipo multidisciplinario que transforme ideas en soluciones inteligentes y funcionales."
+      },
+      {
+        "ICON": "💻",
+        "TEXT": "Ser pioneros en la creación de herramientas digitales que integren automatización, diseño y analítica avanzada."
+      },
+      {
+        "ICON": "🌟",
+        "TEXT": "Promover una cultura de innovación continua, aprendizaje y desarrollo sostenible en cada proyecto."
+      }
+    ]
+  },
+
+  "TEAM": {
+    "TITLE": "Nuestro Equipo Ejecutivo",
+    "DESCRIPTION": "Un grupo de profesionales apasionados por el desarrollo de software, la innovación y la excelencia técnica.",
+    "ROLES": {
+      "TECH_LEAD": "Líder Técnico",
+      "PROJECT_MANAGER": "Gerente de Proyecto",
+      "DEVOPS": "Ingeniero DevOps",
+      "QA_TESTER": "Tester QA"
+    }
+  },
+
+  "PROJECTS": {
+    "TITLE": "Proyectos",
+    "DESCRIPTION": "Algunos de nuestros proyectos más destacados desarrollados para empresas de tecnología, educación y comercio electrónico."
+  },
+
+  "CONTACT": {
+    "TITLE": "Contáctanos",
+    "FIELDS": {
+      "NAME": "Nombre",
+      "EMAIL": "Correo electrónico",
+      "SUBJECT": "Asunto",
+      "PHONE": "Teléfono",
+      "MESSAGE": "Mensaje"
+    },
+    "PLACEHOLDERS": {
+      "NAME": "Escribe tu nombre completo",
+      "EMAIL": "nombre@empresa.com",
+      "SUBJECT": "Motivo de tu mensaje",
+      "PHONE": "+506 8888-8888",
+      "MESSAGE": "Cuéntanos sobre tu proyecto o consulta..."
+    },
+    "BUTTON": {
+      "SEND": "Enviar Mensaje",
+      "SENDING": "Enviando..."
+    },
+    "STATUS": {
+      "SUCCESS": "✅ Mensaje enviado con éxito. ¡Gracias por contactarnos!",
+      "ERROR": "❌ Ocurrió un error al enviar el mensaje. Inténtalo más tarde"
+    }
+  },
+
+  "FOOTERCODIFY": {
+    "COPYRIGHT": "Codify Innovations © 2025. Todos los derechos reservados."
   }
 }

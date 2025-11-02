@@ -2,7 +2,11 @@ import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
 import { routes } from './app.routes';
 import { provideClientHydration } from '@angular/platform-browser';
-import {HttpClient,provideHttpClient, withInterceptors,} from '@angular/common/http';
+import {
+  HttpClient,
+  provideHttpClient,
+  withInterceptors,
+} from '@angular/common/http';
 import { baseUrlInterceptor } from './core/interceptors/base-url.interceptor';
 import { accessTokenInterceptor } from './core/interceptors/access-token.interceptor';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
@@ -22,20 +26,11 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideClientHydration(),
     provideHttpClient(
-      withInterceptors([
-        baseUrlInterceptor,
-        accessTokenInterceptor,
-      ])
+      withInterceptors([baseUrlInterceptor, accessTokenInterceptor])
     ),
     provideAnimationsAsync(),
-    importProvidersFrom(OAuthModule.forRoot()),
-    {
-      provide: APP_INITIALIZER,
-      useFactory: initializeAuth,
-      deps: [AuthService],
-      multi: true,
-    },
     importProvidersFrom(
+      OAuthModule.forRoot(),
       TranslateModule.forRoot({
         defaultLanguage: 'en',
         loader: {
@@ -44,5 +39,11 @@ export const appConfig: ApplicationConfig = {
         },
       })
     ),
+    {
+      provide: APP_INITIALIZER,
+      useFactory: initializeAuth,
+      deps: [AuthService],
+      multi: true,
+    },
   ],
 };
