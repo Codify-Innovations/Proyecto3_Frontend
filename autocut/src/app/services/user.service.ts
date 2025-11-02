@@ -1,7 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { BaseService } from './base-service';
 import { ISearch, IUser } from '../core/interfaces';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs'; // ✅ agregado "of" para mock opcional
 import { AlertService } from './alert.service';
 
 @Injectable({
@@ -25,12 +25,36 @@ export class UserService extends BaseService<IUser> {
 
   // Función para obtener los datos del perfil del usuario
   getUserProfile(): Observable<IUser> {
-    return this.http.get<IUser>(`${this.source}/profile`); // Asumiendo que tu API tiene un endpoint '/profile'
+    return this.http.get<IUser>(`${this.source}/profile`);
   }
 
   // Función para actualizar los datos del perfil del usuario
   updateUserProfile(user: IUser): Observable<any> {
-    return this.http.put(`${this.source}/profile`, user); // Asumiendo que tu API tiene un endpoint '/profile'
+    return this.http.put(`${this.source}/profile`, user);
+  }
+
+  // obtener colecciones del usuario
+  getUserCollections(): Observable<any[]> {
+    // Puedes cambiar la URL cuando tengas el endpoint real
+    return this.http.get<any[]>(`${this.source}/collections`);
+
+    
+    /*
+    return of([
+      {
+        id: 1,
+        title: 'Modelos Clásicos',
+        category: 'Vehículos',
+        thumbnailUrl: 'https://cdn-icons-png.flaticon.com/512/7435/7435983.png',
+      },
+      {
+        id: 2,
+        title: 'Autos Concepto',
+        category: 'Diseños 3D',
+        thumbnailUrl: 'https://cdn-icons-png.flaticon.com/512/7435/7435961.png',
+      },
+    ]);
+    */
   }
 
   // Otros métodos del servicio...
@@ -101,4 +125,3 @@ export class UserService extends BaseService<IUser> {
     });
   }
 }
-

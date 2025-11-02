@@ -11,11 +11,13 @@ import { IRoleType } from './core/interfaces';
 import { ProductComponent } from './pages/product/product.component';
 import { CategoryComponent } from './pages/category/category.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
-import { UserPrivacyComponent } from './pages/user-privacy/user-privacy.component';
-import { UserProfileUpdateComponent } from './pages/user-profile-update/user-profile-update.component';
 import { GiftsComponent } from './pages/gifts/gifts.component';
 import { GiftListGiftsComponent } from './pages/gift-list-gifts/gift-list-gifts.component';
 import { LandingAutocutPage } from './pages/features/landing-autocut/page/landing.page';
+
+// ✅ Importar los componentes del perfil
+import { UserProfileComponent } from './pages/user-profile/user-profile.component';
+import { UserSettingsComponent } from './pages/user-settings/user-settings.component';
 
 export const routes: Routes = [
   {
@@ -47,8 +49,8 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       {
-        path: 'app',
-        redirectTo: 'users',
+        path: '',
+        redirectTo: 'dashboard',
         pathMatch: 'full',
       },
       {
@@ -88,33 +90,47 @@ export const routes: Routes = [
           showInSidebar: true,
         },
       },
+
+    
       {
-        path: 'profile/privacy', 
-        component: UserPrivacyComponent,
+        path: 'profile',
+        component: UserProfileComponent,
         data: {
-          authorities: [
-            IRoleType.admin,
-            IRoleType.superAdmin,
-            IRoleType.user,
-          ],
-          name: 'Privacidad del perfil',
+          authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
+          name: 'Perfil',
+          showInSidebar: true,
+        },
+      },
+
+     
+      {
+        path: 'profile/settings',
+        component: UserSettingsComponent,
+        data: {
+          authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
+          name: 'Configuración de Perfil',
+          showInSidebar: false, 
+        },
+      },
+
+      {
+        path: 'gifts',
+        component: GiftsComponent,
+        data: {
+          authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
+          name: 'Gifts',
           showInSidebar: true,
         },
       },
       {
-        path: 'profile/update', // Nuevo path para la actualización de perfil
-        component: UserProfileUpdateComponent,
+        path: 'gift-list-gifts',
+        component: GiftListGiftsComponent,
         data: {
-          authorities: [
-            IRoleType.admin,
-            IRoleType.superAdmin,
-            IRoleType.user,
-          ],
-          name: 'Actualizar perfil',
+          authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
+          name: 'Gift List',
           showInSidebar: true,
         },
       },
     ],
   },
 ];
-
