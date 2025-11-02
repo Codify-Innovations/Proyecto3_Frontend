@@ -1,0 +1,124 @@
+<header class="bg-white shadow-sm sticky top-0 z-50">
+  <nav class="container mx-auto px-4 md:px-6">
+    <div class="flex items-center justify-between">
+      <!-- Logo -->
+      <div class="flex items-center">
+        <img [src]="AutoCutLogo" 
+             alt="AutoCut Logo" 
+             class="h-12 w-auto md:h-16 lg:h-20 cursor-pointer"
+             (click)="navigateTo('/app/dashboard')">
+      </div>
+
+      <!-- Desktop Navigation -->
+      <div class="hidden md:flex items-center space-x-6 gap-10">
+        <button (click)="navigateTo('/app/dashboard')" 
+                class="text-[#424242] hover:text-[#1C1C1C] transition-colors">
+          Dashboard
+        </button>
+        <button (click)="navigateTo('/app/editor')" 
+                class="text-[#424242] hover:text-[#1C1C1C] transition-colors">
+          Editor
+        </button>
+        <button (click)="navigateTo('/app/ai-generate')" 
+                class="text-[#424242] hover:text-[#1C1C1C] transition-colors">
+          AI Generate
+        </button>
+        <button (click)="navigateTo('/app/ai-qa')" 
+                class="text-[#424242] hover:text-[#1C1C1C] transition-colors">
+          AI QA
+        </button>
+        <button (click)="navigateTo('/app/smart-share')" 
+                class="text-[#424242] hover:text-[#1C1C1C] transition-colors">
+          Smart Share
+        </button>
+        <button (click)="navigateTo('/app/badges')" 
+                class="text-[#424242] hover:text-[#1C1C1C] transition-colors">
+          Badges
+        </button>
+        <button (click)="navigateTo('/app/public')" 
+                class="text-[#424242] hover:text-[#1C1C1C] transition-colors">
+          Public
+        </button>
+      </div>
+
+      <!-- Desktop Profile Dropdown -->
+      <div class="hidden md:block relative">
+        <button (click)="toggleProfileDropdown()" 
+                class="p-2 text-[#424242] hover:text-[#1C1C1C] transition-colors">
+          <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+          </svg>
+        </button>
+        
+        <!-- Dropdown Menu -->
+        <div *ngIf="isProfileDropdownOpen" 
+             class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 border border-gray-200">
+          <button (click)="navigateToProfile()" 
+                  class="block w-full text-left px-4 py-2 text-sm text-[#424242] hover:bg-gray-100">
+            Profile
+          </button>
+          <button (click)="signOut()" 
+                  class="block w-full text-left px-4 py-2 text-sm text-[#880e0e] hover:bg-gray-100">
+            Sign Out
+          </button>
+        </div>
+      </div>
+
+      <!-- Mobile Menu Button -->
+      <button (click)="toggleMenu()" 
+              class="md:hidden p-2 text-[#1C1C1C]">
+        <svg *ngIf="!isMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+        <svg *ngIf="isMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div *ngIf="isMenuOpen" 
+         class="md:hidden pb-4 border-t border-gray-200 mt-2 pt-4">
+      <div class="flex flex-col space-y-4">
+        <button (click)="navigateTo('/app/dashboard')" 
+                class="text-[#424242] hover:text-[#1C1C1C] text-left py-2">
+          Dashboard
+        </button>
+        <button (click)="navigateTo('/app/editor')" 
+                class="text-[#424242] hover:text-[#1C1C1C] text-left py-2">
+          Editor
+        </button>
+        <button (click)="navigateTo('/app/ai-generate')" 
+                class="text-[#424242] hover:text-[#1C1C1C] text-left py-2">
+          AI Generate
+        </button>
+        <button (click)="navigateTo('/app/ai-qa')" 
+                class="text-[#424242] hover:text-[#1C1C1C] text-left py-2">
+          AI QA
+        </button>
+        <button (click)="navigateTo('/app/smart-share')" 
+                class="text-[#424242] hover:text-[#1C1C1C] text-left py-2">
+          Smart Share
+        </button>
+        <button (click)="navigateTo('/app/badges')" 
+                class="text-[#424242] hover:text-[#1C1C1C] text-left py-2">
+          Badges
+        </button>
+        <button (click)="navigateTo('/app/public')" 
+                class="text-[#424242] hover:text-[#1C1C1C] text-left py-2">
+          Public
+        </button>
+        <hr class="border-gray-200">
+        <button (click)="navigateToProfile()" 
+                class="text-[#424242] hover:text-[#1C1C1C] text-left py-2">
+          Profile
+        </button>
+        <button (click)="signOut()" 
+                class="text-[#880e0e] hover:text-[#1C1C1C] text-left py-2">
+          Sign Out
+        </button>
+      </div>
+    </div>
+  </nav>
+</header>
+
