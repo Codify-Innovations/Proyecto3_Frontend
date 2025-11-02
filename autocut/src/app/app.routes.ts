@@ -1,7 +1,7 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './pages/features/auth/login/login.component';
 import { AppLayoutComponent } from './components/app-layout/app-layout.component';
-import { SigUpComponent } from './pages/features/auth/sign-up/signup.component';
+import { SignUpComponent } from './pages/features/auth/sign-up/signup.component';
 import { UsersComponent } from './pages/users/users.component';
 import { AuthGuard } from '././core/guards/auth.guard';
 import { AccessDeniedComponent } from './pages/features/access-denied/access-denied.component';
@@ -12,6 +12,8 @@ import { ProductComponent } from './pages/product/product.component';
 import { CategoryComponent } from './pages/category/category.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { LandingPageComponent } from './pages/landing-page/landing-page.component';
+import { GiftListGiftsComponent } from './pages/gift-list-gifts/gift-list-gifts.component';
+import { LandingAutocutPage } from './pages/features/landing-autocut/page/landing.page';
 
 
 export const routes: Routes = [
@@ -30,12 +32,21 @@ export const routes: Routes = [
   },
   {
     path: 'signup',
-    component: SigUpComponent,
+    component: SignUpComponent,
     canActivate: [GuestGuard],
   },
   {
     path: 'access-denied',
     component: AccessDeniedComponent,
+  },
+  {
+    path: '',
+    redirectTo: 'landing-autocut',
+    pathMatch: 'full',
+  },
+  {
+    path: 'landing-autocut',
+    component: LandingAutocutPage,
   },
   {
     path: 'app',
