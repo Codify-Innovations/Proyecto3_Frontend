@@ -15,7 +15,7 @@ import { GiftsComponent } from './pages/gifts/gifts.component';
 import { GiftListGiftsComponent } from './pages/gift-list-gifts/gift-list-gifts.component';
 import { LandingAutocutPage } from './pages/features/landing-autocut/page/landing.page';
 
-// ✅ Importar los componentes del perfil
+// ✅ Componentes del perfil
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
 import { UserSettingsComponent } from './pages/user-settings/user-settings.component';
 
@@ -90,8 +90,6 @@ export const routes: Routes = [
           showInSidebar: true,
         },
       },
-
-    
       {
         path: 'profile',
         component: UserProfileComponent,
@@ -101,18 +99,15 @@ export const routes: Routes = [
           showInSidebar: true,
         },
       },
-
-     
       {
         path: 'profile/settings',
         component: UserSettingsComponent,
         data: {
           authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
           name: 'Configuración de Perfil',
-          showInSidebar: false, 
+          showInSidebar: false,
         },
       },
-
       {
         path: 'gifts',
         component: GiftsComponent,
