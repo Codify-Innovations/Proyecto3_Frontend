@@ -14,7 +14,6 @@ import { SvgIconComponent } from '../svg-icon/svg-icon.component';
     RouterOutlet,
     TopbarComponent,
     SidebarComponent,
-    SvgIconComponent
   ],
   templateUrl: './app-layout.component.html',
 })

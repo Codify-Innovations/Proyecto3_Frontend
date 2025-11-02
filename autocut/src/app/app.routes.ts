@@ -11,7 +11,7 @@ import { IRoleType } from './core/interfaces';
 import { ProductComponent } from './pages/product/product.component';
 import { CategoryComponent } from './pages/category/category.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
-import { GiftsComponent } from './pages/gifts/gifts.component';
+import { LandingPageComponent } from './pages/landing-page/landing-page.component';
 import { GiftListGiftsComponent } from './pages/gift-list-gifts/gift-list-gifts.component';
 import { LandingAutocutPage } from './pages/features/landing-autocut/page/landing.page';
 
@@ -20,6 +20,14 @@ import { UserProfileComponent } from './pages/user-profile/user-profile.componen
 import { UserSettingsComponent } from './pages/user-settings/user-settings.component';
 
 export const routes: Routes = [
+  {
+    path: '',
+    component: LandingPageComponent,
+  },
+  {
+    path: 'landing',
+    component: LandingPageComponent, 
+  },
   {
     path: 'login',
     component: LoginComponent,
@@ -68,6 +76,11 @@ export const routes: Routes = [
         component: DashboardComponent,
         data: {
           authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
+          authorities: [
+            IRoleType.admin,
+            IRoleType.superAdmin,
+            IRoleType.user,
+          ],
           name: 'Dashboard',
           showInSidebar: true,
         },
