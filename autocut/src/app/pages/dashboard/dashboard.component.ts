@@ -20,6 +20,7 @@ export class DashboardComponent {
         const urls = this.uploaderService.urlSignal$();
         if (urls && urls.length > 0) {
           this.URLs = urls;
+          console.log(this.URLs)
         }
       }
     });

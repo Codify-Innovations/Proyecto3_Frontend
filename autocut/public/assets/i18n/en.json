@@ -1,0 +1,153 @@
+{
+  "HEADER": {
+    "PRODUCT": "Product",
+    "FEATURES": "Features",
+    "TESTIMONIALS": "Testimonials",
+    "LOGIN": "Log In"
+  },
+  "PRODUCT_SECTION": {
+    "TITLE": "AutoCut",
+    "DESCRIPTION": "It is an innovative platform designed to transform the way automotive content creators produce, edit, publish, and analyze their content, bringing together AI-powered tools in one unified space.",
+    "BUTTONS": {
+      "SIGNUP": "Sign Up",
+      "LOGIN": "Log In"
+    }
+  },
+  "FEATURES_SECTION": {
+    "TITLE": "Features",
+    "DESCRIPTION": "AutoCut offers a unified platform that integrates key tools such as AI-based car recognition, automatic clip evaluation, and social media content optimization. This allows content creators to improve productivity, reduce costs, and increase the reach of their posts — all in one place.",
+    "STATS": {
+      "HAPPY_CUSTOMERS": "Happy customers",
+      "COMPLETED_PROJECTS": "Completed projects",
+      "RESOURCES": "Resources",
+      "SUBSCRIBERS": "Subscribers"
+    }
+  },
+  "TESTIMONIALS_SECTION": {
+    "TITLE": "Testimonials",
+    "LIST": [
+      {
+        "AUTHOR": "Javier Cruz",
+        "INITIALS": "JC",
+        "TEXT": "AutoCut has revolutionized my content creation process. Now everything I need is in one platform, and the AI makes everything much faster!"
+      },
+      {
+        "AUTHOR": "María González",
+        "INITIALS": "MG",
+        "TEXT": "Thanks to AutoCut, I’ve optimized my posts and increased my reach on social media without juggling multiple tools."
+      },
+      {
+        "AUTHOR": "Carlos Rodríguez",
+        "INITIALS": "CR",
+        "TEXT": "The AI integration in AutoCut has allowed me to create higher-quality content in less time. It’s the perfect solution for automotive content creators!"
+      }
+    ]
+  },
+  "FOOTER": {
+    "COPYRIGHT": "AutoCut © {{year}}. All rights reserved."
+  },
+
+  "NAVBAR": {
+    "ABOUT": "About Us",
+    "MISSION": "Mission & Vision",
+    "TEAM": "Team",
+    "PROJECTS": "Projects"
+  },
+
+  "HERO": {
+    "TITLE": "CODIFY",
+    "SUBTITLE": "Innovations",
+    "DESCRIPTION": "At Codify Innovations, we develop high-impact technological solutions. We build web and mobile platforms focused on performance, security, and scalability. We transform ideas into intelligent digital products that drive business innovation.",
+    "BUTTON": "Contact Us"
+  },
+
+  "MISSION": {
+    "TITLE": "Our Mission",
+    "ITEMS": [
+      {
+        "ICON": "💡",
+        "TEXT": "Develop innovative technological solutions that improve productivity, optimize processes, and enhance our clients’ digital growth."
+      },
+      {
+        "ICON": "⚙️",
+        "TEXT": "Implement efficient, sustainable, and scalable systems that integrate design, usability, and performance."
+      },
+      {
+        "ICON": "🤝",
+        "TEXT": "Foster strong relationships with our clients through trust, transparency, and measurable results."
+      },
+      {
+        "ICON": "🚀",
+        "TEXT": "Drive digital transformation through artificial intelligence, automation, and agile development."
+      }
+    ]
+  },
+
+  "VISION": {
+    "TITLE": "Our Vision",
+    "ITEMS": [
+      {
+        "ICON": "🌍",
+        "TEXT": "To be a leading company in technological innovation in Latin America, recognized for excellence, quality, and commitment to digital progress."
+      },
+      {
+        "ICON": "🧠",
+        "TEXT": "Build a multidisciplinary team capable of transforming ideas into intelligent and functional solutions."
+      },
+      {
+        "ICON": "💻",
+        "TEXT": "Be pioneers in creating digital tools that integrate automation, design, and advanced analytics."
+      },
+      {
+        "ICON": "🌟",
+        "TEXT": "Promote a culture of continuous innovation, learning, and sustainable development in every project."
+      }
+    ]
+  },
+
+  "TEAM": {
+    "TITLE": "Our Executive Team",
+    "DESCRIPTION": "A group of professionals passionate about software development, innovation, and technical excellence.",
+    "ROLES": {
+      "TECH_LEAD": "Technical Lead",
+      "PROJECT_MANAGER": "Project Manager",
+      "DEVOPS": "DevOps Engineer",
+      "QA_TESTER": "QA Tester"
+    }
+  },
+
+  "PROJECTS": {
+    "TITLE": "Projects",
+    "DESCRIPTION": "Some of our most outstanding projects developed for companies in technology, education, and e-commerce."
+  },
+
+  "CONTACT": {
+    "TITLE": "Contact Us",
+    "FIELDS": {
+      "NAME": "Name",
+      "EMAIL": "Email",
+      "SUBJECT": "Subject",
+      "PHONE": "Phone",
+      "MESSAGE": "Message"
+    },
+    "PLACEHOLDERS": {
+      "NAME": "Enter your full name",
+      "EMAIL": "name@company.com",
+      "SUBJECT": "Message subject",
+      "PHONE": "+1 888-888-8888",
+      "MESSAGE": "Tell us about your project or inquiry..."
+    },
+    "BUTTON": {
+      "SEND": "Send Message",
+      "SENDING": "Sending..."
+    },
+    "STATUS": {
+      "SUCCESS": "✅ Your message has been sent succesfully. ¡Thanks for contacting us!",
+      "ERROR": "❌ An error occurred while sending the message. Try it later"
+    }
+  },
+
+  "FOOTER": {
+    "COPYRIGHT": "Codify Innovations © 2025. All rights reserved."
+  }
+}

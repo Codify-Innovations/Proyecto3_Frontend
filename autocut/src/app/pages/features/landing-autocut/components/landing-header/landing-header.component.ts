@@ -1,18 +1,19 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
+import { TranslateModule, TranslateService } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-landing-header',
   standalone: true,
-  imports: [CommonModule, RouterModule],
+  imports: [CommonModule, RouterModule, TranslateModule],
   templateUrl: './landing-header.component.html',
 })
 export class LandingHeaderComponent {
   @Input() AutoCutLogo: string = '';
   isMenuOpen: boolean = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, public translate: TranslateService) {}
 
   toggleMenu(): void {
     this.isMenuOpen = !this.isMenuOpen;
@@ -29,5 +30,8 @@ export class LandingHeaderComponent {
   navigateToLogin(): void {
     this.router.navigate(['/login']);
   }
-}
 
+  switchLang(lang: string): void {
+    this.translate.use(lang);
+  }
+}
