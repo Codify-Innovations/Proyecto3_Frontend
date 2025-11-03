@@ -57,12 +57,26 @@
           <!-- Password -->
           <div class="form-group mb-4">
             <label for="password" class="text-sm font-medium text-[#424242]">Password</label>
-            <input #password="ngModel" type="password" id="password" name="password" placeholder="••••••••"
-              class="mt-1 block w-full px-4 py-2 border border-[#424242] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#1C1C1C] focus:border-[#1C1C1C] transition duration-150 ease-in-out"
-              [(ngModel)]="user.password" required minlength="8" />
+            <input
+              #password="ngModel"
+              type="password"
+              id="password"
+              name="password"
+              placeholder="••••••••"
+              class="mt-1 block w-full px-4 py-2 border border-[#424242] rounded-lg shadow-sm
+                    focus:outline-none focus:ring-2 focus:ring-[#1C1C1C] focus:border-[#1C1C1C]
+                    transition duration-150 ease-in-out"
+              [(ngModel)]="user.password"
+              required
+              minlength="8"
+              pattern="^(?=.*[A-Z])(?=.*\d).+$"
+            />
             <div *ngIf="password.invalid && password.touched" class="text-[#D32F2F] text-sm mt-1">
               <div *ngIf="password.errors?.['required']">Password is required.</div>
               <div *ngIf="password.errors?.['minlength']">Password must be at least 8 characters.</div>
+              <div *ngIf="password.errors?.['pattern']">
+              Password must contain at least one uppercase letter and one number.
+              </div>
             </div>
           </div>
 
