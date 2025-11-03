@@ -1,5 +1,9 @@
 # See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
 
+# Environment variables
+/environments/environment.development.ts
+/environments/environment.ts
+
 # Compiled output
 /dist
 /tmp

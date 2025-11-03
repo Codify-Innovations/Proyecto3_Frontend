@@ -1,0 +1,90 @@
+<header class="bg-white shadow-sm sticky top-0 z-50">
+  <nav class="container mx-auto px-4 md:px-6">
+    <div class="flex items-center justify-between">
+      <!-- Logo -->
+      <div class="flex items-center">
+        <img [src]="AutoCutLogo" alt="AutoCut Logo" class="h-12 w-auto md:h-16 lg:h-20">
+      </div>
+
+      <!-- Desktop Navigation -->
+      <div class="hidden md:flex items-center space-x-8 gap-10">
+        <button (click)="scrollToSection('product')" class="text-[#424242] hover:text-[#1C1C1C] transition-colors">
+          {{ 'HEADER.PRODUCT' | translate }}
+
+        </button>
+        <button (click)="scrollToSection('features')" class="text-[#424242] hover:text-[#1C1C1C] transition-colors">
+          {{ 'HEADER.FEATURES' | translate }}
+        </button>
+        <button (click)="scrollToSection('testimonials')" class="text-[#424242] hover:text-[#1C1C1C] transition-colors">
+          {{ 'HEADER.TESTIMONIALS' | translate }}
+        </button>
+      </div>
+
+      <!-- Desktop Log In Button -->
+      <div class="hidden md:flex items-center space-x-5 ">
+        <button (click)="navigateToLogin()"
+          class="px-6 py-2 border-2 border-[#880e0e] text-[#880e0e] rounded hover:bg-[#880e0e] hover:text-white transition-all duration-300">
+          {{ 'HEADER.LOGIN' | translate }}
+        </button>
+
+        <label class="inline-flex ml-2 mt-2 items-center cursor-pointer">
+          <input type="checkbox" class="sr-only peer"
+            (change)="switchLang(translate.getCurrentLang() === 'es' ? 'en' : 'es')"
+            [checked]="translate.getCurrentLang() === 'es'" />
+          <div
+            class="relative w-11 h-6 bg-[#880e0e] peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-[#880e0e] rounded-full peer peer-checked:bg-[#880e0e] transition-colors after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-[#B3B3B3] after:border after:rounded-full after:h-5 after:w-5 after:transition-all duration-500 ease-in-out peer-checked:after:translate-x-full">
+          </div>
+          <span class="ml-3 text-sm font-medium select-none text-[#880e0e]">
+            {{ translate.getCurrentLang() === 'es' ? 'ES' : 'EN' }}
+          </span>
+        </label>
+      </div>
+
+
+      <!-- Mobile Menu Button -->
+      <button (click)="toggleMenu()" class="md:hidden p-2 text-[#1C1C1C]">
+        <svg *ngIf="!isMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+        <svg *ngIf="isMenuOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div *ngIf="isMenuOpen" class="md:hidden pb-4 border-t border-gray-200 mt-2 pt-4">
+      <div class="flex flex-col space-y-4">
+
+        <button (click)="scrollToSection('product')" class="text-[#424242] hover:text-[#1C1C1C] text-left py-2">
+          {{ 'HEADER.PRODUCT' | translate }}
+        </button>
+
+        <button (click)="scrollToSection('features')" class="text-[#424242] hover:text-[#1C1C1C] text-left py-2">
+          {{ 'HEADER.FEATURES' | translate }}
+        </button>
+
+        <button (click)="scrollToSection('testimonials')" class="text-[#424242] hover:text-[#1C1C1C] text-left py-2">
+          {{ 'HEADER.TESTIMONIALS' | translate }}
+        </button>
+
+        <label class="inline-flex items-center cursor-pointer m-0">
+          <input type="checkbox" class="sr-only peer"
+            (change)="switchLang(translate.getCurrentLang() === 'es' ? 'en' : 'es')"
+            [checked]="translate.getCurrentLang() === 'es'" />
+          <div
+            class="relative w-11 h-6 bg-[#880e0e] peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-[#880e0e] rounded-full peer peer-checked:bg-[#880e0e] transition-colors after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-[#B3B3B3] after:border after:rounded-full after:h-5 after:w-5 after:transition-all duration-500 ease-in-out peer-checked:after:translate-x-full">
+          </div>
+          <span class="ml-3 text-sm font-medium select-none text-[#880e0e]">
+            {{ translate.getCurrentLang() === 'es' ? 'ES' : 'EN' }}
+          </span>
+        </label>
+        
+        <button (click)="navigateToLogin()"
+          class="px-6 py-2 border-2 border-[#880e0e] text-[#880e0e] rounded hover:bg-[#880e0e] hover:text-white transition-all duration-300 text-center">
+          {{ 'HEADER.LOGIN' | translate }}
+        </button>
+      </div>
+    </div>
+  </nav>
+</header>

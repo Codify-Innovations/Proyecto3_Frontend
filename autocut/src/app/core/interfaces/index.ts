@@ -67,43 +67,6 @@ export interface ISearch {
   totalPages?:number;
 }
 
-
-export interface IGiftList {
-  id?: number;
-  name?: string;
-  description?: string;
-}
-
-export interface IGift {
-  id?: number;
-  name?: string;
-  description?: string;
-  price?: number;
-  imageUrl?: string;
-  createdAt?: string;
-  updatedAt?: string;
-  giftList?: IGiftList;
-}
-
-export interface ICategory {
-  id?: number;
-  nombre?: string;
-  descripcion?: string;
-  createdAt?: string;
-  updatedAt?: string;
-}
-
-export interface IProduct {
-  id?: number;
-  nombre?: string;
-  descripcion?: string;
-  precio?: number;
-  stock?: number;
-  createdAt?: string;
-  updatedAt?: string;
-  category?: ICategory;
-}
-
 export interface ITestimonial {
   authorName: string;
   authorLogo: string;

@@ -1,9 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { TopbarComponent } from './elements/topbar/topbar.component';
-import { SidebarComponent } from './elements/sidebar/sidebar.component';
+import { NavbarClientComponent } from '../shared/navbar-client/navbar-client.component';
 import { CommonModule } from '@angular/common';
-import { LayoutService } from '../../services/layout.service';
+import { LayoutService } from '../../core/services/layout.service';
 import { SvgIconComponent } from '../svg-icon/svg-icon.component';
 
 @Component({
@@ -12,13 +11,14 @@ import { SvgIconComponent } from '../svg-icon/svg-icon.component';
   imports: [
     CommonModule,
     RouterOutlet,
-    TopbarComponent,
-    SidebarComponent,
+    NavbarClientComponent,
   ],
   templateUrl: './app-layout.component.html',
+  styleUrls: ['./app-layout.component.scss']
 })
 export class AppLayoutComponent {
   public title?: string;
+  public AutoCutLogo = '/logo/AutoCut_Logo.png';
 
   constructor(public layoutService: LayoutService) {
     this.layoutService.title.subscribe((title) => (this.title = title));
