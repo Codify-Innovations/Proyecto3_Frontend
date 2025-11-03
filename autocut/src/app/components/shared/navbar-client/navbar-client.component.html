@@ -42,8 +42,8 @@
       </div>
 
       <!-- Desktop Profile Dropdown -->
-      <div class="hidden md:block relative">
-        <button (click)="toggleProfileDropdown()" 
+      <div class="hidden md:block relative profile-dropdown-container">
+        <button (click)="toggleProfileDropdown($event)" 
                 class="p-2 text-[#424242] hover:text-[#1C1C1C] transition-colors">
           <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
@@ -52,7 +52,7 @@
         
         <!-- Dropdown Menu -->
         <div *ngIf="isProfileDropdownOpen" 
-             class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 border border-gray-200">
+             class="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 border border-gray-200 z-10">
           <button (click)="navigateToProfile()" 
                   class="block w-full text-left px-4 py-2 text-sm text-[#424242] hover:bg-gray-100">
             Profile

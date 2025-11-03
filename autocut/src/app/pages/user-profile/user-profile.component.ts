@@ -2,8 +2,8 @@ import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
-import { UserService } from '../../services/user.service';
-import { AlertService } from '../../services/alert.service';
+import { UserService } from '../../pages/features/users/user.service';
+import { AlertService } from '../../core/services/alert.service';
 
 @Component({
   selector: 'app-user-profile',

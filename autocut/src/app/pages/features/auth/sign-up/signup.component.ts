@@ -1,13 +1,13 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild, AfterViewInit  } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, inject } from '@angular/core';
 import { FormsModule, NgModel, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../../services/auth.service';
+import { AuthService } from '../../../../pages/features/auth/auth.service';
 import { IUser } from '../../../../core/interfaces/index';
 import { environment } from '../../../../../environments/environment.development';
+import { AlertService } from '../../../../core/services/alert.service';
 
 declare const google: any;
-
 
 @Component({
   selector: 'app-signup',
@@ -17,6 +17,9 @@ declare const google: any;
   styleUrls: ['./signup.component.scss']
 })
 export class SignUpComponent implements AfterViewInit {
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private alertService = inject(AlertService);
   public signUpError = '';
   public validSignup = false;
 
@@ -34,8 +37,6 @@ export class SignUpComponent implements AfterViewInit {
     confirmPassword: ''
   };
 
-  constructor(private router: Router, private authService: AuthService) {}
-
   // =====================================
   // =========== SIGNUP NORMAL ===========
   // =====================================
@@ -50,17 +51,23 @@ export class SignUpComponent implements AfterViewInit {
     }
 
     if (this.user.password !== this.user.confirmPassword) {
-      this.signUpError = 'Passwords do not match!';
+      this.alertService.error('Las contraseñas no coinciden.');
       return;
     }
 
     this.authService.signup(this.user).subscribe({
-      next: () => {
+      next: (res: any) => {
+        this.alertService.success(res.message || 'Registro completado correctamente.');
         this.validSignup = true;
-        this.router.navigateByUrl('/app/dashboard'); // 🔥 Auto-login tras signup
+        this.router.navigateByUrl('/app/dashboard');
       },
       error: (err: any) => {
-        this.signUpError = err.description || 'An error occurred during registration.';
+        if (err.status === 409) {
+              this.alertService.error('El correo electrónico ya está en uso.');
+        } else {
+          const msg = err.error?.message || 'Ocurrió un error durante el registro.';
+          this.alertService.error(msg);
+        }
       },
     });
   }
@@ -84,15 +91,17 @@ export class SignUpComponent implements AfterViewInit {
     const idToken = response.credential;
 
     if (!idToken) {
-      this.signUpError = 'No se obtuvo el ID Token de Google.';
       return;
     }
 
     this.authService.loginWithGoogle(idToken).subscribe({
-      next: () => this.router.navigateByUrl('/app/dashboard'),
+      next: (res: any) => {
+        this.alertService.success(res.message || 'Registro con Google completado.');
+        this.router.navigateByUrl('/app/dashboard');
+      },
       error: (err) => {
-        console.error('Error al registrarse con Google:', err);
-        this.signUpError = 'No se pudo completar el registro con Google.';
+        const msg = err.error?.message || 'No se pudo completar el registro con Google.';
+        this.alertService.error(msg);
       },
     });
   }
