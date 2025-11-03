@@ -35,9 +35,19 @@
           <!-- Email -->
           <div class="form-group mb-4">
             <label for="email" class="text-sm font-medium text-[#424242]">Email Address</label>
-            <input #email="ngModel" type="email" id="email" name="email" placeholder="your-email@example.com"
-              class="mt-1 block w-full px-4 py-2 border border-[#424242] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#1C1C1C] focus:border-[#1C1C1C] transition duration-150 ease-in-out"
-              [(ngModel)]="user.email" required />
+            <input
+              #email="ngModel"
+              type="email"
+              id="email"
+              name="email"
+              placeholder="your-email@example.com"
+              class="mt-1 block w-full px-4 py-2 border border-[#424242] rounded-lg shadow-sm
+                    focus:outline-none focus:ring-2 focus:ring-[#1C1C1C] focus:border-[#1C1C1C]
+                    transition duration-150 ease-in-out"
+              [(ngModel)]="user.email"
+              required
+              email
+            />
             <div *ngIf="email.invalid && email.touched" class="text-[#D32F2F] text-sm mt-1">
               <div *ngIf="email.errors?.['required']">Email is required.</div>
               <div *ngIf="email.errors?.['email']">Please enter a valid email address.</div>
