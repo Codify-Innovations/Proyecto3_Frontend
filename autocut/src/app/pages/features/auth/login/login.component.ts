@@ -41,7 +41,6 @@ export class LoginComponent implements AfterViewInit {
 
     this.authService.login(this.loginForm).subscribe({
       next: (res: any) => {
-        this.alertService.success(res.message || 'Inicio de sesión exitoso.');
         this.router.navigateByUrl('/app/dashboard');
       },
       error: (err: any) => {
