@@ -1,4 +1,4 @@
-import { Component, inject, Input } from '@angular/core';
+import { Component, inject, Input, ChangeDetectorRef, HostListener } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../../pages/features/auth/auth.service';
@@ -16,13 +16,28 @@ export class NavbarClientComponent {
   isProfileDropdownOpen: boolean = false;
   private authService = inject(AuthService);
   private router = inject(Router);
+  private cdr = inject(ChangeDetectorRef);
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: MouseEvent): void {
+    const target = event.target as HTMLElement;
+    const clickedInside = target.closest('.profile-dropdown-container');
+    
+    if (!clickedInside && this.isProfileDropdownOpen) {
+      this.isProfileDropdownOpen = false;
+      this.cdr.detectChanges();
+    }
+  }
 
   toggleMenu(): void {
     this.isMenuOpen = !this.isMenuOpen;
+    this.cdr.detectChanges();
   }
 
-  toggleProfileDropdown(): void {
+  toggleProfileDropdown(event: Event): void {
+    event.stopPropagation();
     this.isProfileDropdownOpen = !this.isProfileDropdownOpen;
+    this.cdr.detectChanges();
   }
 
   navigateTo(route: string): void {
