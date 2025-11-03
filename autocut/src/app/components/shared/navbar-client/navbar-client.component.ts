@@ -35,9 +35,9 @@ export class NavbarClientComponent {
     this.isProfileDropdownOpen = false;
   }
 
-  signOut(): void {
+  logout() {
     this.authService.logout();
-    this.isProfileDropdownOpen = false;
+    this.router.navigateByUrl('/login');
   }
 }
 
