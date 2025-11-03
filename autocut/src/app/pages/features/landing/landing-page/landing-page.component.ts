@@ -13,6 +13,14 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 export class LandingPageComponent {
   public translate: TranslateService = inject(TranslateService);
 
+  // ✅ Estado del menú responsive
+  menuOpen = false;
+
+  // ✅ Cerrar menú al hacer clic en un enlace
+  closeMenu(): void {
+    this.menuOpen = false;
+  }
+
   switchLang(lang: string): void {
     this.translate.use(lang);
   }
@@ -166,10 +174,7 @@ export class LandingPageComponent {
       )
       .then(() => {
         this.isSending = false;
-        this.successMessage = this.successMessage = this.translate.instant(
-          'CONTACT.STATUS.SUCCESS'
-        );
-
+        this.successMessage = this.translate.instant('CONTACT.STATUS.SUCCESS');
         (event.target as HTMLFormElement).reset();
       })
       .catch((error: any) => {
@@ -183,7 +188,7 @@ export class LandingPageComponent {
     return this.sanitizer.bypassSecurityTrustHtml(svg);
   }
 
-  //Carousel logic
+  // Carousel logic
   startAutoSlide() {
     this.interval = setInterval(() => this.nextSlide(), 5000);
   }
