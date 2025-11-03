@@ -96,7 +96,6 @@ export class SignUpComponent implements AfterViewInit {
 
     this.authService.loginWithGoogle(idToken).subscribe({
       next: (res: any) => {
-        this.alertService.success(res.message || 'Registro con Google completado.');
         this.router.navigateByUrl('/app/dashboard');
       },
       error: (err) => {
