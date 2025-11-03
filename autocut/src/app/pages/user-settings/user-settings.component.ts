@@ -19,7 +19,8 @@ export class UserSettingsComponent implements OnInit {
 
   form!: FormGroup;
   isLoading = false;
-  avatarUrl = 'https://cdn-icons-png.flaticon.com/512/149/149071.png'; 
+  avatarUrl = 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
+  private originalPasswordPlaceholder = '********'; // valor fijo para mostrar
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -27,16 +28,12 @@ export class UserSettingsComponent implements OnInit {
       lastname: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       bio: ['', [Validators.maxLength(200)]],
-      password: [
-        '',
-        [Validators.minLength(8), Validators.pattern(/^(?=.*[A-Z])(?=.*\d).+$/)],
-      ],
+      password: [''], // se llenará dinámicamente
       visibility: ['public'],
     });
 
     this.loadUserData();
   }
-
 
   loadUserData(): void {
     this.isLoading = true;
@@ -49,6 +46,8 @@ export class UserSettingsComponent implements OnInit {
           email: user.email,
           bio: user.bio || '',
           visibility: user.visibility?.toLowerCase().trim() || 'public',
+          // 👇 Mostramos el placeholder de contraseña
+          password: this.originalPasswordPlaceholder,
         });
         this.avatarUrl = user.avatarUrl || this.avatarUrl;
         this.isLoading = false;
@@ -60,9 +59,9 @@ export class UserSettingsComponent implements OnInit {
     });
   }
 
- 
   updateUserSettings(): void {
-    if (this.form.invalid) {
+    // ✅ Validamos normalmente, pero ignoramos la contraseña placeholder
+    if (this.form.invalid && !this.isOnlyPasswordInvalid()) {
       this.alertService.error('Por favor, completa los campos correctamente.');
       this.form.markAllAsTouched();
       return;
@@ -80,14 +79,23 @@ export class UserSettingsComponent implements OnInit {
       visibility,
     };
 
-    if (password && password.trim() !== '') {
+    // ✅ Solo añadimos password si el usuario realmente la cambió
+    if (password && password.trim() !== '' && password !== this.originalPasswordPlaceholder) {
+      const isValid = /^(?=.*[A-Z])(?=.*\d).{8,}$/.test(password);
+      if (!isValid) {
+        this.alertService.error(
+          'La contraseña debe tener al menos 8 caracteres, una mayúscula y un número.'
+        );
+        this.isLoading = false;
+        return;
+      }
       updatePayload.password = password;
     }
 
-    console.log('🟢 Payload enviado:', updatePayload); 
+    console.log('🟢 Payload enviado:', updatePayload);
 
     this.userService.updateUserProfile(updatePayload).subscribe({
-      next: (res: any) => {
+      next: () => {
         this.alertService.success('Datos actualizados correctamente.');
         this.isLoading = false;
       },
@@ -103,6 +111,11 @@ export class UserSettingsComponent implements OnInit {
     });
   }
 
+  /** ✅ Evita error TS y devuelve siempre boolean */
+  private isOnlyPasswordInvalid(): boolean {
+    const passwordControl = this.form.get('password');
+    return !!passwordControl && !!passwordControl.invalid && !passwordControl.value;
+  }
 
   editAvatar(): void {
     this.router.navigate(['/app/profile/avatar']);
