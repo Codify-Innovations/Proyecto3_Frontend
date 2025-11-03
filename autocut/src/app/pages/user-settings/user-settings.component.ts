@@ -1,8 +1,8 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { UserService } from '../../services/user.service';
-import { AlertService } from '../../services/alert.service';
+import { UserService } from '../../pages/features/users/user.service';
+import { AlertService } from '../../core/services/alert.service';
 import { Router } from '@angular/router';
 
 @Component({

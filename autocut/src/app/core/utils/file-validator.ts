@@ -1,4 +1,4 @@
-import { AlertService } from '../../services/alert.service';
+import { AlertService } from '../../core/services/alert.service';
 
 /**
  * Valida un archivo según tipo y tamaño permitido.

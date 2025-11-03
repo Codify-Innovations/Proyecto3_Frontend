@@ -12,7 +12,7 @@ import { accessTokenInterceptor } from './core/interceptors/access-token.interce
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { OAuthModule } from 'angular-oauth2-oidc';
 import { APP_INITIALIZER } from '@angular/core';
-import { AuthService } from './services/auth.service';
+import { AuthService } from './pages/features/auth/auth.service';
 import { handleErrorsInterceptor } from '././core/interceptors/handle-errors.interceptor';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { CustomTranslateLoader } from './core/utils/custom-translate-loader';

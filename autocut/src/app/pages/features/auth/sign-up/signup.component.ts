@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component, ViewChild, AfterViewInit  } from '@angular/core';
 import { FormsModule, NgModel, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
-import { AuthService } from '../../../../services/auth.service';
+import { AuthService } from '../../../../pages/features/auth/auth.service';
 import { IUser } from '../../../../core/interfaces/index';
 import { environment } from '../../../../../environments/environment.development';
 

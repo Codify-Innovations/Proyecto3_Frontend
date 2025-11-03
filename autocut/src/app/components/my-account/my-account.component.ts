@@ -1,6 +1,6 @@
 import { Component, OnInit, inject } from "@angular/core";
 import { Router, RouterLink } from "@angular/router";
-import { AuthService } from "../../services/auth.service";
+import { AuthService } from '../../pages/features/auth/auth.service';
 
 @Component({
   selector: "app-my-account",

@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, effect, EventEmitter, inject, Output } from '@angular/core';
 import { validateFiles } from '../../../core/utils/file-validator';
-import { AlertService } from '../../../services/alert.service';
-import { UploaderService } from '../../../services/cloudinary/uploader.service';
+import { AlertService } from '../../../core/services/alert.service';
+import { UploaderService } from '../../../core/services/cloudinary/uploader.service';
 
 @Component({
   selector: 'app-file-uploader',

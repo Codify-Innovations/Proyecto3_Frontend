@@ -2,7 +2,7 @@ import { HttpInterceptorFn } from '@angular/common/http';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { Observable, catchError, of } from 'rxjs';
-import { AuthService } from '../../services/auth.service';
+import { AuthService } from '../../pages/features/auth/auth.service';
 import { OAuthService } from 'angular-oauth2-oidc';
 
 export const handleErrorsInterceptor: HttpInterceptorFn = (req, next) => {
