@@ -1,0 +1,444 @@
+<!-- Página completa Codify Innovations -->
+<div class="min-h-screen bg-[#0A0A0A] text-white scroll-smooth">
+
+<!-- Navbar -->
+<header class="bg-[#0B0B0B] border-b border-[#1A1A1A] fixed top-0 left-0 w-full z-50 shadow-[0_0_10px_#A4FF4D20]">
+  <nav class="max-w-[1500px] mx-auto flex items-center justify-between h-16 px-6 sm:px-12">
+    <!-- Logo -->
+    <div class="flex items-center space-x-3">
+      <img
+        src="assets/img/login/logo-cuadrado.png"
+        alt="Codify Logo"
+        class="h-10 w-auto object-contain drop-shadow-[0_0_25px_#A4FF4D90] brightness-125 contrast-125 transition-transform duration-500 hover:scale-105"
+      />
+      <span class="text-lg font-bold text-[#A4FF4D] tracking-wide">
+        Codify Innovations
+      </span>
+    </div>
+
+    <!-- Botón Hamburguesa (solo visible en móvil) -->
+    <button
+      class="md:hidden text-[#A4FF4D] focus:outline-none"
+      (click)="menuOpen = !menuOpen"
+      aria-label="Abrir menú"
+    >
+      <!-- Icono hamburguesa -->
+      <svg
+        *ngIf="!menuOpen"
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-7 w-7"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+      </svg>
+
+      <!-- Icono cerrar -->
+      <svg
+        *ngIf="menuOpen"
+        xmlns="http://www.w3.org/2000/svg"
+        class="h-7 w-7"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke="currentColor"
+      >
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+      </svg>
+    </button>
+
+    <!-- Menú Desktop -->
+    <ul class="hidden md:flex items-center space-x-12">
+      <li>
+        <a
+          href="#about"
+          class="text-sm font-medium text-white no-underline transition-all duration-300 hover:text-[#A4FF4D] hover:drop-shadow-[0_0_15px_#A4FF4D]"
+          style="text-decoration: none;"
+        >
+          {{ 'NAVBAR.ABOUT' | translate }}
+        </a>
+      </li>
+      <li>
+        <a
+          href="#mission"
+          class="text-sm font-medium text-white no-underline transition-all duration-300 hover:text-[#A4FF4D] hover:drop-shadow-[0_0_15px_#A4FF4D]"
+          style="text-decoration: none;"
+        >
+          {{ 'NAVBAR.MISSION' | translate }}
+        </a>
+      </li>
+      <li>
+        <a
+          href="#team"
+          class="text-sm font-medium text-white no-underline transition-all duration-300 hover:text-[#A4FF4D] hover:drop-shadow-[0_0_15px_#A4FF4D]"
+          style="text-decoration: none;"
+        >
+          {{ 'NAVBAR.TEAM' | translate }}
+        </a>
+      </li>
+      <li>
+        <a
+          href="#projects"
+          class="text-sm font-medium text-white no-underline transition-all duration-300 hover:text-[#A4FF4D] hover:drop-shadow-[0_0_15px_#A4FF4D]"
+          style="text-decoration: none;"
+        >
+          {{ 'NAVBAR.PROJECTS' | translate }}
+        </a>
+      </li>
+
+      <!-- Language Switch -->
+      <li>
+        <label class="inline-flex items-center mt-3 cursor-pointer">
+          <input
+            type="checkbox"
+            class="sr-only peer"
+            (change)="switchLang(translate.getCurrentLang() === 'es' ? 'en' : 'es')"
+            [checked]="translate.getCurrentLang() === 'es'"
+          />
+          <div
+            class="relative w-11 h-6 bg-[#1A1A1A] peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-[#A4FF4D]
+                   rounded-full peer peer-checked:bg-[#A4FF4D] transition-colors
+                   after:content-[''] after:absolute after:top-[2px] after:left-[2px]
+                   after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all duration-500 ease-in-out peer-checked:after:translate-x-full"
+          ></div>
+          <span class="ml-3 text-sm font-medium select-none text-[#A4FF4D]">
+            {{ translate.getCurrentLang() === 'es' ? 'ES' : 'EN' }}
+          </span>
+        </label>
+      </li>
+
+      <!-- Botón AutoCut -->
+      <li>
+        <a
+          href="landing-autocut"
+          class="px-6 py-2 rounded-md bg-[#A4FF4D] text-[#0B0B0B] font-semibold text-sm no-underline transition-transform duration-300 hover:scale-105 hover:brightness-110"
+          style="text-decoration: none;"
+        >
+          AutoCut
+        </a>
+      </li>
+    </ul>
+  </nav>
+
+  <!-- Menú Móvil Desplegable -->
+  <div
+    *ngIf="menuOpen"
+    class="md:hidden bg-[#0B0B0B] border-t border-[#1A1A1A] flex flex-col items-center space-y-5 py-6 animate-fadeIn"
+  >
+    <a
+      href="#about"
+      (click)="closeMenu()"
+      class="text-sm font-medium text-white no-underline transition-all duration-300 hover:text-[#A4FF4D] hover:drop-shadow-[0_0_15px_#A4FF4D]"
+      style="text-decoration: none;"
+    >
+      {{ 'NAVBAR.ABOUT' | translate }}
+    </a>
+    <a
+      href="#mission"
+      (click)="closeMenu()"
+      class="text-sm font-medium text-white no-underline transition-all duration-300 hover:text-[#A4FF4D] hover:drop-shadow-[0_0_15px_#A4FF4D]"
+      style="text-decoration: none;"
+    >
+      {{ 'NAVBAR.MISSION' | translate }}
+    </a>
+    <a
+      href="#team"
+      (click)="closeMenu()"
+      class="text-sm font-medium text-white no-underline transition-all duration-300 hover:text-[#A4FF4D] hover:drop-shadow-[0_0_15px_#A4FF4D]"
+      style="text-decoration: none;"
+    >
+      {{ 'NAVBAR.TEAM' | translate }}
+    </a>
+    <a
+      href="#projects"
+      (click)="closeMenu()"
+      class="text-sm font-medium text-white no-underline transition-all duration-300 hover:text-[#A4FF4D] hover:drop-shadow-[0_0_15px_#A4FF4D]"
+      style="text-decoration: none;"
+    >
+      {{ 'NAVBAR.PROJECTS' | translate }}
+    </a>
+
+    <a
+      href="landing-autocut"
+      (click)="closeMenu()"
+      class="px-6 py-2 rounded-md bg-[#A4FF4D] text-[#0B0B0B] font-semibold text-sm no-underline transition-transform duration-300 hover:scale-105 hover:brightness-110"
+      style="text-decoration: none;"
+    >
+      AutoCut
+    </a>
+  </div>
+</header>
+
+  <!-- Hero Section -->
+<section
+id="about"
+class="pt-32 lg:pt-40 pb-24 flex items-center justify-center min-h-[90vh] bg-black"
+>
+<div
+  class="max-w-[1500px] mx-auto flex flex-col lg:flex-row items-center justify-between px-12 gap-6 w-full"
+>
+  <!-- Imagen -->
+  <div
+    class="flex-1 flex justify-center lg:justify-start relative -left-[10px]"
+  >
+    <div
+      class="w-[280px] h-[280px] sm:w-[320px] sm:h-[320px] md:w-[360px] md:h-[360px] rounded-full bg-black flex items-center justify-center 
+             shadow-[0_0_60px_#A4FF4D70] transition-all duration-500 hover:scale-105 hover:shadow-[0_0_100px_#A4FF4D]"
+    >
+      <img
+        src="assets/img/login/logo-completo.png"
+        alt="Codify Logo"
+        class="object-contain w-[80%] h-[80%] drop-shadow-[0_0_40px_#A4FF4D90] brightness-125 contrast-125 
+               transition-all duration-500 hover:brightness-150 hover:drop-shadow-[0_0_90px_#A4FF4D]"
+      />
+    </div>
+  </div>
+
+  <!-- Texto -->
+  <div class="flex-1 text-left max-w-lg">
+    <h1
+      class="text-5xl font-extrabold text-white leading-tight drop-shadow-[0_0_10px_#A4FF4D40]"
+    >
+      {{ 'HERO.TITLE' | translate }}
+    </h1>
+    <h2
+      class="text-3xl font-semibold text-[#A4FF4D] mt-1 mb-6"
+    >
+      {{ 'HERO.SUBTITLE' | translate }}
+    </h2>
+
+    <p class="text-gray-300 leading-relaxed text-base max-w-md">
+      {{ 'HERO.DESCRIPTION' | translate }}
+    </p>
+    <div class="mt-8">
+      <a
+        href="#contact"
+        class="inline-block bg-[#A4FF4D] px-8 py-3 rounded-md font-semibold text-black 
+               hover:bg-[#b6ff66] hover:scale-105 transition-all duration-300 
+               shadow-[0_0_25px_#A4FF4D70] no-underline"
+        style="text-decoration: none; color: inherit;"
+      >
+        {{ 'HERO.BUTTON' | translate }}
+      </a>
+    </div>
+  </div>
+</div>
+</section>
+
+<!-- Misión -->
+<section
+  id="mission"
+  class="bg-gradient-to-b from-[#0A0A0A] to-[#0E0E0E] text-center py-32 relative overflow-hidden scroll-mt-20"
+>
+  <div class="max-w-screen-xl mx-auto px-6 relative z-10">
+    <h2 class="mb-20 text-4xl font-extrabold tracking-widest text-[#A4FF4D] uppercase drop-shadow-[0_0_25px_#A4FF4D]">
+      {{ 'MISSION.TITLE' | translate }}
+    </h2>
+
+    <div class="grid gap-12 sm:grid-cols-2 lg:grid-cols-4 mt-10">
+      <div class="flex flex-col items-center text-center">
+        <div class="mb-6 text-[#A4FF4D] text-5xl">💡</div>
+        <p class="text-gray-300 max-w-xs leading-relaxed">
+           {{ 'MISSION.ITEMS.0.TEXT' | translate }}     
+        </p>
+      </div>
+      <div class="flex flex-col items-center text-center">
+        <div class="mb-6 text-[#A4FF4D] text-5xl">⚙️</div>
+        <p class="text-gray-300 max-w-xs leading-relaxed">
+          {{ 'MISSION.ITEMS.1.TEXT' | translate }}          
+        </p>
+      </div>
+      <div class="flex flex-col items-center text-center">
+        <div class="mb-6 text-[#A4FF4D] text-5xl">🤝</div>
+        <p class="text-gray-300 max-w-xs leading-relaxed">
+          {{ 'MISSION.ITEMS.2.TEXT' | translate }}          </p>
+      </div>
+      <div class="flex flex-col items-center text-center">
+        <div class="mb-6 text-[#A4FF4D] text-5xl">🚀</div>
+        <p class="text-gray-300 max-w-xs leading-relaxed">
+          {{ 'MISSION.ITEMS.3.TEXT' | translate }}  
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Visión -->
+<section
+  id="vision"
+  class="bg-gradient-to-b from-[#0E0E0E] to-[#0A0A0A] text-center py-32 relative overflow-hidden scroll-mt-20"
+>
+  <div class="max-w-screen-xl mx-auto px-6 relative z-10">
+    <h2 class="mb-20 text-4xl font-extrabold tracking-widest text-[#A4FF4D] uppercase drop-shadow-[0_0_25px_#A4FF4D]">
+      {{ 'VISION.TITLE' | translate }}
+    </h2>
+
+    <div class="grid gap-12 sm:grid-cols-2 lg:grid-cols-4 mt-10">
+      <div class="flex flex-col items-center text-center">
+        <div class="mb-6 text-[#A4FF4D] text-5xl">🌍</div>
+        <p class="text-gray-300 max-w-xs leading-relaxed">
+          {{ 'VISION.ITEMS.0.TEXT' | translate }}
+        </p>
+      </div>
+      <div class="flex flex-col items-center text-center">
+        <div class="mb-6 text-[#A4FF4D] text-5xl">🧠</div>
+        <p class="text-gray-300 max-w-xs leading-relaxed">
+          {{ 'VISION.ITEMS.1.TEXT' | translate }}
+        </p>
+      </div>
+      <div class="flex flex-col items-center text-center">
+        <div class="mb-6 text-[#A4FF4D] text-5xl">💻</div>
+        <p class="text-gray-300 max-w-xs leading-relaxed">
+          {{ 'VISION.ITEMS.2.TEXT' | translate }}
+
+        </p>
+      </div>
+      <div class="flex flex-col items-center text-center">
+        <div class="mb-6 text-[#A4FF4D] text-5xl">🌟</div>
+        <p class="text-gray-300 max-w-xs leading-relaxed">
+          {{ 'VISION.ITEMS.3.TEXT' | translate }}
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+  <!-- Equipo -->
+  <section id="team" class="bg-[#0F0F0F] py-20 min-h-[600px]">
+    <div class="container mx-auto px-6 text-center">
+      <h1 class="text-3xl font-extrabold text-[#A4FF4D] capitalize lg:text-4xl drop-shadow-[0_0_10px_#A4FF4D80]">
+        {{ 'TEAM.TITLE' | translate }}
+      </h1>
+      <p class="max-w-2xl mx-auto my-6 text-gray-400">
+        {{ 'TEAM.DESCRIPTION' | translate }}      </p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-12 justify-items-center mt-12">
+        <div *ngFor="let member of team" class="flex flex-col items-center group">
+          <img
+            [src]="member.image"
+            [alt]="member.name"
+            loading="lazy"
+            class="object-cover w-32 h-32 rounded-full ring-2 ring-[#A4FF4D]/70 shadow-[0_0_25px_#A4FF4D40] group-hover:scale-110 transition-all duration-500 bg-[#1A1A1A] opacity-0"
+            onload="this.style.opacity='1'"
+          />
+          <h1 class="mt-4 text-lg font-semibold text-white group-hover:text-[#A4FF4D]">{{ member.name }}</h1>
+          <p class="mt-1 text-gray-400 group-hover:text-gray-300">{{ member.role | translate }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Proyectos -->
+<div id="projects" class="relative w-full overflow-hidden rounded-2xl my-24 bg-[#0A0A0A] text-center scroll-mt-20">
+  <h1 class="text-3xl font-extrabold text-[#A4FF4D] capitalize lg:text-4xl drop-shadow-[0_0_10px_#A4FF4D80]">
+    {{ 'PROJECTS.TITLE' | translate }}
+  </h1>
+  <p class="max-w-2xl mx-auto my-6 text-gray-400">
+    {{ 'PROJECTS.DESCRIPTION' | translate }}  
+  </p>
+
+  <div class="relative h-[350px] md:h-[500px] w-full flex items-center justify-center">
+    <img *ngFor="let img of images; let i = index" [src]="img" alt="carousel image"
+      class="absolute top-0 left-0 w-full h-full object-contain transition-opacity duration-700 ease-in-out"
+      [class.opacity-100]="i === currentIndex" [class.opacity-0]="i !== currentIndex" />
+  </div>
+</div>
+
+  <!-- Contacto -->
+<section id="contact" class="bg-[#0B0B0B] text-[#EAEAEA] py-20">
+  <div class="max-w-2xl mx-auto text-center px-6">
+    <!-- Título -->
+    <h2
+      class="text-3xl md:text-4xl font-extrabold mb-16 border-y-2 border-[#A4FF4D] py-4 inline-block text-[#A4FF4D] drop-shadow-[0_0_20px_#A4FF4D90]"
+    >
+      {{ 'CONTACT.TITLE' | translate }}
+    </h2>
+
+    <!-- Formulario -->
+    <form (submit)="sendEmail($event)" class="flex flex-col space-y-6 text-left">
+      <!-- Nombre -->
+      <div>
+        <label class="block text-sm font-medium mb-2 text-[#A4FF4D]">{{ 'CONTACT.FIELDS.NAME' | translate }}</label>
+        <input
+          name="nombre"
+          type="text"
+          placeholder="{{ 'CONTACT.PLACEHOLDERS.NAME' | translate }}
+"
+          required
+          class="w-full bg-[#111111] border border-[#1F1F1F] text-[#EAEAEA] placeholder-gray-500 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#A4FF4D] transition-all duration-200"
+        />
+      </div>
+
+      <!-- Email -->
+      <div>
+        <label class="block text-sm font-medium mb-2 text-[#A4FF4D]">{{ 'CONTACT.FIELDS.EMAIL' | translate }}</label>
+        <input
+          name="email"
+          type="email"
+          placeholder="{{ 'CONTACT.PLACEHOLDERS.EMAIL' | translate }}"
+          required
+          class="w-full bg-[#111111] border border-[#1F1F1F] text-[#EAEAEA] placeholder-gray-500 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#A4FF4D] transition-all duration-200"
+        />
+      </div>
+
+      <!-- Asunto -->
+      <div>
+        <label class="block text-sm font-medium mb-2 text-[#A4FF4D]">{{ 'CONTACT.FIELDS.SUBJECT' | translate }}</label>
+        <input
+          name="asunto"
+          type="text"
+          placeholder="{{ 'CONTACT.PLACEHOLDERS.SUBJECT' | translate }}"
+          required
+          class="w-full bg-[#111111] border border-[#1F1F1F] text-[#EAEAEA] placeholder-gray-500 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#A4FF4D] transition-all duration-200"
+        />
+      </div>
+
+      <!-- Teléfono -->
+      <div>
+        <label class="block text-sm font-medium mb-2 text-[#A4FF4D]">{{ 'CONTACT.FIELDS.PHONE' | translate }}</label>
+        <input
+          name="telefono"
+          type="tel"
+          placeholder="{{ 'CONTACT.PLACEHOLDERS.PHONE' | translate }}"
+          class="w-full bg-[#111111] border border-[#1F1F1F] text-[#EAEAEA] placeholder-gray-500 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#A4FF4D] transition-all duration-200"
+        />
+      </div>
+
+      <!-- Mensaje -->
+      <div>
+        <label class="block text-sm font-medium mb-2 text-[#A4FF4D]">{{ 'CONTACT.FIELDS.MESSAGE' | translate }}</label>
+        <textarea
+          name="mensaje"
+          rows="5"
+          placeholder="{{ 'CONTACT.PLACEHOLDERS.MESSAGE' | translate }}"
+          required
+          class="w-full bg-[#111111] border border-[#1F1F1F] text-[#EAEAEA] placeholder-gray-500 rounded-md px-4 py-3 focus:outline-none focus:ring-2 focus:ring-[#A4FF4D] transition-all duration-200 resize-none"
+        ></textarea>
+      </div>
+
+      <!-- Botón -->
+      <div class="text-center pt-6">
+        <button
+          type="submit"
+          [disabled]="isSending"
+          class="bg-[#A4FF4D] text-black font-semibold px-10 py-3 rounded-md hover:bg-[#C6FF85] hover:scale-105 shadow-[0_0_25px_#A4FF4D70] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+        >
+          {{ isSending ? ('CONTACT.BUTTON.SENDING' | translate) : ('CONTACT.BUTTON.SEND' | translate) }}
+        </button>
+      </div>
+
+      <!-- Mensajes de estado -->
+      <p *ngIf="successMessage" class="text-[#A4FF4D] text-center mt-4">{{ successMessage }}</p>
+      <p *ngIf="errorMessage" class="text-red-500 text-center mt-4">{{ errorMessage }}</p>
+    </form>
+  </div>
+
+  <!-- Footer -->
+  <footer
+    class="bg-[#0A0A0A] text-[#BFBFBF] text-center py-6 mt-20 text-sm border-t border-[#1A1A1A]"
+  >
+    {{ 'FOOTER.COPYRIGHT' | translate:{ year: currentYear } }}
+  </footer>
+</section>
+
+

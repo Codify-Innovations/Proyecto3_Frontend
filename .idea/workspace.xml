@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="03ad9e12-9b49-4e62-b7a4-9b65ed27e925" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/autocut/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/autocut/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/autocut/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/app.routes.ts" beforeDir="false" afterPath="$PROJECT_DIR$/autocut/src/app/app.routes.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/components/gift/gift-form/gift-form.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/components/gift/gift-form/gift-form.component.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/components/gift/gift-form/gift-form.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/components/gift/gift-list-form/gift-list-form.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/components/gift/gift-list-form/gift-list-form.component.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/components/gift/gift-list-form/gift-list-form.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/components/gift/gift-list/gift-list.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/components/gift/gift-list/gift-list.component.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/components/gift/gift-list/gift-list.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/components/gift/gifts-table/gifts-table.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/components/gift/gifts-table/gifts-table.component.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/components/gift/gifts-table/gifts-table.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/components/product/category-list-form/category-list-form.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/components/product/category-list-form/category-list-form.component.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/components/product/category-list-form/category-list-form.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/components/product/category-list/category-list.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/components/product/category-list/category-list.component.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/components/product/category-list/category-list.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/components/product/product-form/product-form.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/components/product/product-form/product-form.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/components/product/products-table/products-table.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/components/product/products-table/products-table.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/core/interfaces/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/autocut/src/app/core/interfaces/index.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/pages/category/category.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/pages/category/category.component.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/pages/category/category.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/pages/dashboard/dashboard.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/pages/dashboard/dashboard.component.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/pages/dashboard/dashboard.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/pages/features/access-denied/access-denied.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/pages/features/access-denied/access-denied.component.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/pages/features/access-denied/access-denied.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/pages/features/landing-autocut/components/features-section/features-section.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/pages/features/landing-autocut/components/features-section/features-section.component.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/pages/features/landing-autocut/components/features-section/features-section.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/pages/features/landing-autocut/components/hero-section/hero-section.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/pages/features/landing-autocut/components/hero-section/hero-section.component.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/pages/features/landing-autocut/components/hero-section/hero-section.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/pages/features/landing-autocut/components/landing-footer/landing-footer.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/pages/features/landing-autocut/components/landing-footer/landing-footer.component.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/pages/features/landing-autocut/components/landing-footer/landing-footer.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/pages/features/landing-autocut/components/landing-header/landing-header.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/pages/features/landing-autocut/components/landing-header/landing-header.component.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/pages/features/landing-autocut/components/landing-header/landing-header.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/pages/features/landing-autocut/components/stat-card/stat-card.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/pages/features/landing-autocut/components/stat-card/stat-card.component.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/pages/features/landing-autocut/components/stat-card/stat-card.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/pages/features/landing-autocut/components/testimonial-card/testimonial-card.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/pages/features/landing-autocut/components/testimonial-card/testimonial-card.component.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/pages/features/landing-autocut/components/testimonial-card/testimonial-card.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/pages/features/landing-autocut/components/testimonials-section/testimonials-section.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/pages/features/landing-autocut/components/testimonials-section/testimonials-section.component.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/pages/features/landing-autocut/components/testimonials-section/testimonials-section.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/pages/features/landing-autocut/page/landing.page.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/pages/features/landing-autocut/page/landing.page.spec.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/pages/features/landing-autocut/page/landing.page.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/pages/gift-list-gifts/gift-list-gifts.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/pages/gift-list-gifts/gift-list-gifts.component.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/pages/gift-list-gifts/gift-list-gifts.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/pages/gifts/gifts.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/pages/gifts/gifts.component.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/pages/gifts/gifts.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/pages/landing-page/landing-page.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/pages/landing-page/landing-page.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/pages/product/product.component.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/pages/product/product.component.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/pages/product/product.component.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/services/alert.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/autocut/src/app/core/services/alert.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/services/auth.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/autocut/src/app/pages/features/auth/auth.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/services/base-service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/autocut/src/app/core/services/base-service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/services/category.service.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/services/cloudinary/uploader.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/autocut/src/app/core/services/cloudinary/uploader.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/services/gift-list.service.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/services/gift.service.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/services/layout.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/autocut/src/app/core/services/layout.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/services/modal.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/autocut/src/app/core/services/modal.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/services/product.service.ts" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/services/profile.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/autocut/src/app/pages/profile/profile.service.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/autocut/src/app/services/user.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/autocut/src/app/pages/users/user.service.ts" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "Alexlop175Cenfotec"
+  }
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Codify-Innovations/Proyecto3_Frontend.git",
+    "accountId": "5fc09640-8878-4962-8b04-846cdfd474bc"
+  }
+}]]></component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 1
+}]]></component>
+  <component name="ProjectId" id="34wyUoytPSdJpWuDehOQEMVExhX" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "P3C3-22/Auth",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\alexa\OneDrive\Documentos\GitHub\Proyecto3_Frontend\autocut\src\app\core\services" />
+      <recent name="C:\Users\alexa\OneDrive\Documentos\GitHub\Proyecto3_Frontend\autocut\src\app\pages\features\auth" />
+      <recent name="C:\Users\alexa\OneDrive\Documentos\GitHub\Proyecto3_Frontend\autocut\src\app\pages\users" />
+      <recent name="C:\Users\alexa\OneDrive\Documentos\GitHub\Proyecto3_Frontend\autocut\src\app\pages\profile" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-d6986cc7102b-e768b9ed790e-JavaScript-WS-243.21565.180" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="03ad9e12-9b49-4e62-b7a4-9b65ed27e925" name="Changes" comment="" />
+      <created>1762138947758</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1762138947758</updated>
+      <workItem from="1762138949082" duration="152000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>
