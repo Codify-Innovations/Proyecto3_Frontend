@@ -13,6 +13,7 @@ import { LandingPageComponent } from './pages/features/landing/landing-page/land
 import { LandingAutocutPage } from './pages/features/landing/landing-autocut/page/landing.page';
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
 import { UserSettingsComponent } from './pages/user-settings/user-settings.component';
+import { VideoEditorComponent } from './pages/features/video-editor/video-editor';
 
 
 export const routes: Routes = [
@@ -46,6 +47,10 @@ export const routes: Routes = [
   {
     path: 'landing-autocut',
     component: LandingAutocutPage,
+  },
+  {
+    path: 'video-editor',
+    component: VideoEditorComponent,
   },
   {
     path: 'app',
