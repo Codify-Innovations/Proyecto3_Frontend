@@ -27,7 +27,8 @@
     class="group flex flex-col items-center justify-center w-full border-2 border-dashed border-gray-300 rounded-xl py-10 px-6 text-center transition-all duration-300 hover:border-[#880e0e] hover:bg-[blue-50]"
     [class.border-blue-500]="dragging" [class.bg-blue-50]="dragging" (drop)="onDrop($event)"
     (dragover)="onDragOver($event)" (dragleave)="onDragLeave()">
-    <input id="fileInput" type="file" class="hidden" (change)="onFileChange($event)" accept="image/*,video/*,audio/*"
+    <input id="fileInput" type="file" class="hidden" (change)="onFileChange($event)" 
+      accept="image/*,video/*,audio/*"
       multiple />
     <label for="fileInput" class="flex flex-col items-center justify-center text-gray-700 select-none cursor-pointer ">
       <span
