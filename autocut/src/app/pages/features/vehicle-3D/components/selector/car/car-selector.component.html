@@ -1,0 +1,31 @@
+<div
+  class="absolute top-0 left-1/2 -translate-x-1/2 flex flex-wrap justify-center gap-6 p-4 rounded-2xl z-20"
+>
+  <div
+    *ngFor="let car of cars"
+    (click)="selectCar(car)"
+    class="relative group w-20 h-20 sm:w-28 sm:h-28 bg-zinc-900/80 border border-zinc-700 rounded-2xl cursor-pointer flex items-center justify-center overflow-hidden transition-all duration-300 hover:border-[#ff0f3b]/80 hover:scale-105"
+    [class.border-[#ff0f3b]]="selectedCar?.id === car.id"
+    [class.shadow-[0_0_25px_#ff0f3b90]]="selectedCar?.id === car.id"
+  >
+    <img
+      [src]="car.logo"
+      [alt]="car.name"
+      class="w-16 h-16 object-contain transition-all duration-300 group-hover:scale-110"
+      [class.opacity-100]="selectedCar?.id === car.id"
+      [class.opacity-60]="selectedCar?.id !== car.id"
+    />
+
+    <!-- Glow -->
+    <div
+      class="absolute inset-0 bg-gradient-to-tr from-transparent via-[#ff0f3b] to-transparent opacity-0 group-hover:opacity-20 transition-opacity duration-300"
+    ></div>
+
+    <!-- Nombre -->
+    <span
+      class="absolute bottom-1 text-[0.7rem] font-semibold tracking-wide text-gray-300 group-hover:text-[#ff0f3b] text-center w-full px-1"
+    >
+      {{ car.name }}
+    </span>
+  </div>
+</div>

@@ -1,0 +1,12 @@
+<div class="relative w-full h-[80vh] bg-black flex flex-col items-center justify-center overflow-hidden">
+  <!-- Canvas principal -->
+  <canvas #canvas class="w-full h-full"></canvas>
+
+  <!-- Overlay opcional de carga -->
+  <div
+    *ngIf="loading"
+    class="absolute inset-0 flex items-center justify-center bg-black/60 text-[#A4FF4D] font-semibold tracking-wide"
+  >
+    Cargando {{ selectedModel }}...
+  </div>
+</div>
