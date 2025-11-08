@@ -6,6 +6,7 @@ import { UploaderService } from '../../../../core/services/cloudinary/uploader.s
 import { FormsModule } from '@angular/forms';
 import { VehicleIdentificationService } from '../../../../core/services/ai/vehicle-identification.service';
 import { validateSingleImage } from '../../../../core/utils/file-validator';
+import { VehicleService } from '../../../../core/services/vehicle.service';
 
 @Component({
   selector: 'app-vehicle-identification',
@@ -15,10 +16,12 @@ import { validateSingleImage } from '../../../../core/utils/file-validator';
 export class VehicleIdentificationComponent {
   private alertService = inject(AlertService);
   private uploaderService = inject(UploaderService);
+  private vehicleService = inject(VehicleService);
   public iaService = inject(VehicleIdentificationService);
   validateSingleImage = validateSingleImage;
 
-  imagePreview: string | null = null;
+  imageURL: string = '';
+  currentYear = new Date().getFullYear();
 
   vehicleData = {
     marca: '',
@@ -26,6 +29,7 @@ export class VehicleIdentificationComponent {
     anio: '',
     confianza: 0,
     categoria: '',
+    imagenURL: '',
   };
 
   ngOnInit(): void {
@@ -45,8 +49,9 @@ export class VehicleIdentificationComponent {
       anio: '',
       confianza: 0,
       categoria: '',
+      imagenURL: '',
     };
-    this.imagePreview = null;
+    this.imageURL = '';
   }
   constructor() {
     effect(() => {
@@ -58,6 +63,7 @@ export class VehicleIdentificationComponent {
           anio: result.año || '',
           confianza: result.confianza || 0,
           categoria: result.categoria || '',
+          imagenURL: this.imageURL,
         };
       }
     });
@@ -65,6 +71,7 @@ export class VehicleIdentificationComponent {
       const urls = this.uploaderService.urlSignal$();
       if (urls && urls.length > 0 && this.iaService.isAnalyzing$()) {
         const imageUrl = urls[0];
+        this.imageURL = imageUrl;
         this.iaService.analyzeVehicle(imageUrl);
       }
     });
@@ -74,13 +81,35 @@ export class VehicleIdentificationComponent {
     if (!files.length) return;
     const file = files[0];
 
-    this.imagePreview = URL.createObjectURL(file);
-
     this.uploaderService.uploadFiles([file], 'ai-identification-vehicles');
     this.iaService.isAnalyzing.set(true);
   }
 
   saveToCollection(): void {
-    this.alertService.success('Vehículo guardado en tu colección.');
+    const { marca, modelo, anio, confianza, categoria, imagenURL } =
+      this.vehicleData;
+
+    if (!marca || !modelo) {
+      this.alertService.displayAlert(
+        'error',
+        'Por favor identifica un vehículo antes de guardarlo.',
+        'center',
+        'top',
+        ['error-snackbar']
+      );
+      return;
+    }
+
+    this.vehicleService.addVehicle({
+      marca,
+      modelo,
+      anio,
+      confianza,
+      categoria,
+      imagenURL,
+    });
+
+    this.resetData();
+    this.iaService.analysisResult$.set(null);
   }
 }

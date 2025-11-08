@@ -78,3 +78,12 @@ export interface IStat {
   value: string;
   label: string;
 }
+
+export interface IVehiculo {
+  marca: string;
+  modelo: string;
+  categoria: string;
+  anio: string;
+  confianza: number;
+  imagenURL: string;
+}
