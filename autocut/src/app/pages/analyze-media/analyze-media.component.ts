@@ -29,7 +29,6 @@ export class AnalyzeMediaComponent {
     });
   }
 
- 
   triggerFileInput() {
     document.getElementById('fileInput')?.click();
   }
@@ -59,12 +58,10 @@ export class AnalyzeMediaComponent {
     else if (file.type.startsWith('audio/')) this.fileType = 'audio';
     else this.fileType = null;
 
-
     const reader = new FileReader();
     reader.onload = (e: any) => (this.previewUrl = e.target.result);
     reader.readAsDataURL(file);
   }
-
 
   analyzeFile() {
     if (!this.selectedFile) {
@@ -80,14 +77,12 @@ export class AnalyzeMediaComponent {
       next: (event) => {
         if (event.status === 'progress') {
           this.uploadProgress = event.progress;
-        } 
-        else if (event.status === 'done') {
-        
+        } else if (event.status === 'done') {
           const response = event.data;
           this.analysisResult = {
-            raw: response,                 
+            raw: response,
             status: response.status || 'unknown',
-            data: response.data || response, 
+            data: response.data || response,
             score: response.data?.score ?? response.score,
             quality_label: response.data?.quality_label ?? response.quality_label,
             metrics: response.data?.metrics ?? response.metrics,
