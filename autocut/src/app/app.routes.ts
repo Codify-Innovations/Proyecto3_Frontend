@@ -13,7 +13,7 @@ import { LandingPageComponent } from './pages/features/landing/landing-page/land
 import { LandingAutocutPage } from './pages/features/landing/landing-autocut/page/landing.page';
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
 import { UserSettingsComponent } from './pages/user-settings/user-settings.component';
-
+import { AnalyzeMediaComponent } from './pages/analyze-media/analyze-media.component'; // 🧠 Nuevo componente IA
 
 export const routes: Routes = [
   {
@@ -58,16 +58,6 @@ export const routes: Routes = [
         pathMatch: 'full',
       },
       {
-        path: 'users',
-        component: UsersComponent,
-        canActivate: [AdminRoleGuard],
-        data: {
-          authorities: [IRoleType.admin, IRoleType.superAdmin],
-          name: 'Users',
-          showInSidebar: true,
-        },
-      },
-      {
         path: 'dashboard',
         component: DashboardComponent,
         data: {
@@ -77,21 +67,22 @@ export const routes: Routes = [
         },
       },
       {
-        path: 'profile',
-        component: UserProfileComponent,
+        path: 'analyze-media',
+        component: AnalyzeMediaComponent,
         data: {
           authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
-          name: 'Perfil',
+          name: 'Análisis Multimedia IA',
           showInSidebar: true,
         },
       },
       {
-        path: 'profile/settings',
-        component: UserSettingsComponent,
+        path: 'users',
+        component: UsersComponent,
+        canActivate: [AdminRoleGuard],
         data: {
-          authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
-          name: 'Configuración de Perfil',
-          showInSidebar: false,
+          authorities: [IRoleType.admin, IRoleType.superAdmin],
+          name: 'Users',
+          showInSidebar: true,
         },
       },
       {
