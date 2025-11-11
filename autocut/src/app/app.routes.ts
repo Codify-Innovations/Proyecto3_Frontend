@@ -14,6 +14,7 @@ import { LandingAutocutPage } from './pages/features/landing/landing-autocut/pag
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
 import { UserSettingsComponent } from './pages/user-settings/user-settings.component';
 import { VideoEditorComponent } from './pages/features/video-editor/video-editor';
+import { VehicleCustomizerPage } from './pages/features/vehicle-3D/vehicle-customizer/vehicle-customizer.page';
 
 
 export const routes: Routes = [
@@ -84,6 +85,15 @@ export const routes: Routes = [
           authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
           name: 'Perfil',
           showInSidebar: true,
+        },
+      },
+            {
+        path: 'vehicle-3d',
+        component: VehicleCustomizerPage,
+        data: {
+          authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
+                  name: 'Personalizador 3D',
+                  showInSidebar: true,
         },
       },
       {

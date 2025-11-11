@@ -1,0 +1,10 @@
+<div class="flex flex-col items-center">
+  <select
+    class="bg-[#1a1a1a] text-gray-200 border border-gray-700 rounded-md px-3 py-1 text-xs focus:border-[#A4FF4D] focus:ring-[#A4FF4D] focus:ring-1 transition-all cursor-pointer"
+    (change)="onChangeFront($event)"
+  >
+    <option *ngFor="let style of lightStyles" [value]="style">
+      {{ style }}
+    </option>
+  </select>
+</div>
