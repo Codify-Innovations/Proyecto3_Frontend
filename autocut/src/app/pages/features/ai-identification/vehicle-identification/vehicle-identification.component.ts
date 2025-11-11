@@ -22,18 +22,21 @@ export class VehicleIdentificationComponent {
 
   imageURL: string = '';
   currentYear = new Date().getFullYear();
-
   vehicleData = {
     marca: '',
     modelo: '',
     anio: '',
-    confianza: 0,
     categoria: '',
     imagenURL: '',
   };
 
+  marcas: string[] = [];
+  modelos: string[] = [];
+  categorias: string[] = [];
+
   ngOnInit(): void {
     this.resetData();
+    this.iaService.loadDropdowns();
   }
 
   ngOnDestroy(): void {
@@ -47,24 +50,26 @@ export class VehicleIdentificationComponent {
       marca: '',
       modelo: '',
       anio: '',
-      confianza: 0,
       categoria: '',
       imagenURL: '',
     };
     this.imageURL = '';
   }
+  private iaFilled = false;
+
   constructor() {
     effect(() => {
       const result = this.iaService.analysisResult$();
-      if (result) {
+      if (result && !this.iaFilled) {
+        this.iaFilled = true;
         this.vehicleData = {
           marca: result.marca || '',
           modelo: result.modelo || '',
           anio: result.año || '',
-          confianza: result.confianza || 0,
           categoria: result.categoria || '',
           imagenURL: this.imageURL,
         };
+        this.iaService.updateModelosYCategorias(result.marca);
       }
     });
     effect(() => {
@@ -72,9 +77,25 @@ export class VehicleIdentificationComponent {
       if (urls && urls.length > 0 && this.iaService.isAnalyzing$()) {
         const imageUrl = urls[0];
         this.imageURL = imageUrl;
+        this.iaFilled = false;
         this.iaService.analyzeVehicle(imageUrl);
       }
     });
+    effect(() => {
+      this.marcas = this.iaService.marcas$();
+      this.modelos = this.iaService.modelos$();
+      this.categorias = this.iaService.categorias$();
+    });
+  }
+
+  onMarcaSeleccionada(marca: string): void {
+    this.vehicleData.modelo = '';
+    this.vehicleData.categoria = '';
+
+    this.modelos = [];
+    this.categorias = [];
+
+    this.iaService.updateModelosYCategorias(marca);
   }
 
   onFilesSelected(files: File[]): void {
@@ -86,8 +107,7 @@ export class VehicleIdentificationComponent {
   }
 
   saveToCollection(): void {
-    const { marca, modelo, anio, confianza, categoria, imagenURL } =
-      this.vehicleData;
+    const { marca, modelo, anio, categoria, imagenURL } = this.vehicleData;
 
     if (!marca || !modelo) {
       this.alertService.displayAlert(
@@ -104,7 +124,6 @@ export class VehicleIdentificationComponent {
       marca,
       modelo,
       anio,
-      confianza,
       categoria,
       imagenURL,
     });

@@ -84,6 +84,5 @@ export interface IVehiculo {
   modelo: string;
   categoria: string;
   anio: string;
-  confianza: number;
   imagenURL: string;
 }

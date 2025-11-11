@@ -1,4 +1,3 @@
-// src/app/core/services/vehicle/vehicle-registration.service.ts
 import { inject, Injectable, signal } from '@angular/core';
 import { IResponse } from '../interfaces';
 import { IVehiculo } from '../interfaces';
