@@ -6,6 +6,7 @@ import { AuthService } from '../../../../pages/features/auth/auth.service';
 import { IUser } from '../../../../core/interfaces/index';
 import { environment } from '../../../../../environments/environment.development';
 import { AlertService } from '../../../../core/services/alert.service';
+import { finalize } from 'rxjs';
 
 declare const google: any;
 
@@ -14,14 +15,16 @@ declare const google: any;
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './signup.component.html',
-  styleUrls: ['./signup.component.scss']
+  styleUrls: ['./signup.component.scss'],
 })
 export class SignUpComponent implements AfterViewInit {
   private authService = inject(AuthService);
   private router = inject(Router);
   private alertService = inject(AlertService);
+
   public signUpError = '';
   public validSignup = false;
+  public loading = false;
 
   @ViewChild('name') nameModel!: NgModel;
   @ViewChild('lastname') lastnameModel!: NgModel;
@@ -34,19 +37,20 @@ export class SignUpComponent implements AfterViewInit {
     lastname: '',
     email: '',
     password: '',
-    confirmPassword: ''
+    confirmPassword: '',
   };
 
   // =====================================
   // =========== SIGNUP NORMAL ===========
   // =====================================
   public handleSignup(frm: NgForm): void {
-    if (frm.invalid) {
+    if (frm.invalid || this.loading) {
       if (!this.nameModel.valid) this.nameModel.control.markAsTouched();
       if (!this.lastnameModel.valid) this.lastnameModel.control.markAsTouched();
       if (!this.emailModel.valid) this.emailModel.control.markAsTouched();
       if (!this.passwordModel.valid) this.passwordModel.control.markAsTouched();
-      if (!this.confirmPasswordModel.valid) this.confirmPasswordModel.control.markAsTouched();
+      if (!this.confirmPasswordModel.valid)
+        this.confirmPasswordModel.control.markAsTouched();
       return;
     }
 
@@ -55,21 +59,29 @@ export class SignUpComponent implements AfterViewInit {
       return;
     }
 
-    this.authService.signup(this.user).subscribe({
-      next: (res: any) => {
-        this.alertService.success(res.message || 'Registro completado correctamente.');
-        this.validSignup = true;
-        this.router.navigateByUrl('/app/dashboard');
-      },
-      error: (err: any) => {
-        if (err.status === 409) {
-              this.alertService.error('El correo electrónico ya está en uso.');
-        } else {
-          const msg = err.error?.message || 'Ocurrió un error durante el registro.';
-          this.alertService.error(msg);
-        }
-      },
-    });
+    this.loading = true;
+
+    this.authService
+      .signup(this.user)
+      .pipe(finalize(() => (this.loading = false)))
+      .subscribe({
+        next: (res: any) => {
+          this.alertService.success(
+            res.message || 'Registro completado correctamente.'
+          );
+          this.validSignup = true;
+          this.router.navigateByUrl('/app/dashboard');
+        },
+        error: (err: any) => {
+          if (err.status === 409) {
+            this.alertService.error('El correo electrónico ya está en uso.');
+          } else {
+            const msg =
+              err.error?.message || 'Ocurrió un error durante el registro.';
+            this.alertService.error(msg);
+          }
+        },
+      });
   }
 
   // =====================================
@@ -89,20 +101,21 @@ export class SignUpComponent implements AfterViewInit {
 
   private handleGoogleResponse(response: any): void {
     const idToken = response.credential;
+    if (!idToken || this.loading) return;
 
-    if (!idToken) {
-      return;
-    }
+    this.loading = true;
 
-    this.authService.loginWithGoogle(idToken).subscribe({
-      next: (res: any) => {
-        this.alertService.success(res.message || 'Registro con Google completado.');
-        this.router.navigateByUrl('/app/dashboard');
-      },
-      error: (err) => {
-        const msg = err.error?.message || 'No se pudo completar el registro con Google.';
-        this.alertService.error(msg);
-      },
-    });
+    this.authService
+      .loginWithGoogle(idToken)
+      .pipe(finalize(() => (this.loading = false)))
+      .subscribe({
+        next: () => this.router.navigateByUrl('/app/dashboard'),
+        error: (err) => {
+          const msg =
+            err.error?.message ||
+            'No se pudo completar el registro con Google.';
+          this.alertService.error(msg);
+        },
+      });
   }
 }

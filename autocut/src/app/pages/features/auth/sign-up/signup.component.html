@@ -37,7 +37,7 @@
             <label for="email" class="text-sm font-medium text-[#424242]">Email Address</label>
             <input
               #email="ngModel"
-              type="email"
+              type="text"
               id="email"
               name="email"
               placeholder="your-email@example.com"
@@ -46,23 +46,38 @@
                     transition duration-150 ease-in-out"
               [(ngModel)]="user.email"
               required
-              email
+              pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
             />
+
             <div *ngIf="email.invalid && email.touched" class="text-[#D32F2F] text-sm mt-1">
               <div *ngIf="email.errors?.['required']">Email is required.</div>
-              <div *ngIf="email.errors?.['email']">Please enter a valid email address.</div>
+              <div *ngIf="email.errors?.['pattern']">Please enter a valid email format.</div>
             </div>
           </div>
 
           <!-- Password -->
           <div class="form-group mb-4">
             <label for="password" class="text-sm font-medium text-[#424242]">Password</label>
-            <input #password="ngModel" type="password" id="password" name="password" placeholder="••••••••"
-              class="mt-1 block w-full px-4 py-2 border border-[#424242] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#1C1C1C] focus:border-[#1C1C1C] transition duration-150 ease-in-out"
-              [(ngModel)]="user.password" required minlength="8" />
+            <input
+              #password="ngModel"
+              type="password"
+              id="password"
+              name="password"
+              placeholder="••••••••"
+              class="mt-1 block w-full px-4 py-2 border border-[#424242] rounded-lg shadow-sm
+                    focus:outline-none focus:ring-2 focus:ring-[#1C1C1C] focus:border-[#1C1C1C]
+                    transition duration-150 ease-in-out"
+              [(ngModel)]="user.password"
+              required
+              minlength="8"
+              pattern="^(?=.*[A-Z])(?=.*\d).+$"
+            />
             <div *ngIf="password.invalid && password.touched" class="text-[#D32F2F] text-sm mt-1">
               <div *ngIf="password.errors?.['required']">Password is required.</div>
               <div *ngIf="password.errors?.['minlength']">Password must be at least 8 characters.</div>
+              <div *ngIf="password.errors?.['pattern']">
+              Password must contain at least one uppercase letter and one number.
+              </div>
             </div>
           </div>
 
@@ -74,30 +89,37 @@
               [(ngModel)]="user.confirmPassword" required minlength="8" />
             <div *ngIf="confirmPassword.invalid && confirmPassword.touched" class="text-[#D32F2F] text-sm mt-1">
               <div *ngIf="confirmPassword.errors?.['required']">Confirm password is required.</div>
-              <div *ngIf="confirmPassword.errors?.['minlength']">Password must be at least 8 characters.</div>
               <!-- Muestra error si las contraseñas no coinciden -->
               <div *ngIf="user.password && user.confirmPassword && user.password !== user.confirmPassword"
                   class="text-[#D32F2F] text-sm mt-1">
                 Passwords do not match.
               </div>
-
             </div>
           </div>
 
-          <!-- Submit Button -->
-        <div class="mb-6">
-          <button
-            type="submit"
-            [disabled]="
-              frm.invalid || user.password !== user.confirmPassword
-            "
-            class="w-full bg-[#D32F2F] text-white py-3 px-4 rounded-lg shadow-md
+ <!-- Submit Button -->
+          <div class="mb-6">
+            <button
+              type="submit"
+              [disabled]="frm.invalid || user.password !== user.confirmPassword || loading"
+              class="w-full bg-[#D32F2F] text-white py-3 px-4 rounded-lg shadow-md
                   hover:bg-[#880e0e] disabled:cursor-not-allowed disabled:opacity-50
                   transition duration-150 ease-in-out"
-          >
-            Sign Up
-          </button>
-        </div>
+            >
+              <ng-container *ngIf="!loading; else loadingState">
+                Sign Up
+              </ng-container>
+              <ng-template #loadingState>
+                <div class="flex items-center justify-center gap-2">
+                  <svg class="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"></path>
+                  </svg>
+                  <span>Creando cuenta...</span>
+                </div>
+              </ng-template>
+            </button>
+          </div>
 
           <!-- Or log in with -->
           <div class="text-center mb-6">
