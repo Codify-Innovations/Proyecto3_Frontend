@@ -13,6 +13,8 @@ import { LandingPageComponent } from './pages/features/landing/landing-page/land
 import { LandingAutocutPage } from './pages/features/landing/landing-autocut/page/landing.page';
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
 import { UserSettingsComponent } from './pages/user-settings/user-settings.component';
+import {IaGeneratorComponent} from './pages/features/ia-generator/ia-generator.component'
+
 
 
 export const routes: Routes = [
@@ -110,6 +112,15 @@ export const routes: Routes = [
           authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
           name: 'Configuración de Perfil',
           showInSidebar: false,
+        },
+      },
+      {
+        path: 'ia/generator',
+        component: IaGeneratorComponent,
+        data: {
+          authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
+          name: 'Generador de Video con IA',
+          showInSidebar: true,
         },
       },
     ],
