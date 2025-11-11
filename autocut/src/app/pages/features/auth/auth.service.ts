@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { OAuthService } from 'angular-oauth2-oidc';
+import { jwtDecode } from 'jwt-decode';
 import { Observable, tap } from 'rxjs';
 import { googleAuthConfig } from '../../../core/config/auth.config';
 import { IAuthority, ILoginResponse, IRoleType, IUser } from '../../../core/interfaces';
@@ -133,8 +134,22 @@ export class AuthService {
   }
 
   public check(): boolean {
-    return !!this.accessToken;
+    if (!this.accessToken) return false;
+
+    try {
+      const { exp }: any = jwtDecode(this.accessToken);
+      const now = Date.now() / 1000;
+      if (exp < now) {
+        this.logout();
+        return false;
+      }
+      return true;
+    } catch (e) {
+      this.logout();
+      return false;
+    }
   }
+
 
   // ==========================================================
   // ================= ROLES ================================
