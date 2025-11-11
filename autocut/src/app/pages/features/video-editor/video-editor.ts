@@ -1,5 +1,7 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import CreativeEditorSDK, { Configuration } from '@cesdk/cesdk-js';
+import { VideoEditorMediaService } from '../../../core/services/video-editor/video-editor-media.service';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-video-editor',
@@ -10,11 +12,12 @@ import CreativeEditorSDK, { Configuration } from '@cesdk/cesdk-js';
 export class VideoEditorComponent {
   @ViewChild('cesdk_container') containerRef: ElementRef = {} as ElementRef;
   private cesdk: any = null;
+  private mediaService = inject(VideoEditorMediaService);
 
   async ngAfterViewInit(): Promise<void> {
     try {
       const config: Configuration = {
-        license: 'FR8R2GdlO_sZYWkEhu9okfd37eFiqV4Bzk1RK6RAR8-THLgCgpWhsq5muHi_s2zC',
+        license: environment.CESDK_LICENSE,
         userId: 'guides-user',
         theme: 'light',
         ui: {
@@ -28,13 +31,10 @@ export class VideoEditorComponent {
 
       this.cesdk = await CreativeEditorSDK.create(this.containerRef.nativeElement, config);
 
-      // Enable settings panel
       this.cesdk.feature.enable('ly.img.settings', () => true);
 
-      // Set the editor view mode
       this.cesdk.ui.setView('default');
 
-      // Configure navigation bar actions using the new API
       this.cesdk.ui.insertNavigationBarOrderComponent('last', {
         id: 'ly.img.actions.navigationBar',
         children: [
@@ -57,14 +57,28 @@ export class VideoEditorComponent {
       ]);
       
       const scene = await this.cesdk.createVideoScene();
+
+      this.mediaService.initialize(this.cesdk);
+
+      this.setupExportImportHandlers();
     } catch (error) {
       console.error('Error initializing Creative Editor SDK:', error);
     }
+  }
+
+  private setupExportImportHandlers(): void {
+    const originalExportScene = this.cesdk.engine.scene.saveToString;
+    
+    this.cesdk.engine.scene.saveToString = async () => {
+      await this.mediaService.replaceAllBlobUrls();
+      return await originalExportScene?.call(this.cesdk.engine.scene);
+    };
   }
 
   ngOnDestroy(): void {
     if (this.cesdk) {
       this.cesdk.dispose();
     }
+    this.mediaService.dispose();
   }
 } 

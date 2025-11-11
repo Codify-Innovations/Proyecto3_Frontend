@@ -49,10 +49,6 @@ export const routes: Routes = [
     component: LandingAutocutPage,
   },
   {
-    path: 'video-editor',
-    component: VideoEditorComponent,
-  },
-  {
     path: 'app',
     component: AppLayoutComponent,
     canActivate: [AuthGuard],
@@ -114,6 +110,15 @@ export const routes: Routes = [
         data: {
           authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
           name: 'Configuración de Perfil',
+          showInSidebar: false,
+        },
+      },
+      {
+        path: 'video-editor',
+        component: VideoEditorComponent,
+        data: {
+          authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
+          name: 'Editor de Video',
           showInSidebar: false,
         },
       },

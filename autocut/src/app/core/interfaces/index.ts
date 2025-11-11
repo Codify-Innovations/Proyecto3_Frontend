@@ -78,3 +78,18 @@ export interface IStat {
   value: string;
   label: string;
 }
+
+export interface IMediaTypeConfig {
+  fillType: string;
+  propertyPath: string;
+  mediaType: 'video' | 'image' | 'audio';
+  defaultExtension: string;
+}
+
+export interface IMediaUploadState {
+  uploadedFiles: Map<string, string>;
+  pendingUploads: Map<string, File>;
+  isUploading: boolean;
+}
+
+export type MediaType = 'video' | 'image' | 'audio';
