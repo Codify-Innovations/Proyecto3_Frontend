@@ -1,0 +1,22 @@
+<div class="flex items-center gap-3">
+  <!-- Etiqueta -->
+  <span
+    class="text-[11px] uppercase tracking-widest text-gray-400 font-semibold select-none"
+  >
+    {{ tinted ? 'Polarizado' : 'Normal' }}
+  </span>
+
+  <!-- Switch -->
+  <button
+    type="button"
+    (click)="toggleTint()"
+    class="relative inline-flex h-5 w-10 items-center rounded-full transition-all duration-300"
+    [class.bg-[#ff0f3b]]="tinted"
+    [class.bg-gray-600]="!tinted"
+  >
+    <span
+      class="absolute left-0.5 top-0.5 h-4 w-4 bg-white rounded-full transition-transform duration-300"
+      [class.translate-x-5]="tinted"
+    ></span>
+  </button>
+</div>
