@@ -7,7 +7,7 @@
         <span class="material-icons">info</span>
       </button>
       <div [ngClass]="{ 'hidden': !tooltipVisible, 'opacity-100': tooltipVisible, 'opacity-0': !tooltipVisible }"
-        class="absolute bottom-full left-4 mb-3 w-72 bg-white border border-gray-200 text-gray-700 text-xs rounded-lg p-4 z-50 shadow-xl transition-opacity duration-300 ease-in-out">
+        class="absolute bottom-full z-[9999] left-4 mb-3 w-72 bg-white border border-gray-200 text-gray-700 text-xs rounded-lg p-4 z-50 shadow-xl transition-opacity duration-300 ease-in-out">
         <p class="font-bold text-sm mb-2 text-gray-900">Formatos permitidos:</p>
         <ul class="list-disc ml-5 space-y-1">
           <li>Images: JPG, PNG, WEBP</li>
@@ -18,7 +18,7 @@
           <span class="font-bold">Peso máximo:</span> Imágenes: 10MB, audios y videos: 100MB
         </p>
 
-        <div class="absolute w-3 h-3 bg-white border-b border-r border-gray-200 top-full left-2 mt-1 z-50"></div>
+        <div class="absolute w-3 h-3 bg-white border-b border-r border-gray-200 top-full left-2 mt-1 z-[9999]"></div>
       </div>
     </div>
   </div>

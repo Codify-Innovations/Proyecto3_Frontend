@@ -7,10 +7,20 @@ import { FormsModule } from '@angular/forms';
 import { VehicleIdentificationService } from '../../../../core/services/ai/vehicle-identification.service';
 import { validateSingleImage } from '../../../../core/utils/file-validator';
 import { VehicleService } from '../../../../core/services/vehicle.service';
+import { VehicleCategory } from '../../../../core/enums/vehicle_category.enum';
+import { VehicleColor } from '../../../../core/enums/vehicle_color.enum';
+import { VehiclePreviewModalComponent } from '../vehicle-preview-modal/vehicle-preview-modal.component';
+import { TranslateColorPipe } from '../../../../core/pipes/translate-color.pipe';
 
 @Component({
   selector: 'app-vehicle-identification',
-  imports: [CommonModule, FormsModule, FileUploaderComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    FileUploaderComponent,
+    VehiclePreviewModalComponent,
+    TranslateColorPipe,
+  ],
   templateUrl: './vehicle-identification.component.html',
 })
 export class VehicleIdentificationComponent {
@@ -18,25 +28,27 @@ export class VehicleIdentificationComponent {
   private uploaderService = inject(UploaderService);
   private vehicleService = inject(VehicleService);
   public iaService = inject(VehicleIdentificationService);
+
+  public categories = Object.values(VehicleCategory);
+  public colors = Object.values(VehicleColor);
+
   validateSingleImage = validateSingleImage;
 
   imageURL: string = '';
   currentYear = new Date().getFullYear();
+  showModal = false;
+
   vehicleData = {
     marca: '',
     modelo: '',
     anio: '',
     categoria: '',
+    color: '',
     imagenURL: '',
   };
 
-  marcas: string[] = [];
-  modelos: string[] = [];
-  categorias: string[] = [];
-
   ngOnInit(): void {
     this.resetData();
-    this.iaService.loadDropdowns();
   }
 
   ngOnDestroy(): void {
@@ -51,6 +63,7 @@ export class VehicleIdentificationComponent {
       modelo: '',
       anio: '',
       categoria: '',
+      color: '',
       imagenURL: '',
     };
     this.imageURL = '';
@@ -66,10 +79,14 @@ export class VehicleIdentificationComponent {
           marca: result.marca || '',
           modelo: result.modelo || '',
           anio: result.año || '',
-          categoria: result.categoria || '',
+          categoria: this.isValidCategory(result.categoria)
+            ? result.categoria.toLowerCase()
+            : '',
+          color: this.isValidColor(result.color)
+            ? result.color.toLowerCase()
+            : '',
           imagenURL: this.imageURL,
         };
-        this.iaService.updateModelosYCategorias(result.marca);
       }
     });
     effect(() => {
@@ -81,21 +98,6 @@ export class VehicleIdentificationComponent {
         this.iaService.analyzeVehicle(imageUrl);
       }
     });
-    effect(() => {
-      this.marcas = this.iaService.marcas$();
-      this.modelos = this.iaService.modelos$();
-      this.categorias = this.iaService.categorias$();
-    });
-  }
-
-  onMarcaSeleccionada(marca: string): void {
-    this.vehicleData.modelo = '';
-    this.vehicleData.categoria = '';
-
-    this.modelos = [];
-    this.categorias = [];
-
-    this.iaService.updateModelosYCategorias(marca);
   }
 
   onFilesSelected(files: File[]): void {
@@ -107,7 +109,8 @@ export class VehicleIdentificationComponent {
   }
 
   saveToCollection(): void {
-    const { marca, modelo, anio, categoria, imagenURL } = this.vehicleData;
+    const { marca, modelo, anio, categoria, imagenURL, color } =
+      this.vehicleData;
 
     if (!marca || !modelo) {
       this.alertService.displayAlert(
@@ -126,9 +129,42 @@ export class VehicleIdentificationComponent {
       anio,
       categoria,
       imagenURL,
+      color,
+    });
+
+    console.log('📤 Vehículo a guardar:', {
+      marca,
+      modelo,
+      anio,
+      categoria,
+      imagenURL,
+      color,
     });
 
     this.resetData();
     this.iaService.analysisResult$.set(null);
+  }
+
+  private isValidColor(color: string): boolean {
+    const lower = color.toLowerCase();
+    return this.colors.map((c) => String(c).toLowerCase()).includes(lower);
+  }
+
+  private isValidCategory(category: string): boolean {
+    if (!category) return false;
+    const lower = category.toLowerCase();
+    return this.categories.map((c) => String(c).toLowerCase()).includes(lower);
+  }
+
+  openPreview(): void {
+    this.showModal = true;
+  }
+
+  closePreview(): void {
+    this.showModal = false;
+  }
+
+  get isFormDisabled(): boolean {
+    return !this.iaService.analysisResult$();
   }
 }

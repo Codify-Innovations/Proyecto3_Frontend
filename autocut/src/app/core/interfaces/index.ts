@@ -85,4 +85,5 @@ export interface IVehiculo {
   categoria: string;
   anio: string;
   imagenURL: string;
+  color: string
 }
