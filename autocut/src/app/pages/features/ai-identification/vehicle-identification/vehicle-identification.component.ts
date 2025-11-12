@@ -80,7 +80,7 @@ export class VehicleIdentificationComponent {
           modelo: result.modelo || '',
           anio: result.año || '',
           categoria: this.isValidCategory(result.categoria)
-            ? result.categoria.toLowerCase()
+            ? result.categoria
             : '',
           color: this.isValidColor(result.color)
             ? result.color.toLowerCase()
