@@ -12,11 +12,16 @@
     </button>
 
 
-    <img
-      [src]="user?.avatarUrl || 'https://cdn-icons-png.flaticon.com/512/1998/1998592.png'"
-      alt="User Avatar"
-      class="w-40 h-40 rounded-full object-cover border-4 border-[#880E0E] shadow-md mb-6"
-    />
+    <app-user-car-viewer
+      *ngIf="userCar"
+      [model]="userCar.modelo"
+      [color]="userCar.carroceria"
+      [glassTint]="userCar.vidriosPolarizados"
+      [interior]="userCar.interior"
+      [frontLight]="userCar.lucesFront"
+      [wheelStyle]="userCar.rines"
+      class="mb-6"
+    ></app-user-car-viewer>
 
     
     <h2 class="text-3xl font-bold text-[#1C1C1C] mb-1">

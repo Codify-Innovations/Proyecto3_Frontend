@@ -51,15 +51,17 @@ export class VehicleViewerComponent implements OnInit, OnChanges {
   }
 
   async ngOnChanges(changes: SimpleChanges): Promise<void> {
+    if (!this.carModel || !this.activeConfig) return;
+
     // Si cambia el modelo seleccionado, recargarlo completo
     if (changes['selectedModel'] && !changes['selectedModel'].firstChange) {
+      this.loading = true;
       await this.loadSelectedModel();
+      this.loading = false;
       return;
     }
 
-    if (!this.carModel || !this.activeConfig) return;
-
-    // Actualizaciones dinámicas de materiales
+    // Aplicar dinámicamente los cambios de personalización
     if (changes['color'])
       this.updateMaterialGroupColor('body', changes['color'].currentValue);
     if (changes['glassTint'])
@@ -76,40 +78,64 @@ export class VehicleViewerComponent implements OnInit, OnChanges {
 
   /** Carga el modelo 3D y ajusta escala/posición */
   private async loadSelectedModel(): Promise<void> {
-    const modelData = CarConfigs[this.selectedModel];
-    this.activeConfig = modelData.config;
+    try {
+      this.loading = true;
 
-    if (this.carModel) this.scene.remove(this.carModel);
+      const modelData = CarConfigs[this.selectedModel];
+      this.activeConfig = modelData.config;
 
-    // Cargar GLTF
-    this.carModel = await this.carLoader.loadCar(
-      this.scene,
-      modelData.modelPath
-    );
+      if (this.carModel) this.scene.remove(this.carModel);
 
-    // --- Normalizar tamaño y posición ---
-    const box = new THREE.Box3().setFromObject(this.carModel);
-    const size = new THREE.Vector3();
-    box.getSize(size);
-    const center = new THREE.Vector3();
-    box.getCenter(center);
+      // Cargar GLTF
+      this.carModel = await this.carLoader.loadCar(
+        this.scene,
+        modelData.modelPath
+      );
 
-    const targetSize = modelData.targetSize ?? 7;
-    const largestDim = Math.max(size.x, size.y, size.z);
-    const scaleFactor = targetSize / largestDim;
+      // --- Normalizar tamaño y posición ---
+      const box = new THREE.Box3().setFromObject(this.carModel);
+      const size = new THREE.Vector3();
+      box.getSize(size);
+      const center = new THREE.Vector3();
+      box.getCenter(center);
 
-    this.carModel.scale.setScalar(scaleFactor * (modelData.modelScale ?? 1));
-    this.carModel.position.sub(center);
-    this.carModel.position.y -= box.min.y * scaleFactor;
-    this.carModel.position.y += modelData.yOffset ?? 1.5;
+      const targetSize = modelData.targetSize ?? 7;
+      const largestDim = Math.max(size.x, size.y, size.z);
+      const scaleFactor = targetSize / largestDim;
 
-    // Reposicionar cámara
-    this.camera.position.set(0, 2.5, 8);
-    this.controls.target.set(0, 1.5, 0);
-    this.controls.update();
+      this.carModel.scale.setScalar(scaleFactor * (modelData.modelScale ?? 1));
+      this.carModel.position.sub(center);
+      this.carModel.position.y -= box.min.y * scaleFactor;
+      this.carModel.position.y += modelData.yOffset ?? 1.5;
 
-    this.materials = this.getAllMaterials();
-    console.log(`Modelo ${this.selectedModel} cargado correctamente.`);
+      // Reposicionar cámara
+      this.camera.position.set(0, 2.5, 8);
+      this.controls.target.set(0, 1.5, 0);
+      this.controls.update();
+
+      this.materials = this.getAllMaterials();
+
+      // Aplicar la configuración guardada (si existe)
+      this.applySavedConfiguration();
+
+      console.log(`Modelo ${this.selectedModel} cargado con configuración inicial.`);
+    } catch (error) {
+      console.error('Error cargando modelo:', error);
+    } finally {
+      this.loading = false;
+    }
+  }
+
+  /** Aplica la configuración que llegó del backend */
+  private applySavedConfiguration(): void {
+    if (!this.activeConfig) return;
+
+    if (this.color) this.updateMaterialGroupColor('body', this.color);
+    if (this.glassTint !== undefined) this.updateGlassTint(this.glassTint);
+    if (this.interior) this.updateInterior(this.interior);
+    if (this.frontLight) this.updateFrontLights(this.frontLight);
+    if (this.wheels) this.updateWheelStyle(this.wheels);
+    if (this.accessory) this.toggleAccessory(this.accessory);
   }
 
   /** Configuración de la escena */
@@ -119,7 +145,7 @@ export class VehicleViewerComponent implements OnInit, OnChanges {
     const height = canvas.clientHeight || window.innerHeight;
 
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0xffffff);
+    this.scene.background = new THREE.Color(0xffffff); // negro para coherencia visual
 
     this.camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 100);
     this.camera.position.set(0, 2.5, 8);
