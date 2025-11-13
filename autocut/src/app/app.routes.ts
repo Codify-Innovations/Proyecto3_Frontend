@@ -144,6 +144,7 @@ export const routes: Routes = [
         },
       },
       {
+       {
         path: 'ai-detection',
         component: VehicleIdentificationComponent,
         data: {
