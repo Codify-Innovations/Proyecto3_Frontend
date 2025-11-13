@@ -143,7 +143,6 @@ export const routes: Routes = [
           showInSidebar: false,
         },
       },
-      {
        {
         path: 'ai-detection',
         component: VehicleIdentificationComponent,
