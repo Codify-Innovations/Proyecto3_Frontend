@@ -4,39 +4,39 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../pages/features/users/user.service';
 import { AlertService } from '../../core/services/alert.service';
+import { VehicleCustomizationService } from '../../pages/features/vehicle-3D/services/vehicle-customization.service';
+import { UserCarViewerComponent } from '../../pages/features/vehicle-3D/user-car-viewer/user-car-viewer.component';
 
 @Component({
   selector: 'app-user-profile',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, UserCarViewerComponent],
   templateUrl: './user-profile.component.html',
 })
 export class UserProfileComponent implements OnInit {
   private userService = inject(UserService);
+  private customizationService = inject(VehicleCustomizationService);
   private alertService = inject(AlertService);
   private router = inject(Router);
 
   user: any = null;
+  userCar: any = null;
   isLoading = true;
 
-  // Badges temporales
   badges = [
     { name: 'Classic Collector' },
     { name: 'Muscle Car Expert' },
     { name: 'Top Speed Designer' },
   ];
 
-  // Modelos temporales
   cars: any[] = [
     { model: 'Mustang GT', brand: 'Ford', year: 2024, image: '' },
     { model: 'Supra MK4', brand: 'Toyota', year: 1998, image: '' },
     { model: 'Camaro ZL1', brand: 'Chevrolet', year: 2022, image: '' },
   ];
 
-  // Modal base
   showModal = false;
   selectedImage: string | null = null;
-
 
   newCar: any = {
     model: '',
@@ -47,9 +47,9 @@ export class UserProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadProfile();
+    this.loadUserCar();
   }
 
- 
   loadProfile(): void {
     this.userService.getUserProfile().subscribe({
       next: (res: any) => {
@@ -66,21 +66,30 @@ export class UserProfileComponent implements OnInit {
     });
   }
 
+  /** Cargar el carro personalizado del usuario */
+  loadUserCar(): void {
+    this.customizationService.getMyCustomization$().subscribe({
+      next: (res: any) => {
+        this.userCar = res.data || null;
+        console.log('Carro del usuario:', this.userCar);
+      },
+      error: (err) => {
+        console.warn('No se pudo cargar el carro del usuario:', err);
+      },
+    });
+  }
+
   goToSettings(): void {
     this.router.navigate(['/app/profile/settings']);
   }
 
-
-
   openModal(): void {
     this.showModal = true;
   }
-
-  closeModal(): void {
-    this.showModal = false;
-    this.selectedImage = null;
-    this.newCar = { model: '', brand: '', year: '', image: '' };
+  identifyCar(): void {
+    this.router.navigate(['/app/ai-detection']);
   }
+
 
   onFileSelected(event: any): void {
     const file = event.target.files[0];
@@ -91,14 +100,13 @@ export class UserProfileComponent implements OnInit {
     }
   }
 
-  addCar(): void {
-    
-    this.cars.push({
-      model: this.newCar.model,
-      brand: this.newCar.brand,
-      year: this.newCar.year,
-      image: this.selectedImage || '',
-    });
-    this.closeModal();
-  }
+  // addCar(): void {
+  //   this.cars.push({
+  //     model: this.newCar.model,
+  //     brand: this.newCar.brand,
+  //     year: this.newCar.year,
+  //     image: this.selectedImage || '',
+  //   });
+  //   this.closeModal();
+  // }
 }
