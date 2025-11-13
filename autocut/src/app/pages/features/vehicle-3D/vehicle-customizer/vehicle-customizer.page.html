@@ -1,0 +1,60 @@
+<!-- CONTENEDOR PRINCIPAL -->
+<div class="relative w-full h-[85vh] bg-black overflow-hidden">
+
+  <!-- SELECTOR DE MODELO -->
+  <app-car-selector (carSelected)="onCarSelected($any($event))"></app-car-selector>
+
+  <!-- VIEWER 3D -->
+  <div class="w-full h-[85vh] mx-auto" *ngIf="loaded">
+    <app-vehicle-viewer
+      [selectedModel]="selectedModel"
+      [color]="bodyColor"
+      [wheels]="wheelStyle"
+      [glassTint]="glassTint"
+      [interior]="interiorColor"
+      [frontLight]="frontLight"
+      [accessory]="accessory">
+    </app-vehicle-viewer>
+  </div>
+
+  <!-- BARRA INFERIOR DE PERSONALIZACIÓN -->
+  <div
+    class="absolute bottom-0 left-0 right-0 bg-[#1C1C1C]/95 backdrop-blur-sm border-t border-gray-700 text-white flex items-center justify-evenly px-10 py-5 z-20">
+
+    <!-- Carrocería -->
+    <div class="flex flex-col items-center gap-2">
+      <span class="text-[11px] uppercase tracking-widest text-gray-400 font-semibold">Carrocería</span>
+      <app-color-picker [color]="bodyColor" (colorChange)="bodyColor = $event"></app-color-picker>
+    </div>
+
+    <!-- Vidrios -->
+    <div class="flex flex-col items-center gap-2">
+      <app-glass-selector (tintChange)="onGlassChange($event)"></app-glass-selector>
+    </div>
+
+    <!-- Interior -->
+    <div class="flex flex-col items-center gap-2">
+      <span class="text-[11px] uppercase tracking-widest text-gray-400 font-semibold">Interior</span>
+      <app-color-picker [color]="interiorColor" (colorChange)="interiorColor = $event"></app-color-picker>
+    </div>
+
+    <!-- Rines -->
+    <div class="flex flex-col items-center gap-2">
+      <span class="text-[11px] uppercase tracking-widest text-gray-400 font-semibold">Rines</span>
+      <app-wheel-selector (wheelChange)="wheelStyle = $event"></app-wheel-selector>
+    </div>
+
+    <!-- Faros -->
+    <div class="flex flex-col items-center gap-2">
+      <span class="text-[11px] uppercase tracking-widest text-gray-400 font-semibold">Faros</span>
+      <app-lights-selector (frontChange)="frontLight = $event"></app-lights-selector>
+    </div>
+
+    <!-- Guardar -->
+    <button
+      (click)="saveCustomization()"
+      class="bg-[#ff0f3b] text-White font-semibold px-8 py-2 rounded-lg hover:bg-[#910000] transition-all shadow-md shadow-[#ff0f3b]">
+      Guardar
+    </button>
+  </div>
+</div>
