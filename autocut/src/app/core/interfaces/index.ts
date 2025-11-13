@@ -90,3 +90,25 @@ export interface IVehicleCustomization {
   fechaCreacion?: string;
   fechaActualizacion?: string;
 }
+export interface IMediaTypeConfig {
+  fillType: string;
+  propertyPath: string;
+  mediaType: 'video' | 'image' | 'audio';
+  defaultExtension: string;
+}
+
+export interface IMediaUploadState {
+  uploadedFiles: Map<string, string>;
+  pendingUploads: Map<string, File>;
+  isUploading: boolean;
+}
+
+export type MediaType = 'video' | 'image' | 'audio';
+export interface IVehiculo {
+  marca: string;
+  modelo: string;
+  categoria: string;
+  anio: string;
+  imagenURL: string;
+  color: string
+}

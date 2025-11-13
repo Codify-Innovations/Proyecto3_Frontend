@@ -86,12 +86,10 @@ export class UserProfileComponent implements OnInit {
   openModal(): void {
     this.showModal = true;
   }
-
-  closeModal(): void {
-    this.showModal = false;
-    this.selectedImage = null;
-    this.newCar = { model: '', brand: '', year: '', image: '' };
+  identifyCar(): void {
+    this.router.navigate(['/app/ai-detection']);
   }
+
 
   onFileSelected(event: any): void {
     const file = event.target.files[0];
@@ -102,13 +100,13 @@ export class UserProfileComponent implements OnInit {
     }
   }
 
-  addCar(): void {
-    this.cars.push({
-      model: this.newCar.model,
-      brand: this.newCar.brand,
-      year: this.newCar.year,
-      image: this.selectedImage || '',
-    });
-    this.closeModal();
-  }
+  // addCar(): void {
+  //   this.cars.push({
+  //     model: this.newCar.model,
+  //     brand: this.newCar.brand,
+  //     year: this.newCar.year,
+  //     image: this.selectedImage || '',
+  //   });
+  //   this.closeModal();
+  // }
 }

@@ -1,0 +1,21 @@
+<div
+  *ngIf="isVisible"
+  class="fixed inset-0 bg-black/70 backdrop-blur-sm flex justify-center items-center z-50 animate-fade-in"
+>
+  <div
+    class="relative bg-white rounded-2xl p-6 shadow-2xl max-w-3xl w-full mx-4 transition-all duration-300 scale-100"
+  >
+    <button
+      (click)="onClose()"
+      class="absolute top-4 right-4 text-gray-600 hover:text-[#880e0e] text-2xl transition"
+    >
+      ✕
+    </button>
+
+    <img
+      [src]="imageURL || ''"
+      alt="Imagen analizada"
+      class="w-full rounded-xl shadow-md object-contain max-h-[70vh]"
+    />
+  </div>
+</div>
