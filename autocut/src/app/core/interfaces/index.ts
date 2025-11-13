@@ -93,3 +93,11 @@ export interface IMediaUploadState {
 }
 
 export type MediaType = 'video' | 'image' | 'audio';
+export interface IVehiculo {
+  marca: string;
+  modelo: string;
+  categoria: string;
+  anio: string;
+  imagenURL: string;
+  color: string
+}
