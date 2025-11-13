@@ -4,24 +4,50 @@ import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
 import { UserService } from '../../pages/features/users/user.service';
 import { AlertService } from '../../core/services/alert.service';
+import { VehicleCustomizationService } from '../../pages/features/vehicle-3D/services/vehicle-customization.service';
+import { UserCarViewerComponent } from '../../pages/features/vehicle-3D/user-car-viewer/user-car-viewer.component';
 
 @Component({
   selector: 'app-user-profile',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, UserCarViewerComponent],
   templateUrl: './user-profile.component.html',
 })
 export class UserProfileComponent implements OnInit {
   private userService = inject(UserService);
+  private customizationService = inject(VehicleCustomizationService);
   private alertService = inject(AlertService);
   private router = inject(Router);
 
   user: any = null;
+  userCar: any = null;
   isLoading = true;
 
+  badges = [
+    { name: 'Classic Collector' },
+    { name: 'Muscle Car Expert' },
+    { name: 'Top Speed Designer' },
+  ];
+
+  cars: any[] = [
+    { model: 'Mustang GT', brand: 'Ford', year: 2024, image: '' },
+    { model: 'Supra MK4', brand: 'Toyota', year: 1998, image: '' },
+    { model: 'Camaro ZL1', brand: 'Chevrolet', year: 2022, image: '' },
+  ];
+
+  showModal = false;
+  selectedImage: string | null = null;
+
+  newCar: any = {
+    model: '',
+    brand: '',
+    year: '',
+    image: '',
+  };
 
   ngOnInit(): void {
     this.loadProfile();
+    this.loadUserCar();
   }
 
   loadProfile(): void {
@@ -40,25 +66,47 @@ export class UserProfileComponent implements OnInit {
     });
   }
 
+  /** Cargar el carro personalizado del usuario */
+  loadUserCar(): void {
+    this.customizationService.getMyCustomization$().subscribe({
+      next: (res: any) => {
+        this.userCar = res.data || null;
+        console.log('Carro del usuario:', this.userCar);
+      },
+      error: (err) => {
+        console.warn('No se pudo cargar el carro del usuario:', err);
+      },
+    });
+  }
+
   goToSettings(): void {
     this.router.navigate(['/app/profile/settings']);
   }
 
+  openModal(): void {
+    this.showModal = true;
+  }
   identifyCar(): void {
     this.router.navigate(['/app/ai-detection']);
   }
-  // Badges temporales
-  badges = [
-    { name: 'Classic Collector' },
-    { name: 'Muscle Car Expert' },
-    { name: 'Top Speed Designer' },
-  ];
 
-  // Modelos temporales
-  cars: any[] = [
-    { model: 'Mustang GT', brand: 'Ford', year: 2024, image: '' },
-    { model: 'Supra MK4', brand: 'Toyota', year: 1998, image: '' },
-    { model: 'Camaro ZL1', brand: 'Chevrolet', year: 2022, image: '' },
-  ];
 
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => (this.selectedImage = e.target.result);
+      reader.readAsDataURL(file);
+    }
+  }
+
+  // addCar(): void {
+  //   this.cars.push({
+  //     model: this.newCar.model,
+  //     brand: this.newCar.brand,
+  //     year: this.newCar.year,
+  //     image: this.selectedImage || '',
+  //   });
+  //   this.closeModal();
+  // }
 }

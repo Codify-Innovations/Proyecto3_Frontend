@@ -79,6 +79,17 @@ export interface IStat {
   label: string;
 }
 
+export interface IVehicleCustomization {
+  id?: number;
+  modelo: string;
+  carroceria?: string;
+  vidriosPolarizados?: boolean;
+  interior?: string;
+  rines?: string;
+  lucesFront?: string;
+  fechaCreacion?: string;
+  fechaActualizacion?: string;
+}
 export interface IMediaTypeConfig {
   fillType: string;
   propertyPath: string;
