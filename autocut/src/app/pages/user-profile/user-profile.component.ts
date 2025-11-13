@@ -19,37 +19,11 @@ export class UserProfileComponent implements OnInit {
   user: any = null;
   isLoading = true;
 
-  // Badges temporales
-  badges = [
-    { name: 'Classic Collector' },
-    { name: 'Muscle Car Expert' },
-    { name: 'Top Speed Designer' },
-  ];
-
-  // Modelos temporales
-  cars: any[] = [
-    { model: 'Mustang GT', brand: 'Ford', year: 2024, image: '' },
-    { model: 'Supra MK4', brand: 'Toyota', year: 1998, image: '' },
-    { model: 'Camaro ZL1', brand: 'Chevrolet', year: 2022, image: '' },
-  ];
-
-  // Modal base
-  showModal = false;
-  selectedImage: string | null = null;
-
-
-  newCar: any = {
-    model: '',
-    brand: '',
-    year: '',
-    image: '',
-  };
 
   ngOnInit(): void {
     this.loadProfile();
   }
 
- 
   loadProfile(): void {
     this.userService.getUserProfile().subscribe({
       next: (res: any) => {
@@ -70,35 +44,21 @@ export class UserProfileComponent implements OnInit {
     this.router.navigate(['/app/profile/settings']);
   }
 
-
-
-  openModal(): void {
-    this.showModal = true;
+  identifyCar(): void {
+    this.router.navigate(['/app/ai-detection']);
   }
+  // Badges temporales
+  badges = [
+    { name: 'Classic Collector' },
+    { name: 'Muscle Car Expert' },
+    { name: 'Top Speed Designer' },
+  ];
 
-  closeModal(): void {
-    this.showModal = false;
-    this.selectedImage = null;
-    this.newCar = { model: '', brand: '', year: '', image: '' };
-  }
+  // Modelos temporales
+  cars: any[] = [
+    { model: 'Mustang GT', brand: 'Ford', year: 2024, image: '' },
+    { model: 'Supra MK4', brand: 'Toyota', year: 1998, image: '' },
+    { model: 'Camaro ZL1', brand: 'Chevrolet', year: 2022, image: '' },
+  ];
 
-  onFileSelected(event: any): void {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e: any) => (this.selectedImage = e.target.result);
-      reader.readAsDataURL(file);
-    }
-  }
-
-  addCar(): void {
-    
-    this.cars.push({
-      model: this.newCar.model,
-      brand: this.newCar.brand,
-      year: this.newCar.year,
-      image: this.selectedImage || '',
-    });
-    this.closeModal();
-  }
 }

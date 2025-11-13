@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, effect, EventEmitter, inject, Output } from '@angular/core';
+import { Component, effect, EventEmitter, inject, Input, Output } from '@angular/core';
 import { validateFiles } from '../../../core/utils/file-validator';
 import { AlertService } from '../../../core/services/alert.service';
 import { UploaderService } from '../../../core/services/cloudinary/uploader.service';
@@ -11,6 +11,7 @@ import { UploaderService } from '../../../core/services/cloudinary/uploader.serv
   templateUrl: './file-uploader.component.html',
 })
 export class FileUploaderComponent {
+  @Input() fileValidatorFn: (files: File[], alertService: AlertService) => boolean = validateFiles;
   @Output() filesSelected = new EventEmitter<File[]>();
 
   public alertService: AlertService = inject(AlertService);
@@ -51,7 +52,7 @@ export class FileUploaderComponent {
     console.log(this.selectedFiles);
     const filesArray = Array.from(files);
 
-    const isValid = validateFiles(filesArray, this.alertService);
+    const isValid = this.fileValidatorFn(filesArray, this.alertService);
 
     if (!isValid) {
       return;
@@ -72,7 +73,7 @@ export class FileUploaderComponent {
     const filesArray = Array.from(files);
     console.log(files);
     console.log(this.selectedFiles);
-    const isValid = validateFiles(filesArray, this.alertService);
+    const isValid = this.fileValidatorFn(filesArray, this.alertService);
     if (!isValid) {
       return;
     }

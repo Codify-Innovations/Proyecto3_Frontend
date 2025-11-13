@@ -14,6 +14,8 @@ import { LandingAutocutPage } from './pages/features/landing/landing-autocut/pag
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
 import { UserSettingsComponent } from './pages/user-settings/user-settings.component';
 import {IaGeneratorComponent} from './pages/features/ia-generator/ia-generator.component'
+import { VideoEditorComponent } from './pages/features/video-editor/video-editor';
+import { VehicleIdentificationComponent } from './pages/features/ai-identification/vehicle-identification/vehicle-identification.component';
 import { VehicleCustomizerPage } from './pages/features/vehicle-3D/vehicle-customizer/vehicle-customizer.page';
 
 
@@ -129,6 +131,18 @@ export const routes: Routes = [
         data: {
           authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
           name: 'Generador de Video con IA',
+        path: 'video-editor',
+        component: VideoEditorComponent,
+        data: {
+          authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
+          name: 'Editor de Video',
+          showInSidebar: false,
+       {
+        path: 'ai-detection',
+        component: VehicleIdentificationComponent,
+        data: {
+          authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
+          name: 'Identificacion con IA',
           showInSidebar: true,
         },
       },
