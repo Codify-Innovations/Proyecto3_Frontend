@@ -131,13 +131,19 @@ export const routes: Routes = [
         data: {
           authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
           name: 'Generador de Video con IA',
+          showInSidebar: false,
+        },
+      },
+      {
         path: 'video-editor',
         component: VideoEditorComponent,
         data: {
           authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
           name: 'Editor de Video',
           showInSidebar: false,
-       {
+        },
+      },
+      {
         path: 'ai-detection',
         component: VehicleIdentificationComponent,
         data: {
@@ -145,7 +151,7 @@ export const routes: Routes = [
           name: 'Identificacion con IA',
           showInSidebar: true,
         },
-      },
+      },      
     ],
   },
 ];
