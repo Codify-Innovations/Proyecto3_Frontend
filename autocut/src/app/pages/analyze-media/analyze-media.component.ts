@@ -16,6 +16,9 @@ export class AnalyzeMediaComponent {
   private aiService = inject(AnalyzeMediaService);
 
   form!: FormGroup;
+
+  stepIndex = 0;
+
   selectedFile: File | null = null;
   analysisResult: any = null;
   loading = false;
@@ -69,42 +72,48 @@ export class AnalyzeMediaComponent {
       return;
     }
 
+    this.stepIndex = 1;
     this.loading = true;
-    this.analysisResult = null;
     this.uploadProgress = 0;
+    this.analysisResult = null;
 
     this.aiService.analyzeMedia(this.selectedFile).subscribe({
       next: (event) => {
+
+   
         if (event.status === 'progress') {
-          this.uploadProgress = event.progress;
-        } else if (event.status === 'done') {
+        
+          this.uploadProgress = event.progress >= 100 ? 99 : event.progress;
+        }
+
+ 
+        if (event.status === 'done') {
+      
+          this.uploadProgress = 100;
+
           const response = event.data;
-          this.analysisResult = {
-            raw: response,
-            status: response.status || 'unknown',
-            data: response.data || response,
-            score: response.data?.score ?? response.score,
-            quality_label: response.data?.quality_label ?? response.quality_label,
-            metrics: response.data?.metrics ?? response.metrics,
-            suggestions: response.data?.suggestions ?? response.suggestions,
-            type: response.data?.type ?? response.type,
-          };
+
+          this.analysisResult = response.data;
+
           this.loading = false;
+          this.stepIndex = 2;
         }
       },
       error: (err) => {
         this.alertService.error(err.message);
         this.loading = false;
-      },
+        this.stepIndex = 0;
+      }
     });
   }
 
   resetForm() {
     this.selectedFile = null;
+    this.previewUrl = null;
     this.analysisResult = null;
     this.uploadProgress = 0;
-    this.previewUrl = null;
     this.fileType = null;
     this.form.reset();
+    this.stepIndex = 0;
   }
 }

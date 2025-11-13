@@ -1,175 +1,269 @@
-<div class="min-h-screen flex items-center justify-center bg-[#F5F5F5] py-12 px-6">
-  <div class="w-full max-w-[1000px] bg-white rounded-2xl shadow-lg p-10 border border-[#E0E0E0] transition-all duration-300">
-    <h2 class="text-3xl font-bold text-[#1C1C1C] mb-4 text-center tracking-tight">
-      Análisis de Calidad de Contenido Multimedia
-    </h2>
-    <p class="text-center text-[#555] mb-10 leading-relaxed max-w-[700px] mx-auto">
-      Cargue una imagen, video o archivo de audio para que el sistema de inteligencia artificial evalúe su calidad visual o sonora,
-      genere una puntuación general y brinde recomendaciones de mejora.
+<div class="min-h-screen flex flex-col items-center bg-[#F5F5F5] py-12 px-6">
+
+  <div class="w-full max-w-4xl mx-auto flex items-center justify-between mb-12">
+
+    <div class="flex flex-col items-center">
+      <div class="w-10 h-10 flex items-center justify-center rounded-full border-2 font-bold"
+        [ngClass]="{
+          'bg-[#880E0E] text-white border-[#880E0E]': stepIndex === 0,
+          'bg-green-600 text-white border-green-600': stepIndex > 0
+        }">1</div>
+      <p class="mt-2 text-sm font-medium">Upload</p>
+    </div>
+
+    <div class="flex-1 h-1 mx-4 bg-gray-300" [ngClass]="{ 'bg-green-600': stepIndex > 0 }"></div>
+
+    <div class="flex flex-col items-center">
+      <div class="w-10 h-10 flex items-center justify-center rounded-full border-2 font-bold"
+        [ngClass]="{
+          'bg-[#880E0E] text-white border-[#880E0E]': stepIndex === 1,
+          'bg-green-600 text-white border-green-600': stepIndex > 1
+        }">2</div>
+      <p class="mt-2 text-sm font-medium">Rating</p>
+    </div>
+
+    <div class="flex-1 h-1 mx-4 bg-gray-300" [ngClass]="{ 'bg-green-600': stepIndex > 1 }"></div>
+    <div class="flex flex-col items-center">
+      <div class="w-10 h-10 flex items-center justify-center rounded-full border-2 font-bold"
+        [ngClass]="{
+          'bg-[#880E0E] text-white border-[#880E0E]': stepIndex === 2
+        }">3</div>
+      <p class="mt-2 text-sm font-medium">Results</p>
+    </div>
+
+  </div>
+
+  <div *ngIf="stepIndex === 0"
+       class="w-full max-w-[900px] bg-white rounded-2xl shadow-lg p-10 border border-[#E0E0E0]">
+
+    <h2 class="text-3xl font-bold text-center mb-4">Análisis de Calidad de Contenido Multimedia</h2>
+
+    <p class="text-center text-[#555] mb-10 max-w-[700px] mx-auto">
+      Cargue una imagen, video o archivo de audio para que el sistema de IA evalúe su calidad.
     </p>
 
     <div
-      class="border-2 border-dashed border-[#B71C1C]/70 rounded-xl p-12 text-center bg-[#FFFDFD] hover:bg-[#FFF5F5] hover:border-[#880E0E] transition-all duration-300"
-    >
-      <p class="text-[#1C1C1C] text-lg mb-4 font-semibold">Suba su archivo multimedia</p>
+      class="border-2 border-dashed border-[#B71C1C]/70 rounded-xl p-12 text-center bg-[#FFFDFD]
+             hover:bg-[#FFF5F5] hover:border-[#880E0E] transition">
 
+      <p class="text-lg font-semibold mb-4">Suba su archivo multimedia</p>
 
       <label for="fileInput" class="cursor-pointer">
         <span
-          class="px-6 py-2 bg-[#880e0e] text-white text-sm font-medium rounded-lg shadow-sm hover:bg-[#b94c4c] hover:shadow-md transition-all duration-200"
-        >
-          Arrastra y suelta para subir
+          class="px-6 py-2 bg-[#880e0e] text-white text-sm font-medium rounded-lg shadow-sm
+                 hover:bg-[#b94c4c] hover:shadow-md transition">
+          Arrastrar y soltar para subir
         </span>
       </label>
 
       <input
         id="fileInput"
         type="file"
-        (change)="onFileSelected($event)"
-        accept="image/*,video/mp4,audio/mpeg,audio/wav"
         class="hidden"
+        accept="image/*,video/mp4,audio/mpeg,audio/wav"
+        (change)="onFileSelected($event)"
       />
 
-
       <div class="mt-6 flex flex-col items-center">
-        <p
-          (click)="triggerFileInput()"
-          class="text-[#880e0e] hover:underline text-sm font-medium mt-1 cursor-pointer transition-all duration-200"
-        >
+        <p (click)="triggerFileInput()" class="text-[#880e0e] hover:underline text-sm mt-1 cursor-pointer">
           Buscar en el dispositivo
         </p>
+
         <button
           (click)="analyzeFile()"
-          [disabled]="loading"
+          [disabled]="!selectedFile"
           type="button"
-          class="px-4 py-2 mt-4 bg-[#8BC34A] text-white text-sm rounded hover:bg-green-600 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
-        >
-          {{ loading ? 'Analizando...' : 'Iniciar análisis' }}
+          class="px-4 py-2 mt-4 bg-[#8BC34A] text-white text-sm rounded
+                 hover:bg-green-600 transition disabled:opacity-50 disabled:cursor-not-allowed">
+          Siguiente →
         </button>
       </div>
 
-      <p class="text-sm text-500 mt-4">
-        Tamaño máximo permitido: 50 MB. Formatos admitidos: JPG, PNG, MP4, MP3, WAV.
+      <p class="text-sm text-gray-500 mt-4">
+        Tamaño máximo: 50 MB — Formatos: JPG, PNG, MP4, MP3, WAV.
       </p>
-    </div>
 
- 
-    <div *ngIf="selectedFile" class="text-center mt-8 text-[#424242] animate-fade-in">
-      <p class="text-lg">
-        Archivo seleccionado: <strong class="text-[#B71C1C]">{{ selectedFile?.name }}</strong>
-      </p>
-      <div class="mt-5 flex justify-center">
-        <ng-container [ngSwitch]="fileType">
-          <img
-            *ngSwitchCase="'image'"
-            [src]="previewUrl"
-            class="max-h-72 rounded-lg shadow-md transition-all hover:scale-[1.01]"
-          />
-          <video *ngSwitchCase="'video'" [src]="previewUrl" controls class="max-h-72 rounded-lg shadow-md"></video>
-          <audio *ngSwitchCase="'audio'" [src]="previewUrl" controls></audio>
-        </ng-container>
+      <div *ngIf="selectedFile" class="mt-8 text-center">
+
+        <p class="text-[#424242] text-base mb-3">
+          Archivo seleccionado: <strong class="text-[#B71C1C]">{{ selectedFile?.name }}</strong>
+        </p>
+
+        <div class="flex justify-center mt-4">
+          <ng-container [ngSwitch]="fileType">
+
+            <img *ngSwitchCase="'image'" [src]="previewUrl"
+                 class="max-h-72 rounded-lg shadow-md" />
+
+            <video *ngSwitchCase="'video'" [src]="previewUrl" controls
+                   class="max-h-72 rounded-lg shadow-md"></video>
+
+            <audio *ngSwitchCase="'audio'" [src]="previewUrl" controls
+                   class="w-full max-w-sm"></audio>
+
+          </ng-container>
+        </div>
+
       </div>
+
+    </div>
+  </div>
+
+
+  <div *ngIf="stepIndex === 1"
+       class="w-full max-w-[900px] bg-black text-white rounded-2xl p-20 text-center">
+    <h2 class="text-2xl mb-6 tracking-wide">
+      {{ uploadProgress < 100 ? 'Analizando...' : 'Completado' }}
+    </h2>
+
+    <div class="w-[350px] mx-auto bg-gray-700 h-6 rounded overflow-hidden">
+      <div class="h-6 bg-white transition-all duration-300"
+           [style.width.%]="uploadProgress"></div>
     </div>
 
+    <p class="mt-4 text-lg">{{ uploadProgress }}%</p>
+  </div>
 
-    <div *ngIf="uploadProgress > 0 && uploadProgress < 100" class="mt-6 text-center animate-fade-in">
-      <p class="text-[#424242] text-sm mb-2">
-        Cargando archivo: <strong>{{ uploadProgress }}%</strong>
-      </p>
-      <div class="w-2/3 mx-auto bg-gray-200 rounded-full h-2.5 overflow-hidden">
-        <div
-          class="bg-gradient-to-r from-[#B71C1C] to-[#880E0E] h-2.5 transition-all duration-300"
-          [style.width.%]="uploadProgress"
-        ></div>
+
+  <div *ngIf="stepIndex === 2"
+       class="w-full min-h-screen flex items-center justify-center px-4">
+
+    <div class="w-full max-w-[1000px] bg-white rounded-2xl shadow-lg p-10 border border-[#E0E0E0]">
+
+      <div class="text-center mb-8">
+
+        <p class="text-[#424242] text-base mb-3">
+          Archivo analizado:
+          <strong class="text-[#B71C1C]">{{ selectedFile?.name }}</strong>
+        </p>
+
+        <div class="flex justify-center">
+          <ng-container [ngSwitch]="fileType">
+
+            <img *ngSwitchCase="'image'" [src]="previewUrl"
+                 class="max-h-80 rounded-xl shadow-lg mb-4" />
+
+            <video *ngSwitchCase="'video'" [src]="previewUrl" controls
+                   class="max-h-80 rounded-xl shadow-lg mb-4"></video>
+
+            <audio *ngSwitchCase="'audio'" [src]="previewUrl" controls
+                   class="w-full max-w-lg mb-4"></audio>
+
+          </ng-container>
+        </div>
       </div>
-    </div>
+      <h3 class="text-2xl font-semibold text-center mb-6">Resultado del Análisis</h3>
 
-
-    <div *ngIf="loading && uploadProgress === 100" class="text-center mt-10 text-[#424242] animate-fade-in">
-      <div class="flex items-center justify-center gap-3">
-        <div class="animate-spin rounded-full h-6 w-6 border-3 border-[#B71C1C] border-t-transparent"></div>
-        <span class="font-medium">Analizando el contenido mediante IA...</span>
-      </div>
-      <p class="text-sm text-gray-500 mt-2">Este proceso puede tardar algunos segundos.</p>
-    </div>
-
-
-    <div *ngIf="analysisResult && !loading" class="mt-12 animate-fade-in">
-      <h3 class="text-2xl font-semibold text-[#1C1C1C] mb-6 text-center">Resultado del Análisis</h3>
       <div class="bg-[#FAFAFA] rounded-xl p-8 border border-[#E0E0E0] shadow-sm">
+
         <div class="text-center mb-6">
-          <p class="text-lg font-semibold text-[#1C1C1C]">
+          <p class="text-lg font-semibold">
             Puntuación general:
-            <span
-              class="font-bold text-2xl"
+            <span class="font-bold text-2xl"
               [ngClass]="{
                 'text-[#4CAF50]': analysisResult?.score > 85,
                 'text-[#FFC107]': analysisResult?.score <= 85 && analysisResult?.score >= 60,
                 'text-[#F44336]': analysisResult?.score < 60
-              }"
-            >
+              }">
               {{ analysisResult?.score }}/100
             </span>
           </p>
-          <p class="text-[#424242] text-base italic mt-2">{{ analysisResult?.quality_label }}</p>
+
+          <p class="text-[#424242]">{{ analysisResult?.quality_label }}</p>
         </div>
 
-        <h4 class="text-xl font-semibold text-[#1C1C1C] mb-4">Métricas de Calidad</h4>
-        <ul class="grid grid-cols-2 gap-x-10 gap-y-2 text-[#424242] text-base leading-relaxed">
-          <li *ngIf="analysisResult?.metrics?.resolucion">- Resolución: {{ analysisResult?.metrics?.resolucion }}</li>
-          <li *ngIf="analysisResult?.metrics?.iluminacion">
-            - Iluminación: {{ analysisResult?.metrics?.iluminacion?.valor }} ({{ analysisResult?.metrics?.iluminacion?.evaluacion }})
-          </li>
-          <li *ngIf="analysisResult?.metrics?.contraste">
-            - Contraste: {{ analysisResult?.metrics?.contraste?.valor }} ({{ analysisResult?.metrics?.contraste?.evaluacion }})
-          </li>
-          <li *ngIf="analysisResult?.metrics?.nitidez">
-            - Nitidez: {{ analysisResult?.metrics?.nitidez?.valor }} ({{ analysisResult?.metrics?.nitidez?.evaluacion }})
-          </li>
-          <li *ngIf="analysisResult?.metrics?.estabilidad">
-            - Estabilidad: {{ analysisResult?.metrics?.estabilidad?.valor }} ({{ analysisResult?.metrics?.estabilidad?.evaluacion }})
-          </li>
-          <li *ngIf="analysisResult?.metrics?.fps">- Fluidez / FPS: {{ analysisResult?.metrics?.fps }}</li>
-          <li *ngIf="analysisResult?.metrics?.audio_score">
-            - Calidad de audio: {{ analysisResult?.metrics?.audio_score?.valor }} ({{ analysisResult?.metrics?.audio_score?.evaluacion }})
-          </li>
-          <li *ngIf="analysisResult?.metrics?.claridad">
-            - Claridad: {{ analysisResult?.metrics?.claridad?.valor }} ({{ analysisResult?.metrics?.claridad?.evaluacion }})
-          </li>
-          <li *ngIf="analysisResult?.metrics?.ruido">
-            - Nivel de ruido: {{ analysisResult?.metrics?.ruido?.valor }} ({{ analysisResult?.metrics?.ruido?.evaluacion }})
-          </li>
-          <li *ngIf="analysisResult?.metrics?.balance">
-            - Balance de frecuencias: {{ analysisResult?.metrics?.balance?.valor }} ({{ analysisResult?.metrics?.balance?.evaluacion }})
-          </li>
-          <li *ngIf="analysisResult?.metrics?.ia_score">
-            - Evaluación IA: {{ analysisResult?.metrics?.ia_score?.valor }} ({{ analysisResult?.metrics?.ia_score?.evaluacion }})
-          </li>
-        </ul>
+        <h4 class="text-xl font-semibold mb-4">Métricas de Calidad</h4>
 
-        <h4 class="text-xl font-semibold mt-8 text-[#1C1C1C]">Recomendaciones de mejora</h4>
-        <ul
-          *ngIf="analysisResult?.suggestions?.length > 0; else noRecommendations"
-          class="list-disc ml-6 mt-3 text-[#424242] space-y-1 text-base leading-snug"
-        >
+        <ul class="grid grid-cols-2 gap-x-10 gap-y-2 text-[#424242] text-base">
+
+          <li *ngIf="analysisResult?.metrics?.resolucion">- Resolución: {{ analysisResult?.metrics?.resolucion }}</li>
+
+          <li *ngIf="analysisResult?.metrics?.iluminacion">
+            - Iluminación: {{ analysisResult?.metrics?.iluminacion?.valor }}
+              ({{ analysisResult?.metrics?.iluminacion?.evaluacion }})
+          </li>
+
+          <li *ngIf="analysisResult?.metrics?.contraste">
+            - Contraste: {{ analysisResult?.metrics?.contraste?.valor }}
+              ({{ analysisResult?.metrics?.contraste?.evaluacion }})
+          </li>
+
+          <li *ngIf="analysisResult?.metrics?.nitidez">
+            - Nitidez: {{ analysisResult?.metrics?.nitidez?.valor }}
+              ({{ analysisResult?.metrics?.nitidez?.evaluacion }})
+          </li>
+
+          <li *ngIf="analysisResult?.metrics?.estabilidad">
+            - Estabilidad: {{ analysisResult?.metrics?.estabilidad?.valor }}
+              ({{ analysisResult?.metrics?.estabilidad?.evaluacion }})
+          </li>
+
+          <li *ngIf="analysisResult?.metrics?.fps">
+            - FPS: {{ analysisResult?.metrics?.fps }}
+          </li>
+
+          <li *ngIf="analysisResult?.metrics?.audio_score">
+            - Calidad de audio: {{ analysisResult?.metrics?.audio_score?.valor }}
+              ({{ analysisResult?.metrics?.audio_score?.evaluacion }})
+          </li>
+
+          <li *ngIf="analysisResult?.metrics?.claridad">
+            - Claridad: {{ analysisResult?.metrics?.claridad?.valor }}
+              ({{ analysisResult?.metrics?.claridad?.evaluacion }})
+          </li>
+
+          <li *ngIf="analysisResult?.metrics?.ruido">
+            - Ruido: {{ analysisResult?.metrics?.ruido?.valor }}
+              ({{ analysisResult?.metrics?.ruido?.evaluacion }})
+          </li>
+
+          <li *ngIf="analysisResult?.metrics?.balance">
+            - Balance: {{ analysisResult?.metrics?.balance?.valor }}
+              ({{ analysisResult?.metrics?.balance?.evaluacion }})
+          </li>
+
+          <li *ngIf="analysisResult?.metrics?.snr">
+            - Relación señal-ruido (SNR): {{ analysisResult?.metrics?.snr?.valor }}
+              ({{ analysisResult?.metrics?.snr?.evaluacion }})
+          </li>
+
+          <li *ngIf="analysisResult?.metrics?.clipping">
+            - Clipping: {{ analysisResult?.metrics?.clipping?.valor }}
+              ({{ analysisResult?.metrics?.clipping?.evaluacion }})
+          </li>
+
+          <li *ngIf="analysisResult?.metrics?.ia_score">
+            - Evaluación IA: {{ analysisResult?.metrics?.ia_score?.valor }}
+              ({{ analysisResult?.metrics?.ia_score?.evaluacion }})
+          </li>
+
+        </ul>
+        <h4 class="text-xl font-semibold mt-8">Recomendaciones de mejora</h4>
+
+        <ul *ngIf="analysisResult?.suggestions?.length > 0; else noRec"
+            class="list-disc ml-6 mt-3 space-y-1 text-[#424242]">
           <li *ngFor="let s of analysisResult?.suggestions">{{ s }}</li>
         </ul>
 
-        <ng-template #noRecommendations>
+        <ng-template #noRec>
           <p class="text-[#388E3C] font-medium italic mt-3 text-center">
-            La IA considera que este contenido ya tiene una calidad óptima cercana al 100%. ¡Excelente trabajo!
+            La IA considera que este contenido tiene excelente calidad.
           </p>
         </ng-template>
 
         <div class="text-center mt-10">
           <span
             (click)="resetForm()"
-            class="px-6 py-2 bg-[#880e0e] text-white text-sm font-medium rounded-lg shadow-sm hover:bg-[#b94c4c] hover:shadow-md transition-all duration-200 cursor-pointer select-none"
-          >
+            class="px-6 py-2 bg-[#880e0e] text-white text-sm font-medium rounded-lg shadow-sm
+                   hover:bg-[#b94c4c] hover:shadow-md transition cursor-pointer">
             Nuevo análisis
           </span>
         </div>
+
       </div>
     </div>
   </div>
+
 </div>
+
+
