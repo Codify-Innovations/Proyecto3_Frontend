@@ -7,15 +7,17 @@
 <button
   (click)="goToSettings()"
   class="absolute top-6 right-6
-         px-6 py-2
+         p-3
          bg-[#880e0e] !bg-[#880e0e]
-         text-white text-sm font-medium
+         text-white
          rounded-lg !rounded-lg
          shadow-sm !shadow-sm
          hover:!bg-[#b94c4c] hover:!shadow-md
-         transition-all duration-200"
+         transition-all duration-200
+         flex items-center justify-center"
+  title="Editar Perfil"
 >
-  Editar Perfil
+  <i class="fa-solid fa-pencil" style="font-weight: bold;"></i>
 </button>
 
     <app-user-car-viewer

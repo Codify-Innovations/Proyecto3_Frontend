@@ -14,6 +14,7 @@ export class VideoEditorMediaService {
   // Estado
   private uploadedFiles = new Map<string, string>(); // blob URL -> Cloudinary URL
   private pendingUploads = new Map<string, File>(); // blob URL -> File
+  private currentUploadBlobUrl: string | null = null; // Track the blob URL currently being uploaded
   
   // Signals públicos para observar estado
   public uploadedFiles$ = signal<Map<string, string>>(new Map());
@@ -67,6 +68,7 @@ export class VideoEditorMediaService {
    */
   public async replaceAllBlobUrls(): Promise<void> {
     try {
+      // First, try to replace known blob URLs with their Cloudinary URLs
       this.processBlocks((blockId, blockType) => {
         if (blockType === '//ly.img.ubq/audio' || 
             blockType === '//ly.img.ubq/graphic' || 
@@ -74,6 +76,10 @@ export class VideoEditorMediaService {
           this.replaceBlobUrlInBlock(blockId);
         }
       });
+
+      // Then, handle any remaining blob URLs that weren't in the map
+      // These might be from imported scenes where Cloudinary URLs were converted to blob URLs
+      await this.handleUnmappedBlobUrls();
     } catch (error) {
       console.error('Error replacing blob URLs:', error);
     }
@@ -87,6 +93,7 @@ export class VideoEditorMediaService {
     this.pendingUploads.clear();
     this.uploadedFiles$.set(new Map());
     this.pendingUploads$.set(new Map());
+    this.currentUploadBlobUrl = null;
     this.cesdk = null;
   }
 
@@ -227,7 +234,13 @@ export class VideoEditorMediaService {
     if (currentUri && currentUri.startsWith('blob:')) {
       const shouldUpdate = !requirePending || this.pendingUploads.has(currentUri);
       
-      if (shouldUpdate && cloudinaryUrls.length > 0) {
+      // If we're tracking a current upload, only process that one
+      // Otherwise, process any pending upload (for normal flow)
+      const isCurrentUpload = this.currentUploadBlobUrl === currentUri;
+      const shouldProcess = shouldUpdate && cloudinaryUrls.length > 0 && 
+        (this.currentUploadBlobUrl ? isCurrentUpload : true);
+      
+      if (shouldProcess) {
         const cloudinaryUrl = cloudinaryUrls[0];
         this.cesdk.engine.block.setString(fillId, config.propertyPath, cloudinaryUrl);
         this.uploadedFiles.set(currentUri, cloudinaryUrl);
@@ -235,6 +248,12 @@ export class VideoEditorMediaService {
         this.pendingUploads.delete(currentUri);
         this.pendingUploads$.set(new Map(this.pendingUploads));
         cloudinaryUrls.shift();
+        
+        // Clear current upload tracking if this was the one we were waiting for
+        if (isCurrentUpload) {
+          this.currentUploadBlobUrl = null;
+        }
+        
         console.log(`Updated ${config.mediaType} block ${blockId} with Cloudinary URL: ${cloudinaryUrl}`);
       }
     }
@@ -259,9 +278,161 @@ export class VideoEditorMediaService {
       
       if (cloudinaryUrl) {
         this.cesdk.engine.block.setString(fillId, config.propertyPath, cloudinaryUrl);
+        console.log(`Replaced blob URL with Cloudinary URL for ${config.mediaType} block ${blockId}`);
       } else {
         console.warn(`No Cloudinary URL found for ${config.mediaType} blob: ${currentUri}`);
       }
+    }
+  }
+
+  /**
+   * Handles blob URLs that don't have Cloudinary URL mappings
+   * This can happen when scenes are imported and Cloudinary URLs are converted to blob URLs
+   */
+  private async handleUnmappedBlobUrls(): Promise<void> {
+    if (!this.cesdk) return;
+
+    const unmappedBlobs: Array<{ fillId: number; blobUrl: string; mediaType: MediaType }> = [];
+
+    // Find all blob URLs that don't have Cloudinary URL mappings
+    this.processBlocks((blockId, blockType) => {
+      if (blockType === '//ly.img.ubq/audio' || 
+          blockType === '//ly.img.ubq/graphic' || 
+          blockType === '//ly.img.ubq/page') {
+        const hasFill = this.cesdk.engine.block.hasFill(blockId);
+        if (!hasFill) return;
+
+        const fillId = this.cesdk.engine.block.getFill(blockId);
+        const fillType = this.cesdk.engine.block.getType(fillId);
+        
+        const config = this.mediaConfigs.find(c => c.fillType === fillType);
+        if (!config) return;
+
+        const currentUri = this.cesdk.engine.block.getString(fillId, config.propertyPath);
+        
+        if (currentUri && currentUri.startsWith('blob:') && !this.uploadedFiles.has(currentUri)) {
+          unmappedBlobs.push({ fillId, blobUrl: currentUri, mediaType: config.mediaType });
+        }
+      }
+    });
+
+    if (unmappedBlobs.length === 0) {
+      return;
+    }
+
+    console.log(`Found ${unmappedBlobs.length} unmapped blob URL(s) that need to be uploaded to Cloudinary`);
+
+    // Upload unmapped blob URLs to Cloudinary one at a time to ensure correct mapping
+    for (const { fillId, blobUrl, mediaType } of unmappedBlobs) {
+      try {
+        console.log(`Uploading unmapped ${mediaType} blob URL to Cloudinary: ${blobUrl}`);
+        await this.uploadAndReplaceBlobUrl(fillId, blobUrl, mediaType);
+      } catch (error) {
+        console.error(`Error uploading unmapped ${mediaType} blob URL:`, error);
+        // Continue with other uploads even if one fails
+      }
+    }
+  }
+
+  /**
+   * Uploads a blob URL to Cloudinary and replaces it in the scene
+   */
+  private async uploadAndReplaceBlobUrl(fillId: number, blobUrl: string, mediaType: MediaType): Promise<void> {
+    try {
+      // Check if already uploaded
+      if (this.uploadedFiles.has(blobUrl)) {
+        const cloudinaryUrl = this.uploadedFiles.get(blobUrl);
+        if (cloudinaryUrl) {
+          const config = this.mediaConfigs.find(c => c.mediaType === mediaType);
+          if (config) {
+            this.cesdk.engine.block.setString(fillId, config.propertyPath, cloudinaryUrl);
+            console.log(`Replaced unmapped blob URL with Cloudinary URL: ${cloudinaryUrl}`);
+          }
+        }
+        return;
+      }
+
+      // Check if already pending - wait for it to complete
+      if (this.pendingUploads.has(blobUrl)) {
+        await this.waitForUpload(blobUrl);
+        const cloudinaryUrl = this.uploadedFiles.get(blobUrl);
+        if (cloudinaryUrl) {
+          const config = this.mediaConfigs.find(c => c.mediaType === mediaType);
+          if (config) {
+            this.cesdk.engine.block.setString(fillId, config.propertyPath, cloudinaryUrl);
+            console.log(`Replaced unmapped blob URL with Cloudinary URL: ${cloudinaryUrl}`);
+          }
+        }
+        return;
+      }
+
+      // Try to fetch the blob - if it fails, the blob URL is stale/invalid
+      let blob: Blob;
+      try {
+        const response = await fetch(blobUrl);
+        if (!response.ok) {
+          throw new Error(`Failed to fetch blob: ${response.statusText}`);
+        }
+        blob = await response.blob();
+      } catch (error) {
+        console.error(`Cannot fetch blob URL (may be stale): ${blobUrl}`, error);
+        // If we can't fetch the blob, we can't upload it
+        // This might happen if the blob URL is from a previous session
+        throw new Error(`Blob URL is no longer valid: ${blobUrl}. Please re-upload the media file.`);
+      }
+      
+      // Get media config for default extension
+      const config = this.mediaConfigs.find(c => c.mediaType === mediaType);
+      const defaultExtension = config?.defaultExtension || 'mp4';
+      const extension = blob.type.split('/')[1] || defaultExtension;
+      
+      // Convert blob to File
+      const fileName = `${mediaType}_${Date.now()}.${extension}`;
+      const file = new File([blob], fileName, { type: blob.type });
+      
+      // Store as pending - this will be tracked by the upload service
+      this.pendingUploads.set(blobUrl, file);
+      this.pendingUploads$.set(new Map(this.pendingUploads));
+      
+      // Track this as the current upload so updateSceneWithCloudinaryUrls can match it correctly
+      this.currentUploadBlobUrl = blobUrl;
+      
+      // Upload to Cloudinary - this will trigger the effect that calls updateSceneWithCloudinaryUrls
+      this.uploaderService.uploadFiles([file], 'VideoEditor');
+      
+      // Wait for upload to complete and be processed
+      await this.waitForUpload(blobUrl);
+      
+      // Clear current upload tracking
+      this.currentUploadBlobUrl = null;
+      
+      // Replace blob URL with Cloudinary URL
+      const cloudinaryUrl = this.uploadedFiles.get(blobUrl);
+      if (cloudinaryUrl && config) {
+        this.cesdk.engine.block.setString(fillId, config.propertyPath, cloudinaryUrl);
+        console.log(`Replaced unmapped blob URL with Cloudinary URL: ${cloudinaryUrl}`);
+      } else {
+        console.warn(`Cloudinary URL not available for blob: ${blobUrl}`);
+      }
+    } catch (error) {
+      console.error(`Error uploading and replacing blob URL:`, error);
+      throw error;
+    }
+  }
+
+  /**
+   * Waits for a blob URL to be uploaded to Cloudinary and added to uploadedFiles map
+   * The upload service's effect will call updateSceneWithCloudinaryUrls which populates uploadedFiles
+   */
+  private async waitForUpload(blobUrl: string, maxWaitTime: number = 15000): Promise<void> {
+    const startTime = Date.now();
+    const checkInterval = 100; // Check every 100ms
+
+    while (!this.uploadedFiles.has(blobUrl)) {
+      if (Date.now() - startTime > maxWaitTime) {
+        throw new Error(`Timeout waiting for upload of blob: ${blobUrl}`);
+      }
+      await new Promise(resolve => setTimeout(resolve, checkInterval));
     }
   }
 }
