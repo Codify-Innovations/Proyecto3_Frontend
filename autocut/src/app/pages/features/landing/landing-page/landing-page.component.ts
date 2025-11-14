@@ -33,31 +33,31 @@ export class LandingPageComponent {
       name: 'Alexander Lopez',
       role: 'TEAM.ROLES.TECH_LEAD',
       image:
-        'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=600&auto=format',
+        'assets/img/login/alex.jpeg',
     },
     {
       name: 'Emerson Hidalgo',
       role: 'TEAM.ROLES.PROJECT_MANAGER',
       image:
-        'https://images.unsplash.com/photo-1531590878845-12627191e687?w=600&auto=format',
+        'assets/img/login/emerson.jpeg',
     },
     {
       name: 'Luis Diego Dien',
       role: 'TEAM.ROLES.DEVOPS',
       image:
-        'https://images.unsplash.com/photo-1488508872907-592763824245?w=600&auto=format',
+        'assets/img/login/luis.jpeg',
     },
     {
       name: 'Sebastian Zamora',
       role: 'TEAM.ROLES.QA_TESTER',
       image:
-        'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=600&auto=format',
+        'assets/img/login/sebas.jpeg',
     },
     {
       name: 'Gabriel Bryan',
       role: 'TEAM.ROLES.QA_TESTER',
       image:
-        'https://images.unsplash.com/photo-1499470932971-a90681ce8530?w=600&auto=format',
+        'assets/img/login/gabriel.jpeg',
     },
   ];
 

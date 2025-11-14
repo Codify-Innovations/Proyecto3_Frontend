@@ -3,19 +3,28 @@ import axios from 'axios';
 
 @Injectable({ providedIn: 'root' })
 export class IaService {
-    private apiUrl = 'http://127.0.0.1:8000/api/video'; // tu microservicio IA local
+  private apiUrl = 'http://127.0.0.1:8000/api/video';
 
-    async generateVideo(imageUrls: string[], style: string, duration: number): Promise<any> {
-        try {
-          const response = await axios.post(`${this.apiUrl}/generate-multiple`, {
-            image_urls: imageUrls,
-            style: style,
-            duration: duration, // ✅ enviar duración
-          });
-          return response.data;
-        } catch (error) {
-          console.error('❌ Error generando video con IA:', error);
-          throw error;
-        }
+  async generateVideo(
+    urls: string[],
+    style: string,
+    duration: number,
+    musicUrl?: string
+  ): Promise<any> {
+    try {
+      const response = await axios.post(`${this.apiUrl}/generate-edit`, {
+        image_urls: urls,
+        video_urls: [],
+        music_url: musicUrl ?? undefined,
+        style,
+        duration
+      });
+
+      return response.data;
+
+    } catch (error) {
+      console.error('❌ Error generando video PRO:', error);
+      throw error;
     }
+  }
 }

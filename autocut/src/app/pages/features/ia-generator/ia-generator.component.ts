@@ -12,19 +12,17 @@ import { UploaderService } from '../../../core/services/cloudinary/uploader.serv
   templateUrl: './ia-generator.component.html',
 })
 export class IaGeneratorComponent {
-  // 🔧 Servicios
   alertService = inject(AlertService);
   iaService = inject(IaService);
   uploaderService = inject(UploaderService);
 
-  // 🎛️ Variables principales
   URLs: string[] = [];
-  selectedStyle = 'dynamic';
-  durationPerImage = 3; // duración predeterminada en segundos
+  selectedStyle: string = 'showcase';
+  durationPerImage: number = 3;
   videoUrl?: string;
+  musicUrl: string | null = null;
   loading = false;
 
-  // 💬 Texto dinámico de duración (para slider)
   get durationLabel(): string {
     if (this.durationPerImage <= 2) return 'Rápido ⚡';
     if (this.durationPerImage <= 4) return 'Normal 🎞️';
@@ -33,7 +31,6 @@ export class IaGeneratorComponent {
   }
 
   constructor() {
-    // Si el uploader sube imágenes automáticamente
     effect(() => {
       if (this.uploaderService.uploaded$()) {
         const urls = this.uploaderService.urlSignal$();
@@ -45,18 +42,13 @@ export class IaGeneratorComponent {
     });
   }
 
-  // 🎬 Generar video con IA
   async generateVideo() {
     console.log('🚀 Ejecutando generateVideo()');
-    console.log('URLs:', this.URLs);
-    console.log('Estilo:', this.selectedStyle);
-    console.log('Duración por imagen:', this.durationPerImage);
 
-    // ⚠️ Validación básica
     if (this.URLs.length === 0) {
       this.alertService.displayAlert(
         'error',
-        '⚠️ No hay imágenes cargadas para generar el video.',
+        '⚠️ No hay archivos cargados.',
         'center',
         'top',
         ['error-snackbar']
@@ -71,13 +63,14 @@ export class IaGeneratorComponent {
       const result = await this.iaService.generateVideo(
         this.URLs,
         this.selectedStyle,
-        this.durationPerImage
+        this.durationPerImage,
+        this.musicUrl ?? undefined
       );
 
       console.log('✅ Respuesta backend:', result);
 
-      if (result && (result.video_url || result.cloudinary_url)) {
-        this.videoUrl = result.video_url || result.cloudinary_url;
+      if (result?.video_url) {
+        this.videoUrl = result.video_url;
         this.alertService.displayAlert(
           'success',
           '🎬 Video generado correctamente.',
@@ -86,13 +79,14 @@ export class IaGeneratorComponent {
           ['success-snackbar']
         );
       } else {
-        throw new Error('El backend no devolvió una URL válida.');
+        throw new Error('Respuesta incompleta del backend.');
       }
+
     } catch (error) {
-      console.error('❌ Error al generar el video:', error);
+      console.error('❌ Error al generar video:', error);
       this.alertService.displayAlert(
         'error',
-        'Ocurrió un error al generar el video. Intenta nuevamente.',
+        'Ocurrió un error al generar el video.',
         'center',
         'top',
         ['error-snackbar']
@@ -100,17 +94,5 @@ export class IaGeneratorComponent {
     } finally {
       this.loading = false;
     }
-  }
-
-  // 💾 Guardar el video
-  saveVideo(videoUrl: string) {
-    console.log('💾 Guardar video:', videoUrl);
-    this.alertService.displayAlert(
-      'success',
-      '📁 Video guardado en tu cuenta correctamente.',
-      'center',
-      'top',
-      ['success-snackbar']
-    );
   }
 }

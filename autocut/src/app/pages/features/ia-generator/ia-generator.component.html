@@ -1,85 +1,104 @@
 <div class="min-h-screen bg-gray-50 flex flex-col items-center py-10 px-6">
-    <!-- 🔹 Título -->
-    <h1 class="text-4xl font-extrabold text-[#880e0e] mb-4 tracking-tight">
-      🎥 AI Video Generator
-    </h1>
-    <p class="text-gray-600 text-center max-w-2xl mb-10 leading-relaxed">
-      Convierte tus imágenes y clips en un video con estilo cinematográfico, dinámico o minimalista.
-      Ajusta la duración por imagen y deja que la inteligencia artificial haga el resto.  
-    </p>
-  
-    <!-- 🔸 Contenedor principal -->
-    <div
-      class="bg-white w-full max-w-2xl rounded-2xl shadow-lg border border-gray-200 p-8 transition-all duration-300 hover:shadow-xl">
-  
-      <!-- 🧠 Instrucciones -->
-      <div class="bg-[#FFF8F8] border border-[#F4C2C2] rounded-lg p-5 mb-6 text-sm text-gray-700">
-        <div class="flex items-start space-x-3">
-          <span class="material-icons text-[#B71C1C] mt-0.5">info</span>
-          <div>
-            <p class="font-semibold text-gray-900 mb-1">Cómo funciona:</p>
-            <ul class="list-disc ml-5 space-y-1">
-              <li>Ve a <b>Dashboard</b> para agregar los archivos que quieras utilizar.</li>
-              <li>Luego de haber subido tus archivos selecciona un <b>estilo visual</b> para tu video.</li>
-              <li>Elige cuántos <b>segundos dura cada imagen</b> en pantalla.</li>
-              <li>Presiona <b>"Generar video con IA"</b> y espera mientras se procesa.</li>
-            </ul>
-          </div>
+  <!-- 🔹 Título -->
+  <h1 class="text-4xl font-extrabold text-[#880e0e] mb-4 tracking-tight">
+    🎥 AI Video Generator
+  </h1>
+  <p class="text-gray-600 text-center max-w-2xl mb-10 leading-relaxed">
+    Convierte tus imágenes y clips en un video con estilo cinematográfico, dinámico o minimalista.
+    Ajusta la duración por imagen y deja que la inteligencia artificial haga el resto.  
+  </p>
+
+  <!-- 🔸 Contenedor principal -->
+  <div
+    class="bg-white w-full max-w-2xl rounded-2xl shadow-lg border border-gray-200 p-8 transition-all duration-300 hover:shadow-xl">
+
+    <!-- 🧠 Instrucciones -->
+    <div class="bg-[#FFF8F8] border border-[#F4C2C2] rounded-lg p-5 mb-6 text-sm text-gray-700">
+      <div class="flex items-start space-x-3">
+        <span class="material-icons text-[#B71C1C] mt-0.5">info</span>
+        <div>
+          <p class="font-semibold text-gray-900 mb-1">Cómo funciona:</p>
+          <ul class="list-disc ml-5 space-y-1">
+            <li>Ve a <b>Dashboard</b> para agregar los archivos que quieras utilizar.</li>
+            <li>Luego de haber subido tus archivos selecciona un <b>estilo visual</b> para tu video.</li>
+            <li>Elige cuántos <b>segundos dura cada imagen</b> en pantalla.</li>
+            <li>Presiona <b>"Generar video con IA"</b> y espera mientras se procesa.</li>
+          </ul>
         </div>
       </div>
-  
-      <!-- 🎬 Selector de estilo -->
-      <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
-        <label class="text-gray-800 font-semibold mb-2 md:mb-0">Estilo del video:</label>
-        <select
-          [(ngModel)]="selectedStyle"
-          class="w-full md:w-1/2 border border-gray-300 rounded-lg px-4 py-2 text-gray-700 text-sm focus:ring-2 focus:ring-[#880e0e]/30 outline-none transition">
-          <option value="dynamic">🎬 Dinámico — energía y movimiento</option>
-          <option value="cinematic">🎥 Cinematográfico — tonos cálidos y barras negras</option>
-          <option value="minimal">✨ Minimalista — blanco y negro con transiciones suaves</option>
-        </select>
-      </div>
-  
-      <!-- ⏱️ Selector de duración -->
-      <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
-        <label class="text-gray-800 font-semibold mb-2 md:mb-0">
-          Duración por imagen (segundos):
-        </label>
-        <select
-          [(ngModel)]="durationPerImage"
-          class="w-full md:w-1/2 border border-gray-300 rounded-lg px-4 py-2 text-gray-700 text-sm focus:ring-2 focus:ring-[#880e0e]/30 outline-none transition">
-          <option value="1">1s — Rápido</option>
-          <option value="3">3s — Normal</option>
-          <option value="5">5s — Lento</option>
-          <option value="8">8s — Muy Lento</option>
-        </select>
-      </div>
-  
-      <!-- 🔘 Botón de generación -->
-      <div class="flex justify-center">
-        <button
-          type="button"
-          class="px-8 py-3 bg-[#880e0e] text-white font-semibold rounded-lg shadow-md hover:bg-[#B71C1C] hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
-          (click)="generateVideo()"
-          [disabled]="loading || uploaderService.isUploading()">
-          {{ loading ? 'Procesando video...' : '🎬 Generar video con IA' }}
-        </button>
-      </div>
-  
-      <!-- ⌛ Indicador de carga -->
-      <div *ngIf="loading" class="mt-4 text-center text-gray-500 text-sm animate-pulse">
-        Generando video, esto puede tardar unos segundos...
-      </div>
-  
-      <!-- ✅ Vista previa -->
-      <div *ngIf="videoUrl" class="mt-10 text-center">
-        <h3 class="text-lg font-semibold mb-3 text-gray-800">Vista previa del video generado</h3>
-        <video
-          [src]="videoUrl"
-          controls
-          class="rounded-xl shadow-lg w-full max-w-2xl mx-auto border border-gray-200">
-        </video>
-      </div>
+    </div>
+
+    <!-- 🎬 Selector de estilo -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+      <label class="text-gray-800 font-semibold mb-2 md:mb-0">Estilo del video:</label>
+      <select
+      [(ngModel)]="selectedStyle"
+      class="w-full md:w-1/2 border border-gray-300 rounded-lg px-4 py-2 text-gray-700 text-sm focus:ring-2 focus:ring-[#880e0e]/30 outline-none transition">
+    
+      <option value="aggressive">🔥 Aggressive / NFS — velocidad, zoom y energía</option>
+      <option value="cinematic">🎥 Cinematic — barras negras y color cálido</option>
+      <option value="showcase">🚗 Showcase Pro — movimiento suave y vibrante</option>
+      <option value="tiktok">⚡ TikTok Flash Cuts — cortes rápidos y flashes</option>
+      <option value="amv">🎞️ Anime AMV — zoom + shake + flashes</option>
+      <option value="trap">🌑 Urban Trap — oscuro, contraste, vibración baja</option>
+      <option value="minimal">✨ Minimal — blanco y negro, slow, elegante</option>
+      <option value="neon">🌈 Neon Hyperpop — glow, aberración, colores fuertes</option>
+    </select>
+    <!-- 🎵 Música opcional -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-6">
+      <label class="text-gray-800 font-semibold mb-2 md:mb-0">
+        Música (opcional):
+      </label>
+    
+      <input
+        type="text"
+        [(ngModel)]="musicUrl"
+        placeholder="URL de música (opcional)"
+        class="w-full md:w-1/2 border border-gray-300 rounded-lg px-4 py-2 text-gray-700 text-sm focus:ring-2 focus:ring-[#880e0e]/30 outline-none transition"
+      />
+    </div>
+    
+    </div>
+
+    <!-- ⏱️ Selector de duración -->
+    <div class="flex flex-col md:flex-row md:items-center md:justify-between mb-8">
+      <label class="text-gray-800 font-semibold mb-2 md:mb-0">
+        Duración por imagen (segundos):
+      </label>
+      <select
+        [(ngModel)]="durationPerImage"
+        class="w-full md:w-1/2 border border-gray-300 rounded-lg px-4 py-2 text-gray-700 text-sm focus:ring-2 focus:ring-[#880e0e]/30 outline-none transition">
+        <option value="1">1s — Rápido</option>
+        <option value="3">3s — Normal</option>
+        <option value="5">5s — Lento</option>
+        <option value="8">8s — Muy Lento</option>
+      </select>
+    </div>
+
+    <!-- 🔘 Botón de generación -->
+    <div class="flex justify-center">
+      <button
+        type="button"
+        class="px-8 py-3 bg-[#880e0e] text-white font-semibold rounded-lg shadow-md hover:bg-[#B71C1C] hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+        (click)="generateVideo()"
+        [disabled]="loading || uploaderService.isUploading()">
+        {{ loading ? 'Procesando video...' : '🎬 Generar video con IA' }}
+      </button>
+    </div>
+
+    <!-- ⌛ Indicador de carga -->
+    <div *ngIf="loading" class="mt-4 text-center text-gray-500 text-sm animate-pulse">
+      Generando video, esto puede tardar unos segundos...
+    </div>
+
+    <!-- ✅ Vista previa -->
+    <div *ngIf="videoUrl" class="mt-10 text-center">
+      <h3 class="text-lg font-semibold mb-3 text-gray-800">Vista previa del video generado</h3>
+      <video
+        [src]="videoUrl"
+        controls
+        class="rounded-xl shadow-lg w-full max-w-2xl mx-auto border border-gray-200">
+      </video>
     </div>
   </div>
-  
+</div>
