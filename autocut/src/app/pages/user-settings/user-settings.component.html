@@ -37,10 +37,21 @@
           />
         </ng-template>
 
+  
         <button
           type="button"
           (click)="editAvatar()"
-          class="bg-[#880E0E] text-white text-xs font-medium px-3 py-1.5 rounded-md hover:bg-[#B71C1C] transition"
+          class="px-6 py-2 text-white text-sm font-medium
+                 bg-[#880e0e] !bg-[#880e0e]
+                 rounded-lg !rounded-lg
+                 shadow-sm !shadow-sm
+                 hover:!bg-[#b94c4c] hover:!shadow-md
+                 transition-all duration-200"
+          style="
+            background-color:#880e0e !important;
+            border-radius:0.5rem !important;
+            box-shadow:0 1px 3px #00000020 !important;
+          "
         >
           Cambiar avatar
         </button>
@@ -135,7 +146,17 @@
         <button
           type="submit"
           [disabled]="isLoading"
-          class="w-full bg-[#1C1C1C] text-white font-bold rounded-md py-3 hover:bg-[#424242] transition-all duration-200 shadow-sm hover:shadow-md disabled:opacity-70"
+          class="w-full text-white font-bold py-3
+                 bg-[#880e0e] !bg-[#880e0e]
+                 rounded-lg !rounded-lg
+                 shadow-sm !shadow-sm
+                 hover:!bg-[#b94c4c] hover:!shadow-md
+                 transition-all duration-200 disabled:opacity-70"
+          style="
+            background-color:#880e0e !important;
+            border-radius:0.5rem !important;
+            box-shadow:0 1px 3px #00000020 !important;
+          "
         >
           {{ isLoading ? "Guardando..." : "Guardar Cambios" }}
         </button>
@@ -143,3 +164,5 @@
     </div>
   </form>
 </div>
+
+
