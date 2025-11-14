@@ -62,15 +62,6 @@ html, body {
 }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
-// .error-snackbar .mdc-snackbar__surface{
-//   background-color: rgb(197, 49, 49) !important;
-// }
-
-// .success-snackbar .mdc-snackbar__surface{
-//   background-color: rgb(54, 197, 49) !important;
-// }
-
-
 .page-wrapper.compact-wrapper .page-body-wrapper div.sidebar-wrapper .sidebar-main .sidebar-links .simplebar-wrapper .simplebar-mask .simplebar-content-wrapper .simplebar-content > li .sidebar-link {
   text-decoration: none;
 }
@@ -87,11 +78,7 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   margin-bottom: 30px;
 }
 
-/* ====================================================== */
-/*      SNACKBARS PERSONALIZADOS TIPO "CARD PREMIUM"      */
-/* ====================================================== */
 
-/* Remover estilos feos por defecto de Angular Material */
 .mdc-snackbar__surface {
   background: transparent !important;
   box-shadow: none !important;
@@ -99,7 +86,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   border-radius: 0 !important;
 }
 
-/* Contenedor personalizado */
 .success-snackbar,
 .error-snackbar,
 .warning-snackbar,
@@ -123,9 +109,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   font-family: "Roboto", sans-serif;
 }
 
-/* ====================================================== */
-/*                     PALETA DE COLORES                  */
-/* ====================================================== */
 
 /* SUCCESS */
 .success-snackbar .mdc-snackbar__surface {
@@ -143,21 +126,17 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 
 /* WARNING */
 .warning-snackbar .mdc-snackbar__surface {
-  background: #fbeaea !important;      /* Pastel vino */
-  border-color: #B71C1C !important;    /* Advertencia */
+  background: #fbeaea !important;     
+  border-color: #B71C1C !important;   
   color: #880e0e !important;
 }
 
 /* INFO */
 .info-snackbar .mdc-snackbar__surface {
-  background: #eeeeee !important;      /* Gris muy claro */
-  border-color: #424242 !important;    /* Gris oscuro */
+  background: #eeeeee !important;       
+  border-color: #424242 !important;    
   color: #212121 !important;
 }
-
-/* ====================================================== */
-/*                    ICONOS CON ::before                 */
-/* ====================================================== */
 
 .mdc-snackbar__label {
   display: flex !important;
@@ -181,37 +160,29 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
   font-weight: bold;
 }
 
-/* Éxito */
 .success-snackbar .mdc-snackbar__label::before {
   background: #dcedc8;
   content: "✔";
   color: #8BC34A;
 }
 
-/* Error */
 .error-snackbar .mdc-snackbar__label::before {
   background: #ffcdd2;
   content: "✖";
   color: #D32F2F;
 }
 
-/* Warning (advertencia seria) */
 .warning-snackbar .mdc-snackbar__label::before {
   background: #f8d7da;
   content: "!";
   color: #B71C1C;
 }
 
-/* Info */
 .info-snackbar .mdc-snackbar__label::before {
   background: #e0e0e0;
   content: "i";
   color: #424242;
 }
-
-/* ====================================================== */
-/*                     BOTÓN "CERRAR"                     */
-/* ====================================================== */
 
 .mdc-button__ripple {
   display: none !important;
