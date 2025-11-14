@@ -1,29 +1,19 @@
 <div class="min-h-screen flex flex-col items-center bg-[#F5F5F5]">
 
   <div
-    class="relative w-full max-w-5xl bg-white mt-10 rounded-2xl shadow-md p-10 border border-[#E0E0E0] flex flex-col items-center"
-  >
-  
-    <button
-      (click)="goToSettings()"
-      class="absolute top-6 right-6 bg-[#880E0E] text-white text-sm font-medium px-4 py-2 rounded-md hover:bg-[#B71C1C] transition"
-    >
+    class="relative w-full max-w-5xl bg-white mt-10 rounded-2xl shadow-md p-10 border border-[#E0E0E0] flex flex-col items-center">
+
+    <button (click)="goToSettings()"
+      class="absolute top-6 right-6 bg-[#880E0E] text-white text-sm font-medium px-4 py-2 rounded-md hover:bg-[#B71C1C] transition">
       Editar Perfil
     </button>
 
 
-    <app-user-car-viewer
-      *ngIf="userCar"
-      [model]="userCar.modelo"
-      [color]="userCar.carroceria"
-      [glassTint]="userCar.vidriosPolarizados"
-      [interior]="userCar.interior"
-      [frontLight]="userCar.lucesFront"
-      [wheelStyle]="userCar.rines"
-      class="mb-6"
-    ></app-user-car-viewer>
+    <app-user-car-viewer *ngIf="userCar" [model]="userCar.modelo" [color]="userCar.carroceria"
+      [glassTint]="userCar.vidriosPolarizados" [interior]="userCar.interior" [frontLight]="userCar.lucesFront"
+      [wheelStyle]="userCar.rines" class="mb-6"></app-user-car-viewer>
 
-    
+
     <h2 class="text-3xl font-bold text-[#1C1C1C] mb-1">
       {{ '@' + (user?.name || 'Usuario') }}
     </h2>
@@ -32,22 +22,20 @@
     </p>
 
     <div class="flex items-center gap-2 mt-2">
-      <span
-        class="inline-block w-2 h-2 rounded-full"
-        [ngClass]="user?.visibility === 'private' ? 'bg-red-500' : 'bg-green-500'"
-      ></span>
+      <span class="inline-block w-2 h-2 rounded-full"
+        [ngClass]="user?.visibility === 'private' ? 'bg-red-500' : 'bg-green-500'"></span>
       <span class="text-sm text-[#757575] font-medium">
         {{ user?.visibility === 'private' ? 'Perfil privado' : 'Perfil público' }}
       </span>
     </div>
 
-  
+
     <p class="text-center text-[#757575] max-w-2xl mt-4">
       {{ user?.bio || 'Aún no has agregado una biografía. Personaliza tu perfil en Configuración.' }}
     </p>
   </div>
 
-  <div class="w-full max-w-6xl mt-14 px-4 flex flex-col items-center">
+  <!-- <div class="w-full max-w-6xl mt-14 px-4 flex flex-col items-center">
     <h3 class="text-2xl font-semibold text-[#1C1C1C] mb-6 text-center">
       Badges
     </h3>
@@ -64,17 +52,32 @@
         </p>
       </div>
     </div>
-  </div>
+  </div> -->
+  <section class="mt-10 w-full">
+
+    <h2 class="text-2xl font-bold text-gray-800 mb-4">Mis Logros</h2>
+
+    <div *ngIf="loading" class="text-gray-500 py-4">
+      Cargando logros...
+    </div>
+
+    <div *ngIf="error" class="text-red-600 py-4">
+      {{ error }}
+    </div>
+
+    <app-achievement-list *ngIf="!loading && !error" [logros]="achievements">
+    </app-achievement-list>
+
+  </section>
+
 
 
   <div class="w-full max-w-6xl mt-14 mb-10 px-4">
     <div class="flex items-center justify-center gap-2 mb-6">
       <h3 class="text-2xl font-semibold text-[#1C1C1C]">Your Collection</h3>
-      <button
-        (click)="identifyCar()"
+      <button (click)="identifyCar()"
         class="text-[#007BFF] text-3xl font-bold leading-none hover:text-[#0056b3] transition"
-        title="Agregar nueva colección"
-      >
+        title="Agregar nueva colección">
         +
       </button>
     </div>
@@ -82,17 +85,9 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
       <div
         class="border border-[#E0E0E0] rounded-xl bg-white shadow-sm hover:shadow-md transition p-4 flex flex-col items-center"
-        *ngFor="let car of cars"
-      >
-        <div
-          class="w-48 h-36 bg-[#F5F5F5] rounded-md mb-4 flex items-center justify-center"
-        >
-          <img
-            *ngIf="car.image"
-            [src]="car.image"
-            alt="Car"
-            class="w-full h-full object-cover rounded-md"
-          />
+        *ngFor="let car of cars">
+        <div class="w-48 h-36 bg-[#F5F5F5] rounded-md mb-4 flex items-center justify-center">
+          <img *ngIf="car.image" [src]="car.image" alt="Car" class="w-full h-full object-cover rounded-md" />
           <span *ngIf="!car.image" class="text-gray-400 text-sm">
             Imagen del modelo
           </span>
@@ -104,4 +99,3 @@
     </div>
   </div>
 </div>
-

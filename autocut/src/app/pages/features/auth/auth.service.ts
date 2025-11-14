@@ -1,10 +1,15 @@
-import { inject, Injectable } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { OAuthService } from 'angular-oauth2-oidc';
 import { jwtDecode } from 'jwt-decode';
 import { Observable, tap } from 'rxjs';
 import { googleAuthConfig } from '../../../core/config/auth.config';
-import { IAuthority, ILoginResponse, IRoleType, IUser } from '../../../core/interfaces';
+import {
+  IAuthority,
+  ILoginResponse,
+  IRoleType,
+  IUser,
+} from '../../../core/interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -16,6 +21,8 @@ export class AuthService {
   private accessToken!: string;
   private expiresIn!: number;
   private user: IUser = { email: '', authorities: [] };
+
+  public currentUser = signal<IUser | null>(null);
 
   constructor() {
     // Solo configuración inicial, NO HTTP
@@ -36,12 +43,16 @@ export class AuthService {
   // ================= AUTENTICACIÓN =========================
   // ==========================================================
 
-  public login(credentials: { email: string; password: string }): Observable<ILoginResponse> {
+  public login(credentials: {
+    email: string;
+    password: string;
+  }): Observable<ILoginResponse> {
     return this.http.post<ILoginResponse>('auth/login', credentials).pipe(
       tap((response) => {
         this.accessToken = response.token;
         this.expiresIn = response.expiresIn;
         this.user = response.authUser;
+        this.currentUser.set(this.user);
         this.save();
       })
     );
@@ -53,6 +64,7 @@ export class AuthService {
         this.accessToken = response.token;
         this.expiresIn = response.expiresIn;
         this.user = response.authUser;
+        this.currentUser.set(this.user);
         this.save();
       })
     );
@@ -96,7 +108,7 @@ export class AuthService {
     localStorage.removeItem('access_token');
     localStorage.removeItem('expiresIn');
     localStorage.removeItem('auth_user');
-
+    this.currentUser.set(null);
     try {
       this.oauthService.logOut();
     } catch (e) {
@@ -110,8 +122,10 @@ export class AuthService {
 
   public save(): void {
     localStorage.setItem('auth_user', JSON.stringify(this.user));
-    if (this.accessToken) localStorage.setItem('access_token', JSON.stringify(this.accessToken));
-    if (this.expiresIn) localStorage.setItem('expiresIn', JSON.stringify(this.expiresIn));
+    if (this.accessToken)
+      localStorage.setItem('access_token', JSON.stringify(this.accessToken));
+    if (this.expiresIn)
+      localStorage.setItem('expiresIn', JSON.stringify(this.expiresIn));
   }
 
   private load(): void {
@@ -122,7 +136,10 @@ export class AuthService {
     if (exp) this.expiresIn = JSON.parse(exp);
 
     const user = localStorage.getItem('auth_user');
-    if (user) this.user = JSON.parse(user);
+    if (user) {
+      this.user = JSON.parse(user);
+      this.currentUser.set(this.user);
+    }
   }
 
   public getUser(): IUser | undefined {
@@ -150,7 +167,6 @@ export class AuthService {
     }
   }
 
-
   // ==========================================================
   // ================= ROLES ================================
   // ==========================================================
@@ -160,7 +176,11 @@ export class AuthService {
   }
 
   public isSuperAdmin(): boolean {
-    return this.user.authorities?.some((a) => a.authority === IRoleType.superAdmin) ?? false;
+    return (
+      this.user.authorities?.some(
+        (a) => a.authority === IRoleType.superAdmin
+      ) ?? false
+    );
   }
 
   public hasAnyRole(roles: any[]): boolean {
@@ -187,7 +207,9 @@ export class AuthService {
       userAuthorities?.some((ua) => ua.authority === ra)
     );
     const isAdmin = userAuthorities?.some(
-      (ua) => ua.authority === IRoleType.admin || ua.authority === IRoleType.superAdmin
+      (ua) =>
+        ua.authority === IRoleType.admin ||
+        ua.authority === IRoleType.superAdmin
     );
     return hasRole && !!isAdmin;
   }

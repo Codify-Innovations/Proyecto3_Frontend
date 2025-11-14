@@ -1,0 +1,20 @@
+<div class="w-full mt-6">
+  
+  <!-- Sin logros -->
+  <div *ngIf="logros.length === 0" class="text-center text-gray-500 py-10">
+    Aún no has desbloqueado ningún logro.
+  </div>
+
+  <!-- Lista de logros -->
+  <div
+    *ngIf="logros.length > 0"
+    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 mt-4">
+
+    <app-achievement-card
+      *ngFor="let item of logros"
+      [logro]="item.logro"
+      [fechaDesbloqueo]="item.fechaDesbloqueo">
+    </app-achievement-card>
+
+  </div>
+</div>
