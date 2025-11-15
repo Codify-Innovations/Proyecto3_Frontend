@@ -5,61 +5,130 @@ import { AlertService } from '../../../core/services/alert.service';
 import { IaService } from '../../../core/services/ia/ia.service';
 import { UploaderService } from '../../../core/services/cloudinary/uploader.service';
 
+import { FileUploaderComponent } from '../../../components/shared/file-uploader/file-uploader.component';
+
 @Component({
   selector: 'app-ia-generator',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, FileUploaderComponent],
   templateUrl: './ia-generator.component.html',
 })
 export class IaGeneratorComponent {
-  // 🔧 Servicios
+
   alertService = inject(AlertService);
   iaService = inject(IaService);
   uploaderService = inject(UploaderService);
 
-  // 🎛️ Variables principales
+  files: File[] = [];
+  fileNames: string[] = [];
   URLs: string[] = [];
-  selectedStyle = 'dynamic';
-  durationPerImage = 3; // duración predeterminada en segundos
+
+  selectedStyle = 'showcase';
+  durationPerImage = 3;
+  durationError: string | null = null;
+
+  musicUrl: string | null = null;
+
   videoUrl?: string;
   loading = false;
 
-  // 💬 Texto dinámico de duración (para slider)
-  get durationLabel(): string {
-    if (this.durationPerImage <= 2) return 'Rápido ⚡';
-    if (this.durationPerImage <= 4) return 'Normal 🎞️';
-    if (this.durationPerImage <= 7) return 'Lento 🎬';
-    return 'Muy lento 💤';
-  }
-
   constructor() {
-    // Si el uploader sube imágenes automáticamente
     effect(() => {
-      if (this.uploaderService.uploaded$()) {
-        const urls = this.uploaderService.urlSignal$();
-        if (urls?.length > 0) {
-          this.URLs = urls;
-          console.log('📸 Archivos cargados desde Cloudinary:', this.URLs);
-        }
+      const urls = this.uploaderService.urlSignal$();
+      const uploaded = this.uploaderService.uploaded$();
+
+      if (uploaded && urls && urls.length > 0) {
+        console.log("📸 URLs recibidas desde Cloudinary:", urls);
+        this.URLs = [...urls];
       }
     });
   }
 
-  // 🎬 Generar video con IA
-  async generateVideo() {
-    console.log('🚀 Ejecutando generateVideo()');
-    console.log('URLs:', this.URLs);
-    console.log('Estilo:', this.selectedStyle);
-    console.log('Duración por imagen:', this.durationPerImage);
+  // ⭐ VALIDACIÓN DE DURACIÓN (1–99)
+  validateDuration() {
+    if (this.durationPerImage === null || this.durationPerImage === undefined) {
+      this.durationError = "Debes ingresar un número entre 1 y 99.";
+      return;
+    }
+  
+    // Convertir a string para bloquear 3 dígitos
+    const str = String(this.durationPerImage);
+  
+    // ❌ Si tiene más de 2 dígitos → recortar a 2
+    if (str.length > 2) {
+      this.durationPerImage = Number(str.slice(0, 2));
+      this.durationError = "Máximo permitido: 20 segundos.";
+      return;
+    }
+  
+    // Validación numérica real
+    const value = Number(this.durationPerImage);
+  
+    if (value < 1) {
+      this.durationPerImage = 1;
+      this.durationError = "El mínimo permitido es 1 segundo.";
+      return;
+    }
+  
+    if (value > 20) {
+      this.durationPerImage = 20;
+      this.durationError = "El máximo permitido es 20 segundos.";
+      return;
+    }
+  
+    this.durationError = null;
+  }
 
-    // ⚠️ Validación básica
+  // VALIDACIÓN DE FORMATO DE AUDIO 🎵
+  validateMusicUrl() {
+    if (!this.musicUrl || this.musicUrl.trim() === "") return;
+
+    const isValid = /\.(mp3|wav|m4a)$/i.test(this.musicUrl);
+
+    if (!isValid) {
+      this.alertService.displayAlert(
+        'error',
+        '❌ Solo se permiten URLs de música en formato .mp3, .wav o .m4a',
+        'center',
+        'top'
+      );
+      this.musicUrl = ""; 
+    }
+  }
+
+  onFileUpload(files: File[]) {
+    console.log("📥 Archivos seleccionados:", files);
+
+    if (!files || files.length === 0) return;
+
+    this.files = files;
+    this.fileNames = files.map(f => f.name);
+
+    this.uploaderService.uploadFiles(files, 'ai-video-generator');
+  }
+
+  removeFile(index: number) {
+    this.files.splice(index, 1);
+    this.fileNames.splice(index, 1);
+  }
+
+  async generateVideo() {
     if (this.URLs.length === 0) {
       this.alertService.displayAlert(
         'error',
-        '⚠️ No hay imágenes cargadas para generar el video.',
+        '⚠️ Debes subir archivos primero.',
         'center',
-        'top',
-        ['error-snackbar']
+        'top'
+      );
+      return;
+    }
+
+    if (this.durationError) {
+      this.alertService.displayAlert(
+        'error',
+        '⚠️ Corrige la duración antes de continuar.',
+        'center',
+        'top'
       );
       return;
     }
@@ -71,46 +140,38 @@ export class IaGeneratorComponent {
       const result = await this.iaService.generateVideo(
         this.URLs,
         this.selectedStyle,
-        this.durationPerImage
+        this.durationPerImage,
+        this.musicUrl
       );
 
-      console.log('✅ Respuesta backend:', result);
+      console.log("🎯 Respuesta del backend:", result);
 
-      if (result && (result.video_url || result.cloudinary_url)) {
-        this.videoUrl = result.video_url || result.cloudinary_url;
-        this.alertService.displayAlert(
-          'success',
-          '🎬 Video generado correctamente.',
-          'center',
-          'top',
-          ['success-snackbar']
-        );
-      } else {
-        throw new Error('El backend no devolvió una URL válida.');
-      }
+      const url =
+        result?.video_url ||
+        result?.cloudinary_url ||
+        result?.url;
+
+      if (!url) throw new Error("No se recibió URL válida");
+
+      this.videoUrl = url;
+
+      this.alertService.displayAlert(
+        'success',
+        '🎬 Video generado correctamente.',
+        'center',
+        'top'
+      );
+
     } catch (error) {
-      console.error('❌ Error al generar el video:', error);
+      console.error("❌ Error generando video:", error);
       this.alertService.displayAlert(
         'error',
-        'Ocurrió un error al generar el video. Intenta nuevamente.',
+        '❌ Error generando el video.',
         'center',
-        'top',
-        ['error-snackbar']
+        'top'
       );
-    } finally {
-      this.loading = false;
     }
-  }
 
-  // 💾 Guardar el video
-  saveVideo(videoUrl: string) {
-    console.log('💾 Guardar video:', videoUrl);
-    this.alertService.displayAlert(
-      'success',
-      '📁 Video guardado en tu cuenta correctamente.',
-      'center',
-      'top',
-      ['success-snackbar']
-    );
+    this.loading = false;
   }
 }
