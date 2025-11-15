@@ -28,5 +28,10 @@ jobs:
     - name: Install dependencies
       run: npm install
 
+    - name: Setup environment files
+      run: |
+        cp src/environments/environment.example.ts src/environments/environment.ts
+        cp src/environments/environment.development.example.ts src/environments/environment.development.ts
+
     - name: Build
       run: npm run build

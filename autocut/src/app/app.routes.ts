@@ -13,6 +13,11 @@ import { LandingPageComponent } from './pages/features/landing/landing-page/land
 import { LandingAutocutPage } from './pages/features/landing/landing-autocut/page/landing.page';
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
 import { UserSettingsComponent } from './pages/user-settings/user-settings.component';
+import { AnalyzeMediaComponent } from './pages/analyze-media/analyze-media.component'; // 🧠 Nuevo componente IA
+import {IaGeneratorComponent} from './pages/features/ia-generator/ia-generator.component'
+import { VideoEditorComponent } from './pages/features/video-editor/video-editor';
+import { VehicleIdentificationComponent } from './pages/features/ai-identification/vehicle-identification/vehicle-identification.component';
+import { VehicleCustomizerPage } from './pages/features/vehicle-3D/vehicle-customizer/vehicle-customizer.page';
 
 
 export const routes: Routes = [
@@ -58,6 +63,33 @@ export const routes: Routes = [
         pathMatch: 'full',
       },
       {
+        path: 'dashboard',
+        component: DashboardComponent,
+        data: {
+          authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
+          name: 'Dashboard',
+          showInSidebar: true,
+        },
+      },
+      {
+        path: 'analyze-media',
+        component: AnalyzeMediaComponent,
+        data: {
+          authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
+          name: 'Análisis Multimedia IA',
+          showInSidebar: true,
+        },
+      },
+            {
+        path: 'vehicle-3d',
+        component: VehicleCustomizerPage,
+        data: {
+          authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
+                  name: 'Personalizador 3D',
+                  showInSidebar: true,
+        },
+      },
+      {
         path: 'users',
         component: UsersComponent,
         canActivate: [AdminRoleGuard],
@@ -68,15 +100,6 @@ export const routes: Routes = [
         },
       },
       {
-        path: 'dashboard',
-        component: DashboardComponent,
-        data: {
-          authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
-          name: 'Dashboard',
-          showInSidebar: true,
-        },
-      },
-      {
         path: 'profile',
         component: UserProfileComponent,
         data: {
@@ -95,23 +118,39 @@ export const routes: Routes = [
         },
       },
       {
-        path: 'profile',
-        component: UserProfileComponent,
+        path: 'ia/generator',
+        component: IaGeneratorComponent,
         data: {
           authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
-          name: 'Perfil',
-          showInSidebar: true,
-        },
-      },
-      {
-        path: 'profile/settings',
-        component: UserSettingsComponent,
-        data: {
-          authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
-          name: 'Configuración de Perfil',
+          name: 'Generador de Video con IA',
           showInSidebar: false,
         },
       },
+      {
+        path: 'video-editor',
+        component: VideoEditorComponent,
+        data: {
+          authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
+          name: 'Editor de Video',
+          showInSidebar: false,
+        },
+      },
+       {
+        path: 'ai-detection',
+        component: VehicleIdentificationComponent,
+        data: {
+          authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
+          name: 'Identificacion con IA',
+          showInSidebar: true,
+        },
+      },      
     ],
+  },
+  {
+    path: '**',
+    loadComponent: () =>
+      import('./pages/features/auth/not-found/not-found.component').then(
+        (m) => m.NotFoundComponent
+      ),
   },
 ];

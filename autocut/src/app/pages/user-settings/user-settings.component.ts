@@ -4,11 +4,13 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { UserService } from '../../pages/features/users/user.service';
 import { AlertService } from '../../core/services/alert.service';
 import { Router } from '@angular/router';
+import { VehicleCustomizationService } from '../../pages/features/vehicle-3D/services/vehicle-customization.service';
+import { UserCarViewerComponent } from '../../pages/features/vehicle-3D/user-car-viewer/user-car-viewer.component';
 
 @Component({
   selector: 'app-user-settings',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, UserCarViewerComponent],
   templateUrl: './user-settings.component.html',
 })
 export class UserSettingsComponent implements OnInit {
@@ -16,11 +18,14 @@ export class UserSettingsComponent implements OnInit {
   private userService = inject(UserService);
   private alertService = inject(AlertService);
   private router = inject(Router);
+  private customizationService = inject(VehicleCustomizationService);
 
   form!: FormGroup;
   isLoading = false;
   avatarUrl = 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
-  private originalPasswordPlaceholder = '********'; // valor fijo para mostrar
+  private originalPasswordPlaceholder = '********';
+
+  userCar: any = null;
 
   ngOnInit(): void {
     this.form = this.fb.group({
@@ -28,11 +33,12 @@ export class UserSettingsComponent implements OnInit {
       lastname: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       bio: ['', [Validators.maxLength(200)]],
-      password: [''], // se llenará dinámicamente
+      password: [''],
       visibility: ['public'],
     });
 
     this.loadUserData();
+    this.loadUserCar();
   }
 
   loadUserData(): void {
@@ -46,7 +52,6 @@ export class UserSettingsComponent implements OnInit {
           email: user.email,
           bio: user.bio || '',
           visibility: user.visibility?.toLowerCase().trim() || 'public',
-          // 👇 Mostramos el placeholder de contraseña
           password: this.originalPasswordPlaceholder,
         });
         this.avatarUrl = user.avatarUrl || this.avatarUrl;
@@ -58,9 +63,19 @@ export class UserSettingsComponent implements OnInit {
       },
     });
   }
+  loadUserCar(): void {
+    this.customizationService.getMyCustomization$().subscribe({
+      next: (res: any) => {
+        this.userCar = res.data || null;
+        console.log('Carro del usuario:', this.userCar);
+      },
+      error: (err) => {
+        console.warn('No se pudo cargar el carro del usuario:', err);
+      },
+    });
+  }
 
   updateUserSettings(): void {
-    // ✅ Validamos normalmente, pero ignoramos la contraseña placeholder
     if (this.form.invalid && !this.isOnlyPasswordInvalid()) {
       this.alertService.error('Por favor, completa los campos correctamente.');
       this.form.markAllAsTouched();
@@ -71,15 +86,8 @@ export class UserSettingsComponent implements OnInit {
 
     const { name, lastname, email, bio, password, visibility } = this.form.value;
 
-    const updatePayload: any = {
-      name,
-      lastname,
-      email,
-      bio,
-      visibility,
-    };
+    const updatePayload: any = { name, lastname, email, bio, visibility };
 
-    // ✅ Solo añadimos password si el usuario realmente la cambió
     if (password && password.trim() !== '' && password !== this.originalPasswordPlaceholder) {
       const isValid = /^(?=.*[A-Z])(?=.*\d).{8,}$/.test(password);
       if (!isValid) {
@@ -92,7 +100,6 @@ export class UserSettingsComponent implements OnInit {
       updatePayload.password = password;
     }
 
-    console.log('🟢 Payload enviado:', updatePayload);
 
     this.userService.updateUserProfile(updatePayload).subscribe({
       next: () => {
@@ -111,14 +118,12 @@ export class UserSettingsComponent implements OnInit {
     });
   }
 
-  /** ✅ Evita error TS y devuelve siempre boolean */
   private isOnlyPasswordInvalid(): boolean {
     const passwordControl = this.form.get('password');
     return !!passwordControl && !!passwordControl.invalid && !passwordControl.value;
   }
 
   editAvatar(): void {
-    this.router.navigate(['/app/profile/avatar']);
+    this.router.navigate(['/app/vehicle-3d']);
   }
 }
-

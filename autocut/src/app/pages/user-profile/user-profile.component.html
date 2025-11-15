@@ -4,19 +4,31 @@
     class="relative w-full max-w-5xl bg-white mt-10 rounded-2xl shadow-md p-10 border border-[#E0E0E0] flex flex-col items-center"
   >
   
-    <button
-      (click)="goToSettings()"
-      class="absolute top-6 right-6 bg-[#880E0E] text-white text-sm font-medium px-4 py-2 rounded-md hover:bg-[#B71C1C] transition"
-    >
-      Editar Perfil
-    </button>
+<button
+  (click)="goToSettings()"
+  class="absolute top-6 right-6
+         px-4 py-2
+         bg-[#880e0e] !bg-[#880e0e]
+         text-white text-lg font-bold
+         rounded-lg !rounded-lg
+         shadow-sm !shadow-sm
+         hover:!bg-[#b94c4c] hover:!shadow-md
+         transition-all duration-200"
+  title="Editar Perfil"
+>
+  <i class="fas fa-pencil"></i>
+</button>
 
-
-    <img
-      [src]="user?.avatarUrl || 'https://cdn-icons-png.flaticon.com/512/1998/1998592.png'"
-      alt="User Avatar"
-      class="w-40 h-40 rounded-full object-cover border-4 border-[#880E0E] shadow-md mb-6"
-    />
+    <app-user-car-viewer
+      *ngIf="userCar"
+      [model]="userCar.modelo"
+      [color]="userCar.carroceria"
+      [glassTint]="userCar.vidriosPolarizados"
+      [interior]="userCar.interior"
+      [frontLight]="userCar.lucesFront"
+      [wheelStyle]="userCar.rines"
+      class="mb-6"
+    ></app-user-car-viewer>
 
     
     <h2 class="text-3xl font-bold text-[#1C1C1C] mb-1">
@@ -66,7 +78,7 @@
     <div class="flex items-center justify-center gap-2 mb-6">
       <h3 class="text-2xl font-semibold text-[#1C1C1C]">Your Collection</h3>
       <button
-        (click)="openModal()"
+        (click)="identifyCar()"
         class="text-[#007BFF] text-3xl font-bold leading-none hover:text-[#0056b3] transition"
         title="Agregar nueva colección"
       >
@@ -96,76 +108,6 @@
         <p class="text-[#757575] text-sm">{{ car.brand }}</p>
         <p class="text-[#757575] text-sm">{{ car.year }}</p>
       </div>
-    </div>
-  </div>
-
-  <div
-    *ngIf="showModal"
-    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-  >
-    <div
-      class="bg-[#F3F3F3] rounded-2xl shadow-lg w-[400px] p-8 relative flex flex-col items-center"
-    >
-      <button
-        (click)="closeModal()"
-        class="absolute top-4 right-4 text-gray-500 hover:text-[#880E0E] text-lg font-bold"
-      >
-        ✕
-      </button>
-
-    
-      <div
-        class="w-full h-40 bg-white border border-[#E0E0E0] rounded-xl flex items-center justify-center mb-6 cursor-pointer hover:border-[#007BFF] transition"
-        (click)="fileInput.click()"
-      >
-        <ng-container *ngIf="!selectedImage">
-          <span class="text-gray-400 text-sm">Seleccionar imagen</span>
-        </ng-container>
-        <ng-container *ngIf="selectedImage">
-          <img
-            [src]="selectedImage"
-            alt="Preview"
-            class="max-h-36 rounded-lg object-cover"
-          />
-        </ng-container>
-        <input
-          #fileInput
-          type="file"
-          accept="image/*"
-          class="hidden"
-          (change)="onFileSelected($event)"
-        />
-      </div>
-
-    
-      <div class="w-full flex flex-col gap-4 mb-6">
-        <input
-          type="text"
-          placeholder="Modelo"
-          [(ngModel)]="newCar.model"
-          class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#007BFF]"
-        />
-        <input
-          type="text"
-          placeholder="Marca"
-          [(ngModel)]="newCar.brand"
-          class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#007BFF]"
-        />
-        <input
-          type="number"
-          placeholder="Año"
-          [(ngModel)]="newCar.year"
-          class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-[#007BFF]"
-        />
-      </div>
-
-      <button
-        (click)="addCar()"
-        class="bg-[#007BFF] hover:bg-[#0056b3] text-white font-medium px-8 py-2 rounded-md flex items-center gap-2 transition"
-      >
-        Add
-        <span class="text-lg">→</span>
-      </button>
     </div>
   </div>
 </div>

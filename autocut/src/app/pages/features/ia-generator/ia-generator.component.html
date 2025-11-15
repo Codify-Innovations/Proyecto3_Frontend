@@ -1,0 +1,121 @@
+<div class="min-h-screen bg-gray-50 flex flex-col items-center py-10 px-6">
+
+  <!-- 🔹 Título principal -->
+  <h1 class="text-4xl font-extrabold text-[#880e0e] mb-4 tracking-tight text-center">
+    AI Video Generator
+  </h1>
+
+  <p class="text-gray-600 text-center max-w-2xl mb-10 leading-relaxed">
+    Sube imágenes o clips, selecciona un estilo y deja que la IA construya un video
+    con efectos, transiciones, color grading y música automática.
+  </p>
+
+  <!-- 🧩 CARD PRINCIPAL -->
+  <div class="bg-white w-full max-w-3xl rounded-2xl shadow-lg border border-gray-200 p-8">
+
+    <!-- ============================ -->
+    <!--     FILE UPLOADER        -->
+    <!-- ============================ -->
+<app-file-uploader (filesSelected)="onFileUpload($event)"></app-file-uploader>
+<div class="... p-6 mb-8">
+    <!-- ============================ -->
+    <!--     SELECTOR DE ESTILOS      -->
+    <!-- ============================ -->
+    <div class="mb-6">
+      <label class="text-gray-800 font-semibold block mb-2">
+        Estilo del video:
+      </label>
+
+      <select
+        [(ngModel)]="selectedStyle"
+        class="w-full border border-gray-300 rounded-lg px-4 py-2 text-gray-700 text-sm focus:ring-2 focus:ring-[#880e0e]/30 outline-none transition">>
+        <option value="cinematic">Cinematic — barras + tonos cálidos</option>
+        <option value="minimal">Minimal — blanco y negro suave</option>
+        <option value="trap">Trap — oscuro y lento</option>
+
+      </select>
+    </div>
+        <!-- ============================ -->
+    <!--      DURACIÓN POR CLIP       -->
+    <!-- ============================ -->
+    <div class="mb-8">
+      <label class="text-gray-800 font-semibold block mb-2">
+        Duración por imagen o video (segundos):
+      </label>
+    
+      <input
+      type="number"
+      [(ngModel)]="durationPerImage"
+      (input)="validateDuration()"
+      min="1"
+      max="20"
+      class="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm text-gray-700 focus:ring-2 focus:ring-[#880e0e]/30 outline-none transition"
+    />
+    
+    
+      <p *ngIf="durationError" class="text-xs text-red-500 mt-1">
+        {{ durationError }}
+      </p>
+    
+      <p class="text-xs text-gray-500 mt-1">
+        Cada clip del video final durará {{ durationPerImage }} segundos.
+      </p>
+    </div>
+
+<!-- ============================ -->
+<!--       SELECTOR DE MÚSICA     -->
+<!-- ============================ -->
+<div class="mb-8">
+  <label class="text-gray-800 font-semibold block mb-2">
+    Música personalizada (opcional):
+  </label>
+
+  <input
+    type="text"
+    [(ngModel)]="musicUrl"
+    placeholder="URL de música (.mp3, .wav, .m4a)"
+    (input)="validateMusicUrl()"
+    class="w-full border border-gray-300 rounded-lg px-4 py-2 text-sm text-gray-700 focus:ring-2 focus:ring-[#880e0e]/30 outline-none transition">
+  
+  <p class="text-xs text-gray-500 mt-1">
+    Solo se permiten formatos: <strong>MP3</strong>, <strong>WAV</strong>, <strong>M4A</strong>.
+  </p>
+</div>
+
+
+    <!-- ============================ -->
+    <!--      BOTÓN GENERAR PRO       -->
+    <!-- ============================ -->
+    <div class="flex justify-center mb-6">
+      <button
+        type="button"
+        class="px-8 py-3 bg-[#880e0e] text-white font-semibold rounded-lg shadow-md hover:bg-[#B71C1C] hover:shadow-lg transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+        (click)="generateVideo()"
+        [disabled]="loading || uploaderService.isUploading()">
+
+        {{ loading ? 'Procesando video...' : '🎬 Generar video con IA' }}
+      </button>
+    </div>
+
+    <!-- Loader -->
+    <div *ngIf="loading" class="text-center text-gray-500 text-sm animate-pulse">
+      Generando tu video, espera…
+    </div>
+
+    <!-- ============================ -->
+    <!--      VISTA PREVIA VIDEO      -->
+    <!-- ============================ -->
+    <div *ngIf="videoUrl" class="mt-10 text-center">
+      <h3 class="text-lg font-semibold mb-3 text-gray-800">
+        Vista previa del video generado
+      </h3>
+
+      <video
+        [src]="videoUrl"
+        controls
+        class="rounded-xl shadow-lg w-full max-w-2xl mx-auto border border-gray-200">
+      </video>
+    </div>
+
+  </div>
+</div>
