@@ -146,4 +146,11 @@ export const routes: Routes = [
       },      
     ],
   },
+  {
+    path: '**',
+    loadComponent: () =>
+      import('./pages/features/auth/not-found/not-found.component').then(
+        (m) => m.NotFoundComponent
+      ),
+  },
 ];
