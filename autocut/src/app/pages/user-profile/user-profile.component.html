@@ -4,13 +4,20 @@
     class="relative w-full max-w-5xl bg-white mt-10 rounded-2xl shadow-md p-10 border border-[#E0E0E0] flex flex-col items-center"
   >
   
-    <button
-      (click)="goToSettings()"
-      class="absolute top-6 right-6 bg-[#880E0E] text-white text-sm font-medium px-4 py-2 rounded-md hover:bg-[#B71C1C] transition"
-    >
-      Editar Perfil
-    </button>
-
+<button
+  (click)="goToSettings()"
+  class="absolute top-6 right-6
+         px-4 py-2
+         bg-[#880e0e] !bg-[#880e0e]
+         text-white text-lg font-bold
+         rounded-lg !rounded-lg
+         shadow-sm !shadow-sm
+         hover:!bg-[#b94c4c] hover:!shadow-md
+         transition-all duration-200"
+  title="Editar Perfil"
+>
+  <i class="fas fa-pencil"></i>
+</button>
 
     <app-user-car-viewer
       *ngIf="userCar"
