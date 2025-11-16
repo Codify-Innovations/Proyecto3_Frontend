@@ -11,6 +11,8 @@ import { VehicleCategory } from '../../../../core/enums/vehicle_category.enum';
 import { VehicleColor } from '../../../../core/enums/vehicle_color.enum';
 import { VehiclePreviewModalComponent } from '../vehicle-preview-modal/vehicle-preview-modal.component';
 import { TranslateColorPipe } from '../../../../core/pipes/translate-color.pipe';
+import { environment } from '../../../../../environments/environment';
+import { InferenceClient } from '@huggingface/inference';
 
 @Component({
   selector: 'app-vehicle-identification',
@@ -28,6 +30,10 @@ export class VehicleIdentificationComponent {
   private uploaderService = inject(UploaderService);
   private vehicleService = inject(VehicleService);
   public iaService = inject(VehicleIdentificationService);
+  private inferenceClient = new InferenceClient(environment.hfToken);
+  private readonly negativePrompt =
+    'text, watermark, collage, distorted proportions, low quality, blurry, extra limbs, mangled wheels, cartoon letters, duplicated car, split image';
+  public isSaving = false;
 
   public categories = Object.values(VehicleCategory);
   public colors = Object.values(VehicleColor);
@@ -45,6 +51,7 @@ export class VehicleIdentificationComponent {
     categoria: '',
     color: '',
     imagenURL: '',
+    imagenHotWheels: '',
   };
 
   ngOnInit(): void {
@@ -65,6 +72,7 @@ export class VehicleIdentificationComponent {
       categoria: '',
       color: '',
       imagenURL: '',
+      imagenHotWheels: '',
     };
     this.imageURL = '';
   }
@@ -86,6 +94,7 @@ export class VehicleIdentificationComponent {
             ? result.color.toLowerCase()
             : '',
           imagenURL: this.imageURL,
+          imagenHotWheels: '',
         };
       }
     });
@@ -108,7 +117,7 @@ export class VehicleIdentificationComponent {
     this.iaService.isAnalyzing.set(true);
   }
 
-  saveToCollection(): void {
+  async saveToCollection(): Promise<void> {
     const { marca, modelo, anio, categoria, imagenURL, color } =
       this.vehicleData;
 
@@ -123,26 +132,43 @@ export class VehicleIdentificationComponent {
       return;
     }
 
-    this.vehicleService.addVehicle({
-      marca,
-      modelo,
-      anio,
-      categoria,
-      imagenURL,
-      color,
-    });
+    if (this.isSaving) {
+      return;
+    }
 
-    console.log('📤 Vehículo a guardar:', {
-      marca,
-      modelo,
-      anio,
-      categoria,
-      imagenURL,
-      color,
-    });
+    this.isSaving = true;
 
-    this.resetData();
-    this.iaService.analysisResult$.set(null);
+    try {
+      const imagenHotWheels = await this.generateHotWheelsImage();
+
+      const payload = {
+        marca,
+        modelo,
+        anio,
+        categoria,
+        imagenURL,
+        color,
+        imagenHotWheels,
+      };
+
+      this.vehicleService.addVehicle(payload);
+
+      console.log('Vehículo a guardar:', payload);
+
+      this.resetData();
+      this.iaService.analysisResult$.set(null);
+    } catch (error) {
+      this.alertService.displayAlert(
+        'error',
+        'No se pudo generar la versión Hot Wheels.',
+        'center',
+        'top',
+        ['error-snackbar']
+      );
+      console.error('Error generando imagen Hot Wheels:', error);
+    } finally {
+      this.isSaving = false;
+    }
   }
 
   private isValidColor(color: string): boolean {
@@ -166,5 +192,31 @@ export class VehicleIdentificationComponent {
 
   get isFormDisabled(): boolean {
     return !this.iaService.analysisResult$();
+  }
+
+  private buildHotWheelsPrompt(): string {
+    const { color, marca, modelo, anio } = this.vehicleData;
+    const vehicleDescription = `${color || ''} ${marca || ''} ${modelo || ''} year ${anio || ''}`.trim();
+
+    return `${vehicleDescription}, Hot Wheels style, studio lighting, glossy paint, sharp focus, high detail, product photo, on white background, realistic toy car photography, macro lens`;
+  }
+
+  private async generateHotWheelsImage(): Promise<string> {
+    const prompt = this.buildHotWheelsPrompt();
+    const image = await this.inferenceClient.textToImage({
+      provider: 'nscale',
+      model: 'stabilityai/stable-diffusion-xl-base-1.0',
+      inputs: prompt,
+      parameters: {
+        num_inference_steps: 5,
+        negative_prompt: this.negativePrompt,
+      },
+    });
+
+    return this.uploaderService.uploadBlob(
+      new Blob([image], { type: 'image/png' }),
+      'ai-identification-hotwheels',
+      `hotwheels-${Date.now()}.png`
+    );
   }
 }
