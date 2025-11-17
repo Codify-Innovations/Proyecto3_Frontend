@@ -40,11 +40,14 @@ export class AnalyzeMediaComponent {
     const file = event.target.files[0];
     if (!file) return;
 
-    const validTypes = ['image/jpeg', 'image/png', 'video/mp4', 'audio/mpeg', 'audio/wav'];
     const maxSizeMB = 50;
 
-    if (!validTypes.includes(file.type)) {
-      this.alertService.error('Formato no válido. Solo JPG, PNG, MP4, MP3 o WAV.');
+    const isImage = file.type.startsWith('image/');
+    const isVideo = file.type.startsWith('video/');
+    const isAudio = file.type.startsWith('audio/');
+
+    if (!(isImage || isVideo || isAudio)) {
+      this.alertService.error('Formato no válido. Solo se permiten imágenes, videos o audios.');
       return;
     }
 
@@ -56,10 +59,9 @@ export class AnalyzeMediaComponent {
     this.selectedFile = file;
     this.form.patchValue({ file });
 
-    if (file.type.startsWith('image/')) this.fileType = 'image';
-    else if (file.type.startsWith('video/')) this.fileType = 'video';
-    else if (file.type.startsWith('audio/')) this.fileType = 'audio';
-    else this.fileType = null;
+    if (isImage) this.fileType = 'image';
+    else if (isVideo) this.fileType = 'video';
+    else if (isAudio) this.fileType = 'audio';
 
     const reader = new FileReader();
     reader.onload = (e: any) => (this.previewUrl = e.target.result);
@@ -79,20 +81,14 @@ export class AnalyzeMediaComponent {
 
     this.aiService.analyzeMedia(this.selectedFile).subscribe({
       next: (event) => {
-
-   
         if (event.status === 'progress') {
-        
           this.uploadProgress = event.progress >= 100 ? 99 : event.progress;
         }
 
- 
         if (event.status === 'done') {
-      
           this.uploadProgress = 100;
 
           const response = event.data;
-
           this.analysisResult = response.data;
 
           this.loading = false;
@@ -100,7 +96,7 @@ export class AnalyzeMediaComponent {
         }
       },
       error: (err) => {
-        this.alertService.error(err.message);
+        this.alertService.error(err.message || 'Error al analizar el archivo.');
         this.loading = false;
         this.stepIndex = 0;
       }

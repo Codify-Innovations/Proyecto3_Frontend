@@ -1,0 +1,40 @@
+<div class="w-screen h-screen bg-[#0A0A0A] flex items-center justify-center relative overflow-hidden">
+
+    <div class="absolute inset-0 bg-gradient-radial from-[#880e0e33] via-transparent to-transparent blur-3xl"></div>
+
+    <div class="absolute inset-0 opacity-[0.08] bg-[url('/assets/grid.svg')] bg-cover"></div>
+
+    <div class="relative z-10 text-center px-6">
+
+        <h1
+            class="text-[120px] md:text-[160px] font-extrabold tracking-widest text-white drop-shadow-[0_0_15px_#880e0eAA]">
+            404
+        </h1>
+
+        <p class="text-gray-300 text-xl md:text-2xl mt-2 font-light">
+            La página que buscas no existe o fue movida.
+        </p>
+
+        <div class="mx-auto w-24 h-1 bg-[#880e0e] rounded-full mt-6 mb-8"></div>
+
+        <div class="flex justify-center gap-4 mt-4">
+
+            <a (click)="goBack()" class="px-6 py-3 rounded-lg text-white font-medium
+          bg-[#880e0e] hover:bg-[#a11010] transition-all
+          shadow-[0_0_15px_#880e0e55] hover:shadow-[0_0_25px_#880e0eAA] no-underline cursor-pointer [text-decoration:none!important]">
+                Volver a la página anterior
+            </a>
+
+            <a href="/landing-autocut" class="px-6 py-3 rounded-lg border border-gray-500 text-white font-medium
+                hover:border-white hover:text-white transition-all [text-decoration:none!important]">
+                Ir al Landing Page
+            </a>
+
+        </div>
+
+    </div>
+
+    <div class="absolute bottom-10 right-10 w-32 h-32 bg-[#880e0e] rounded-full blur-2xl 
+            animate-pulse [animation-duration:4s]"></div>
+
+</div>

@@ -79,7 +79,6 @@ export class UserProfileComponent implements OnInit {
     });
   }
 
-  /** Cargar el carro personalizado del usuario */
   loadUserCar(): void {
     this.customizationService.getMyCustomization$().subscribe({
       next: (res: any) => {

@@ -25,7 +25,6 @@ export class UserSettingsComponent implements OnInit {
   avatarUrl = 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
   private originalPasswordPlaceholder = '********';
 
-  /** Configuración del carro del usuario */
   userCar: any = null;
 
   ngOnInit(): void {
@@ -64,8 +63,6 @@ export class UserSettingsComponent implements OnInit {
       },
     });
   }
-
-  /** Cargar el carro personalizado del usuario */
   loadUserCar(): void {
     this.customizationService.getMyCustomization$().subscribe({
       next: (res: any) => {
