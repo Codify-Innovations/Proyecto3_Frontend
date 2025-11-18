@@ -1,23 +1,18 @@
 <div class="min-h-screen flex flex-col items-center bg-[#F5F5F5]">
 
   <div
-    class="relative w-full max-w-5xl bg-white mt-10 rounded-2xl shadow-md p-10 border border-[#E0E0E0] flex flex-col items-center"
-  >
-  
-<button
-  (click)="goToSettings()"
-  class="absolute top-6 right-6
+    class="relative w-full max-w-5xl bg-white mt-10 rounded-2xl shadow-md p-10 border border-[#E0E0E0] flex flex-col items-center">
+
+    <button (click)="goToSettings()" class="absolute top-6 right-6
          px-4 py-2
          bg-[#880e0e] !bg-[#880e0e]
          text-white text-lg font-bold
          rounded-lg !rounded-lg
          shadow-sm !shadow-sm
          hover:!bg-[#b94c4c] hover:!shadow-md
-         transition-all duration-200"
-  title="Editar Perfil"
->
-  <i class="fas fa-pencil"></i>
-</button>
+         transition-all duration-200" title="Editar Perfil">
+      <i class="fas fa-pencil"></i>
+    </button>
 
     <app-user-car-viewer *ngIf="userCar" [model]="userCar.modelo" [color]="userCar.carroceria"
       [glassTint]="userCar.vidriosPolarizados" [interior]="userCar.interior" [frontLight]="userCar.lucesFront"
@@ -45,40 +40,45 @@
     </p>
   </div>
 
-  <!-- <div class="w-full max-w-6xl mt-14 px-4 flex flex-col items-center">
-    <h3 class="text-2xl font-semibold text-[#1C1C1C] mb-6 text-center">
-      Badges
-    </h3>
-    <div class="flex flex-wrap justify-center gap-6">
-      <div
-        *ngFor="let badge of badges"
-        class="flex flex-col items-center bg-white border border-[#E0E0E0] rounded-xl shadow-sm hover:shadow-md transition p-4 w-44"
-      >
-        <p class="text-[#1C1C1C] font-semibold text-sm text-center">
-          {{ badge.name }}
-        </p>
-        <p class="text-[#757575] text-xs text-center mt-1">
-          Insignia obtenida por logros automotrices destacados.
-        </p>
+  <section class="mt-16 w-full">
+
+    <div class="flex flex-col items-center text-center mb-10">
+
+      <div class="w-14 h-14 rounded-full bg-white shadow-[0_4px_14px_rgba(136,14,14,0.30)]
+                flex items-center justify-center border border-[#880e0e]/20 mb-4">
+        <span class="text-3xl">🏅</span>
       </div>
+
+      <h2 class="text-4xl font-extrabold text-[#1C1C1C] tracking-tight">
+        Mis Logros
+      </h2>
+
+      <p class="text-gray-600 text-sm mt-2 max-w-xl">
+        Mira los logros que ya has desbloqueado dentro de AutoCut.
+      </p>
+
     </div>
-  </div> -->
-  <section class="mt-10 w-full">
 
-    <h2 class="text-2xl font-bold text-gray-800 mb-4">Mis Logros</h2>
-
-    <div *ngIf="loading" class="text-gray-500 py-4">
+    <div *ngIf="loading()" class="text-gray-500 py-4 text-center">
       Cargando logros...
     </div>
 
-    <div *ngIf="error" class="text-red-600 py-4">
-      {{ error }}
+    <!-- Error -->
+    <div *ngIf="error()" class="text-red-600 py-4 text-center">
+      {{ error() }}
     </div>
 
-    <app-achievement-list *ngIf="!loading && !error" [logros]="achievements">
+    <!-- SIN LOGROS -->
+    <div *ngIf="!loading() && !error() && achievements()?.length === 0" class="text-gray-500 py-10 text-center">
+      Aún no has desbloqueado ningún logro.
+    </div>
+
+
+    <app-achievement-list *ngIf="!loading() && !error()" [logros]="achievements()">
     </app-achievement-list>
 
   </section>
+
 
 
 

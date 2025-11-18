@@ -1,5 +1,5 @@
 import { effect, Injectable, signal } from '@angular/core';
-import { IResponse, IUsuarioLogro } from '../interfaces';
+import { ILogro, IResponse, IUsuarioLogro } from '../interfaces';
 import { BaseService } from './base-service';
 import { environment } from '../../../environments/environment';
 import { AuthService } from '../../pages/features/auth/auth.service';
@@ -21,6 +21,11 @@ export class AchievementService extends BaseService<IUsuarioLogro> {
     return this.loading;
   }
 
+  private allAchievements = signal<ILogro[]>([]); // logros activos
+  get allAchievements$() {
+    return this.allAchievements;
+  }
+
   private error = signal<string | null>(null);
   get error$() {
     return this.error;
@@ -30,10 +35,12 @@ export class AchievementService extends BaseService<IUsuarioLogro> {
 
     effect(() => {
       const user = this.auth.currentUser();
+      console.log('User changed:', user);
 
       if (user) {
         this.clearAchievements();
         this.loadMyAchievements();
+        this.loadActiveAchievements();
       } else {
         this.clearAchievements();
       }
@@ -81,6 +88,20 @@ export class AchievementService extends BaseService<IUsuarioLogro> {
           this.loading.set(false);
         },
       });
+  }
+
+  // ============================
+  //   3. LOGROS ACTIVOS (NUEVO)
+  // ============================
+  loadActiveAchievements(): void {
+    this.http.get<IResponse<ILogro[]>>(`${this.source}/activos`).subscribe({
+      next: (res) => {
+        this.allAchievements.set(res.data ?? []);
+      },
+      error: () => {
+        this.error.set('No se pudieron cargar los logros activos.');
+      },
+    });
   }
 
   clearAchievements() {

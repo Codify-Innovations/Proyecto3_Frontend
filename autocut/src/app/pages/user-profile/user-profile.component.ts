@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, effect, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -30,11 +30,10 @@ export class UserProfileComponent implements OnInit {
   user: any = null;
   userCar: any = null;
   isLoading = true;
-  
-  // ===== SIGNAL DE LOGROS ===== //
-  achievements = this.achievementService.achievements$();
-  loading = this.achievementService.loading$();
-  error = this.achievementService.error$();
+
+  achievements = this.achievementService.achievements$;
+  loading = this.achievementService.loading$;
+  error = this.achievementService.error$;
 
   badges = [
     { name: 'Classic Collector' },

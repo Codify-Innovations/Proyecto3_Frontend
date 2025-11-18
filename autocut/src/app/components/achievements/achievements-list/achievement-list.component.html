@@ -1,20 +1,24 @@
-<div class="w-full mt-6">
-  
-  <!-- Sin logros -->
-  <div *ngIf="logros.length === 0" class="text-center text-gray-500 py-10">
-    Aún no has desbloqueado ningún logro.
-  </div>
+<div class="relative w-full max-w-6xl  px-4 mx-auto overflow-visible">
 
-  <!-- Lista de logros -->
-  <div
-    *ngIf="logros.length > 0"
-    class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 mt-4">
+  <button [class.hidden]="logros.length === 0" class="ach-prev absolute left-2 top-1/2 -translate-y-1/2 z-50
+           flex items-center justify-center
+           hover:text-[#880e0e] transition">
+    <lucide-icon [img]="icons.ChevronLeft" class="w-8 h-8 text-gray-600 hover:text-[#880e0e]"></lucide-icon>
+  </button>
 
-    <app-achievement-card
-      *ngFor="let item of logros"
-      [logro]="item.logro"
-      [fechaDesbloqueo]="item.fechaDesbloqueo">
-    </app-achievement-card>
+  <button [class.hidden]="logros.length === 0" class="ach-next absolute right-2 top-1/2 -translate-y-1/2 z-50
+           flex items-center justify-center
+           hover:text-[#880e0e] transition">
+    <lucide-icon [img]="icons.ChevronRight" class="w-8 h-8 text-gray-600 hover:text-[#880e0e]"></lucide-icon>
+  </button>
 
-  </div>
+  <swiper-container slides-per-view="3" space-between="30" navigation="true" loop="true" speed="500"
+    navigation-prev-el=".ach-prev" navigation-next-el=".ach-next" class="w-full achievements-carousel ">
+    <swiper-slide *ngFor="let item of logros">
+      <div class="p-1 h-full flex justify-center">
+        <app-achievement-card [logro]="item.logro" [fechaDesbloqueo]="item.fechaDesbloqueo"
+          class="w-full"></app-achievement-card>
+      </div>
+    </swiper-slide>
+  </swiper-container>
 </div>
