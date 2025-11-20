@@ -11,8 +11,7 @@ import { VehicleCategory } from '../../../../core/enums/vehicle_category.enum';
 import { VehicleColor } from '../../../../core/enums/vehicle_color.enum';
 import { VehiclePreviewModalComponent } from '../vehicle-preview-modal/vehicle-preview-modal.component';
 import { TranslateColorPipe } from '../../../../core/pipes/translate-color.pipe';
-import { environment } from '../../../../../environments/environment';
-import { InferenceClient } from '@huggingface/inference';
+import { HotWheelsImageService } from '../../../../core/services/ai/hot-wheels-image.service';
 
 @Component({
   selector: 'app-vehicle-identification',
@@ -30,9 +29,7 @@ export class VehicleIdentificationComponent {
   private uploaderService = inject(UploaderService);
   private vehicleService = inject(VehicleService);
   public iaService = inject(VehicleIdentificationService);
-  private inferenceClient = new InferenceClient(environment.hfToken);
-  private readonly negativePrompt =
-    'text, watermark, collage, distorted proportions, low quality, blurry, extra limbs, mangled wheels, cartoon letters, duplicated car, split image';
+  private hotWheelsImageService = inject(HotWheelsImageService);
   public isSaving = false;
 
   public categories = Object.values(VehicleCategory);
@@ -194,29 +191,10 @@ export class VehicleIdentificationComponent {
     return !this.iaService.analysisResult$();
   }
 
-  private buildHotWheelsPrompt(): string {
+  private async generateHotWheelsImage(): Promise<string> {
     const { color, marca, modelo, anio } = this.vehicleData;
     const vehicleDescription = `${color || ''} ${marca || ''} ${modelo || ''} year ${anio || ''}`.trim();
-
-    return `${vehicleDescription}, Hot Wheels style, studio lighting, glossy paint, sharp focus, high detail, product photo, on white background, realistic toy car photography, macro lens`;
-  }
-
-  private async generateHotWheelsImage(): Promise<string> {
-    const prompt = this.buildHotWheelsPrompt();
-    const image = await this.inferenceClient.textToImage({
-      provider: 'nscale',
-      model: 'stabilityai/stable-diffusion-xl-base-1.0',
-      inputs: prompt,
-      parameters: {
-        num_inference_steps: 5,
-        negative_prompt: this.negativePrompt,
-      },
-    });
-
-    return this.uploaderService.uploadBlob(
-      new Blob([image], { type: 'image/png' }),
-      'ai-identification-hotwheels',
-      `hotwheels-${Date.now()}.png`
-    );
+    const prompt = `${vehicleDescription}, Hot Wheels style, studio lighting, glossy paint, sharp focus, high detail, product photo, on white background, realistic toy car photography, macro lens. Avoid text, watermark, collage, distorted proportions, low quality, blurry, extra limbs, mangled wheels, cartoon letters, duplicated car, split image; keep a single centered vehicle, realistic proportions, clean white background, no text or logos.`;
+    return this.hotWheelsImageService.generateImage(prompt);
   }
 }

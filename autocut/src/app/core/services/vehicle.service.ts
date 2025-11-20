@@ -78,4 +78,17 @@ export class VehicleService extends BaseService<IVehiculo> {
       },
     });
   }
+
+  getVehiclesByUser(
+    userId: number,
+    page: number,
+    size: number
+  ) {
+    return this.http.get<IResponse<IVehiculo[]>>(
+      `${this.source}/user/${userId}`,
+      {
+        params: this.buildUrlParams({ page, size }),
+      }
+    );
+  }
 }

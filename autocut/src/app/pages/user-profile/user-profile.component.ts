@@ -1,22 +1,34 @@
-import { Component, OnInit, inject } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+  inject,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';
 import { UserService } from '../../pages/features/users/user.service';
 import { AlertService } from '../../core/services/alert.service';
 import { VehicleCustomizationService } from '../../pages/features/vehicle-3D/services/vehicle-customization.service';
 import { UserCarViewerComponent } from '../../pages/features/vehicle-3D/user-car-viewer/user-car-viewer.component';
+import { VehicleService } from '../../core/services/vehicle.service';
+import { IVehiculo } from '../../core/interfaces';
 
 @Component({
   selector: 'app-user-profile',
   standalone: true,
-  imports: [CommonModule, FormsModule, UserCarViewerComponent],
+  imports: [CommonModule, UserCarViewerComponent],
   templateUrl: './user-profile.component.html',
 })
-export class UserProfileComponent implements OnInit {
+export class UserProfileComponent implements OnInit, AfterViewInit, OnDestroy {
+  @ViewChild('vehiclesAnchor') vehiclesAnchor?: ElementRef<HTMLDivElement>;
+
   private userService = inject(UserService);
   private customizationService = inject(VehicleCustomizationService);
   private alertService = inject(AlertService);
+  private vehicleService = inject(VehicleService);
   private router = inject(Router);
 
   user: any = null;
@@ -29,34 +41,37 @@ export class UserProfileComponent implements OnInit {
     { name: 'Top Speed Designer' },
   ];
 
-  cars: any[] = [
-    { model: 'Mustang GT', brand: 'Ford', year: 2024, image: '' },
-    { model: 'Supra MK4', brand: 'Toyota', year: 1998, image: '' },
-    { model: 'Camaro ZL1', brand: 'Chevrolet', year: 2022, image: '' },
-  ];
-
-  showModal = false;
-  selectedImage: string | null = null;
-
-  newCar: any = {
-    model: '',
-    brand: '',
-    year: '',
-    image: '',
-  };
+  userVehicles: IVehiculo[] = [];
+  private intersectionObserver?: IntersectionObserver;
+  private vehiclesPage = 1;
+  private readonly vehiclesPageSize = 6;
+  isVehiclesLoading = false;
+  hasMoreVehicles = true;
+  hasLoadedVehicles = false;
 
   ngOnInit(): void {
     this.loadProfile();
     this.loadUserCar();
   }
 
+  ngAfterViewInit(): void {
+    this.setupIntersectionObserver();
+  }
+
+  ngOnDestroy(): void {
+    this.intersectionObserver?.disconnect();
+  }
+
   loadProfile(): void {
     this.userService.getUserProfile().subscribe({
       next: (res: any) => {
         this.user = res.data;
-        if (this.user?.visibility)
+        if (this.user?.visibility) {
           this.user.visibility = this.user.visibility.toLowerCase().trim();
+        }
         this.isLoading = false;
+        this.resetVehiclesFeed();
+        this.loadMoreVehicles();
       },
       error: (err) => {
         console.error('Error al obtener perfil:', err);
@@ -82,30 +97,77 @@ export class UserProfileComponent implements OnInit {
     this.router.navigate(['/app/profile/settings']);
   }
 
-  openModal(): void {
-    this.showModal = true;
-  }
   identifyCar(): void {
     this.router.navigate(['/app/ai-detection']);
   }
 
-
-  onFileSelected(event: any): void {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e: any) => (this.selectedImage = e.target.result);
-      reader.readAsDataURL(file);
-    }
+  private resetVehiclesFeed(): void {
+    this.userVehicles = [];
+    this.vehiclesPage = 1;
+    this.hasMoreVehicles = true;
+    this.hasLoadedVehicles = false;
   }
 
-  // addCar(): void {
-  //   this.cars.push({
-  //     model: this.newCar.model,
-  //     brand: this.newCar.brand,
-  //     year: this.newCar.year,
-  //     image: this.selectedImage || '',
-  //   });
-  //   this.closeModal();
-  // }
+  trackByVehicle = (_: number, vehicle: IVehiculo) =>
+    vehicle.id ?? `${vehicle.marca}-${vehicle.modelo}-${vehicle.anio}-${_}`;
+
+  private loadMoreVehicles(): void {
+    if (!this.user?.id || this.isVehiclesLoading || !this.hasMoreVehicles) {
+      return;
+    }
+
+    this.isVehiclesLoading = true;
+
+    this.vehicleService
+      .getVehiclesByUser(this.user.id, this.vehiclesPage, this.vehiclesPageSize)
+      .subscribe({
+        next: (res) => {
+          const vehicles = res.data ?? [];
+          this.userVehicles = [...this.userVehicles, ...vehicles];
+
+          const meta = res.meta;
+          const currentPage =
+            (meta?.pageNumber as number | undefined) ?? this.vehiclesPage;
+          const totalPages = meta?.totalPages as number | undefined;
+
+          if (totalPages !== undefined) {
+            this.hasMoreVehicles = currentPage < totalPages;
+          } else {
+            this.hasMoreVehicles = vehicles.length === this.vehiclesPageSize;
+          }
+
+          this.vehiclesPage = currentPage + 1;
+          this.hasLoadedVehicles = true;
+          this.isVehiclesLoading = false;
+        },
+        error: (err) => {
+          console.error('Error al cargar vehículos:', err);
+          this.alertService.error('No se pudieron cargar los vehículos.');
+          this.hasLoadedVehicles = true;
+          this.isVehiclesLoading = false;
+        },
+      });
+  }
+
+  private setupIntersectionObserver(): void {
+    if (typeof window === 'undefined' || typeof IntersectionObserver === 'undefined') {
+      return;
+    }
+
+    this.intersectionObserver?.disconnect();
+
+    if (!this.vehiclesAnchor) {
+      return;
+    }
+
+    this.intersectionObserver = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          this.loadMoreVehicles();
+        }
+      });
+    });
+
+    this.intersectionObserver.observe(this.vehiclesAnchor.nativeElement);
+  }
 }

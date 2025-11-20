@@ -12,6 +12,8 @@ export interface IResponse<T> {
     size?: number;
     totalPages?: number;
     totalElements?: number;
+    pageNumber?: number;
+    pageSize?: number;
   };
 }
 
@@ -105,6 +107,7 @@ export interface IMediaUploadState {
 
 export type MediaType = 'video' | 'image' | 'audio';
 export interface IVehiculo {
+  id?: number;
   marca: string;
   modelo: string;
   categoria: string;
