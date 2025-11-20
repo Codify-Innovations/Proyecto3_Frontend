@@ -13,7 +13,6 @@ import { VehiclePreviewModalComponent } from '../vehicle-preview-modal/vehicle-p
 import { TranslateColorPipe } from '../../../../core/pipes/translate-color.pipe';
 import { HotWheelsImageService } from '../../../../core/services/ai/hot-wheels-image.service';
 
-
 @Component({
   selector: 'app-vehicle-identification',
   imports: [
@@ -49,6 +48,7 @@ export class VehicleIdentificationComponent {
     categoria: '',
     color: '',
     imagenURL: '',
+    imagenHotWheels: '',
   };
 
   ngOnInit(): void {
@@ -69,6 +69,7 @@ export class VehicleIdentificationComponent {
       categoria: '',
       color: '',
       imagenURL: '',
+      imagenHotWheels: '',
     };
     this.imageURL = '';
   }
@@ -90,6 +91,7 @@ export class VehicleIdentificationComponent {
             ? result.color.toLowerCase()
             : '',
           imagenURL: this.imageURL,
+          imagenHotWheels: '',
         };
       }
     });
@@ -112,7 +114,7 @@ export class VehicleIdentificationComponent {
     this.iaService.isAnalyzing.set(true);
   }
 
-  saveToCollection(): void {
+  async saveToCollection(): Promise<void> {
     const { marca, modelo, anio, categoria, imagenURL, color } =
       this.vehicleData;
 
@@ -127,26 +129,43 @@ export class VehicleIdentificationComponent {
       return;
     }
 
-    this.vehicleService.addVehicle({
-      marca,
-      modelo,
-      anio,
-      categoria,
-      imagenURL,
-      color,
-    });
+    if (this.isSaving) {
+      return;
+    }
 
-    console.log('📤 Vehículo a guardar:', {
-      marca,
-      modelo,
-      anio,
-      categoria,
-      imagenURL,
-      color,
-    });
+    this.isSaving = true;
 
-    this.resetData();
-    this.iaService.analysisResult$.set(null);
+    try {
+      const imagenHotWheels = await this.generateHotWheelsImage();
+
+      const payload = {
+        marca,
+        modelo,
+        anio,
+        categoria,
+        imagenURL,
+        color,
+        imagenHotWheels,
+      };
+
+      this.vehicleService.addVehicle(payload);
+
+      console.log('Vehículo a guardar:', payload);
+
+      this.resetData();
+      this.iaService.analysisResult$.set(null);
+    } catch (error) {
+      this.alertService.displayAlert(
+        'error',
+        'No se pudo generar la versión Hot Wheels.',
+        'center',
+        'top',
+        ['error-snackbar']
+      );
+      console.error('Error generando imagen Hot Wheels:', error);
+    } finally {
+      this.isSaving = false;
+    }
   }
 
   private isValidColor(color: string): boolean {

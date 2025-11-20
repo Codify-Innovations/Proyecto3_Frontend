@@ -113,5 +113,6 @@ export interface IVehiculo {
   categoria: string;
   anio: string;
   imagenURL: string;
+  imagenHotWheels?: string;
   color: string
 }
