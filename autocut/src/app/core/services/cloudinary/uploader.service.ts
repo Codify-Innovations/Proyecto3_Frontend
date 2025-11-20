@@ -2,6 +2,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { BaseService } from '../base-service';
 import { AlertService } from '../alert.service';
 import { IResponse } from '../../interfaces';
+import { HttpEventType } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +13,7 @@ export class UploaderService extends BaseService<any> {
 
   isUploading = signal<boolean>(false);
 
+  uploadProgress = signal<number>(0);
   private uploaded = signal<any | null>(null);
   get uploaded$() {
     return this.uploaded;
@@ -23,47 +25,58 @@ export class UploaderService extends BaseService<any> {
   }
 
   uploadFiles(files: File[], folderName: string): void {
-    const formData = new FormData();
-    files.forEach((file) => formData.append('files', file));
-    formData.append('folderName', folderName);
+  const formData = new FormData();
+  files.forEach((file) => formData.append('files', file));
+  formData.append('folderName', folderName);
 
-    this.urlSignal.set([]);
-    this.isUploading.set(true);
-    this.uploaded.set(false);
+  this.urlSignal.set([]);
+  this.isUploading.set(true);
+  this.uploaded.set(false);
+  this.uploadProgress.set(0); 
 
-    this.addCustomSource('upload', formData).subscribe({
-      next: (response: IResponse<any>) => {
+  this.http.post(`${this.source}/upload`, formData, {
+    reportProgress: true,
+    observe: 'events'
+  }).subscribe({
+    next: (event: any) => {
+      if (event.type === HttpEventType.UploadProgress) {
+        const total = event.total ?? 1;
+        const progress = Math.round((event.loaded / total) * 100);
+        this.uploadProgress.set(progress);
+      }
+
+      if (event.type === HttpEventType.Response) {
+        const response = event.body as IResponse<any>;
+
         if (response.data && Array.isArray(response.data)) {
           this.urlSignal.set(response.data);
         }
 
-        this.alertService.displayAlert(
-          'success',
-          'Archivos subidos correctamente',
-          'center',
-          'top',
-          ['success-snackbar']
-        );
-
         this.isUploading.set(false);
         this.uploaded.set(true);
-      },
-      error: (err: any) => {
-        this.isUploading.set(false);
-        this.uploaded.set(false);
-        const backendMessage =
-          err?.error?.detail || 'Error al subir los archivos.';
+        this.uploadProgress.set(100);
+      }
+    },
 
-        this.alertService.displayAlert(
-          'error',
-          backendMessage,
-          'center',
-          'top',
-          ['error-snackbar']
-        );
+    error: (err: any) => {
+      this.isUploading.set(false);
+      this.uploaded.set(false);
+      this.uploadProgress.set(0);
 
-        console.error('❌ Error en upload:', err);
-      },
-    });
-  }
+      const backendMessage =
+        err?.error?.detail || 'Error al subir los archivos.';
+
+      this.alertService.displayAlert(
+        'error',
+        backendMessage,
+        'center',
+        'top',
+        ['error-snackbar']
+      );
+
+      console.error('❌ Error en upload:', err);
+    },
+  });
+}
+
 }
