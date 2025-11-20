@@ -2,7 +2,6 @@ import { inject, Injectable, signal } from '@angular/core';
 import { BaseService } from '../base-service';
 import { AlertService } from '../alert.service';
 import { IResponse } from '../../interfaces';
-import { firstValueFrom } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -66,36 +65,5 @@ export class UploaderService extends BaseService<any> {
         console.error('❌ Error en upload:', err);
       },
     });
-  }
-
-  async uploadBlob(
-    blob: Blob,
-    folderName: string,
-    fileName: string
-  ): Promise<string> {
-    const formData = new FormData();
-    formData.append('files', blob, fileName);
-    formData.append('folderName', folderName);
-
-    try {
-      const response = await firstValueFrom(
-        this.addCustomSource('upload', formData)
-      );
-
-      if (response.data && Array.isArray(response.data) && response.data.length) {
-        return response.data[0];
-      }
-
-      throw new Error('No se recibió una URL válida del servicio de archivos.');
-    } catch (err) {
-      this.alertService.displayAlert(
-        'error',
-        'Error al subir la imagen generada.',
-        'center',
-        'top',
-        ['error-snackbar']
-      );
-      throw err;
-    }
   }
 }

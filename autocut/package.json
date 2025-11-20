@@ -22,7 +22,6 @@
     "@angular/router": "^19.2.0",
     "@cesdk/cesdk-js": "^1.62.0",
     "@emailjs/browser": "^4.4.1",
-    "@huggingface/inference": "^4.13.3",
     "@ng-bootstrap/ng-bootstrap": "^18.0.0",
     "@ngx-translate/core": "^17.0.0",
     "@ngx-translate/http-loader": "^17.0.0",

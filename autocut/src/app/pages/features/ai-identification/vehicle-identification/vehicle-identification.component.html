@@ -100,14 +100,9 @@
 
         <!-- Botón -->
         <div class="col-span-2 flex justify-center mt-10">
-          <button type="submit" [disabled]="vehicleForm.invalid || isFormDisabled || isSaving"
-            class="px-10 py-3 bg-[#880e0e] text-white font-medium rounded shadow-[0_8px_20px_rgba(136,14,14,0.25)] hover:bg-[#B71C1C] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2">
-            <ng-container *ngIf="isSaving; else saveText">
-              Guardando...
-            </ng-container>
-            <ng-template #saveText>
-              Guardar en mi colección
-            </ng-template>
+          <button type="submit" [disabled]="vehicleForm.invalid || isFormDisabled"
+            class="px-10 py-3 bg-[#880e0e] text-white font-medium rounded shadow-[0_8px_20px_rgba(136,14,14,0.25)] hover:bg-[#B71C1C] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed">
+            Guardar en mi colección
           </button>
         </div>
 

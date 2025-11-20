@@ -11,7 +11,10 @@ import { VehicleCategory } from '../../../../core/enums/vehicle_category.enum';
 import { VehicleColor } from '../../../../core/enums/vehicle_color.enum';
 import { VehiclePreviewModalComponent } from '../vehicle-preview-modal/vehicle-preview-modal.component';
 import { TranslateColorPipe } from '../../../../core/pipes/translate-color.pipe';
+<<<<<<< HEAD
 import { HotWheelsImageService } from '../../../../core/services/ai/hot-wheels-image.service';
+=======
+>>>>>>> parent of fa2931a (Imagen Hot Wheels generada)
 
 @Component({
   selector: 'app-vehicle-identification',
@@ -29,8 +32,11 @@ export class VehicleIdentificationComponent {
   private uploaderService = inject(UploaderService);
   private vehicleService = inject(VehicleService);
   public iaService = inject(VehicleIdentificationService);
+<<<<<<< HEAD
   private hotWheelsImageService = inject(HotWheelsImageService);
   public isSaving = false;
+=======
+>>>>>>> parent of fa2931a (Imagen Hot Wheels generada)
 
   public categories = Object.values(VehicleCategory);
   public colors = Object.values(VehicleColor);
@@ -48,7 +54,6 @@ export class VehicleIdentificationComponent {
     categoria: '',
     color: '',
     imagenURL: '',
-    imagenHotWheels: '',
   };
 
   ngOnInit(): void {
@@ -69,7 +74,6 @@ export class VehicleIdentificationComponent {
       categoria: '',
       color: '',
       imagenURL: '',
-      imagenHotWheels: '',
     };
     this.imageURL = '';
   }
@@ -91,7 +95,6 @@ export class VehicleIdentificationComponent {
             ? result.color.toLowerCase()
             : '',
           imagenURL: this.imageURL,
-          imagenHotWheels: '',
         };
       }
     });
@@ -114,7 +117,7 @@ export class VehicleIdentificationComponent {
     this.iaService.isAnalyzing.set(true);
   }
 
-  async saveToCollection(): Promise<void> {
+  saveToCollection(): void {
     const { marca, modelo, anio, categoria, imagenURL, color } =
       this.vehicleData;
 
@@ -129,43 +132,26 @@ export class VehicleIdentificationComponent {
       return;
     }
 
-    if (this.isSaving) {
-      return;
-    }
+    this.vehicleService.addVehicle({
+      marca,
+      modelo,
+      anio,
+      categoria,
+      imagenURL,
+      color,
+    });
 
-    this.isSaving = true;
+    console.log('📤 Vehículo a guardar:', {
+      marca,
+      modelo,
+      anio,
+      categoria,
+      imagenURL,
+      color,
+    });
 
-    try {
-      const imagenHotWheels = await this.generateHotWheelsImage();
-
-      const payload = {
-        marca,
-        modelo,
-        anio,
-        categoria,
-        imagenURL,
-        color,
-        imagenHotWheels,
-      };
-
-      this.vehicleService.addVehicle(payload);
-
-      console.log('Vehículo a guardar:', payload);
-
-      this.resetData();
-      this.iaService.analysisResult$.set(null);
-    } catch (error) {
-      this.alertService.displayAlert(
-        'error',
-        'No se pudo generar la versión Hot Wheels.',
-        'center',
-        'top',
-        ['error-snackbar']
-      );
-      console.error('Error generando imagen Hot Wheels:', error);
-    } finally {
-      this.isSaving = false;
-    }
+    this.resetData();
+    this.iaService.analysisResult$.set(null);
   }
 
   private isValidColor(color: string): boolean {
@@ -190,6 +176,7 @@ export class VehicleIdentificationComponent {
   get isFormDisabled(): boolean {
     return !this.iaService.analysisResult$();
   }
+<<<<<<< HEAD
 
   private async generateHotWheelsImage(): Promise<string> {
     const { color, marca, modelo, anio } = this.vehicleData;
@@ -197,4 +184,6 @@ export class VehicleIdentificationComponent {
     const prompt = `${vehicleDescription}, Hot Wheels style, studio lighting, glossy paint, sharp focus, high detail, product photo, on white background, realistic toy car photography, macro lens. Avoid text, watermark, collage, distorted proportions, low quality, blurry, extra limbs, mangled wheels, cartoon letters, duplicated car, split image; keep a single centered vehicle, realistic proportions, clean white background, no text or logos.`;
     return this.hotWheelsImageService.generateImage(prompt);
   }
+=======
+>>>>>>> parent of fa2931a (Imagen Hot Wheels generada)
 }
