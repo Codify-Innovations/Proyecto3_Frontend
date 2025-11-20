@@ -79,53 +79,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
 }
 
 
-
-swiper-container.achievements-carousel {
-  background: transparent !important;
-}
-
-swiper-slide {
-  display: flex;
-  justify-content: center;
-}
-
-/* Mejor sombra y hover */
-.ach-prev,
-.ach-next {
-  cursor: pointer;
-  transition: all 0.25s ease;
-}
-
-.ach-prev:hover,
-.ach-next:hover {
-  box-shadow: 0 4px 12px rgba(136, 14, 14, 0.35);
-}
-
-.ach-prev lucide-icon,
-.ach-next lucide-icon {
-  transition: color 0.25s ease;
-}
-
-.ach-prev:hover lucide-icon,
-.ach-next:hover lucide-icon {
-  color: white !important;
-}
-
-/* No cortar sombras */
-swiper-container {
-  overflow: visible !important;
-}
-
-swiper-container::part(wrapper) {
-  overflow: visible !important;
-}
-
-swiper-slide {
-  overflow: visible !important;
-}
-
-
-
 .mdc-snackbar__surface {
   background: transparent !important;
   box-shadow: none !important;

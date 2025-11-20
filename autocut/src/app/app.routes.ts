@@ -14,11 +14,11 @@ import { LandingAutocutPage } from './pages/features/landing/landing-autocut/pag
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
 import { UserSettingsComponent } from './pages/user-settings/user-settings.component';
 import { AnalyzeMediaComponent } from './pages/analyze-media/analyze-media.component'; // 🧠 Nuevo componente IA
-import { IaGeneratorComponent } from './pages/features/ia-generator/ia-generator.component';
+import {IaGeneratorComponent} from './pages/features/ia-generator/ia-generator.component'
 import { VideoEditorComponent } from './pages/features/video-editor/video-editor';
 import { VehicleIdentificationComponent } from './pages/features/ai-identification/vehicle-identification/vehicle-identification.component';
 import { VehicleCustomizerPage } from './pages/features/vehicle-3D/vehicle-customizer/vehicle-customizer.page';
-import { AchievementsComponent } from './pages/features/achievements/achievements.component';
+
 
 export const routes: Routes = [
   {
@@ -80,13 +80,13 @@ export const routes: Routes = [
           showInSidebar: true,
         },
       },
-      {
+            {
         path: 'vehicle-3d',
         component: VehicleCustomizerPage,
         data: {
           authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
-          name: 'Personalizador 3D',
-          showInSidebar: true,
+                  name: 'Personalizador 3D',
+                  showInSidebar: true,
         },
       },
       {
@@ -135,7 +135,7 @@ export const routes: Routes = [
           showInSidebar: false,
         },
       },
-      {
+       {
         path: 'ai-detection',
         component: VehicleIdentificationComponent,
         data: {
@@ -143,16 +143,7 @@ export const routes: Routes = [
           name: 'Identificacion con IA',
           showInSidebar: true,
         },
-      },
-      {
-        path: 'achievements',
-        component: AchievementsComponent,
-        data: {
-          authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
-          name: 'Logros',
-          showInSidebar: true,
-        },
-      },
+      },      
     ],
   },
   {
