@@ -253,6 +253,10 @@
           </p>
         </ng-template>
 
+        <div class="flex justify-center mb-8">
+        <app-share-button [url]="previewUrl ?? ''"></app-share-button>
+        </div>
+
         <div class="text-center mt-10">
           <span
             (click)="resetForm()"

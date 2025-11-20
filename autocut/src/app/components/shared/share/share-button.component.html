@@ -1,0 +1,51 @@
+<div class="relative inline-block">
+  <!-- Botón principal -->
+  <button
+    (click)="toggleMenu()"
+    class="p-3 bg-[#880E0E] text-white rounded-full shadow-md hover:bg-[#B71C1C] transition"
+    type="button"
+  >
+    <i class="fa-solid fa-share-nodes text-lg"></i>
+  </button>
+
+  <!-- Menú -->
+<div
+  *ngIf="menuOpen"
+  class="absolute bottom-full right-0 mb-2 w-48 bg-white rounded-lg shadow-xl border border-gray-200 animate-fadeIn z-[999]"
+>
+    <button
+      class="w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center gap-2"
+      (click)="share('facebook')"
+    >
+      <i class="fa-brands fa-facebook text-blue-600"></i> Facebook
+    </button>
+
+    <button
+      class="w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center gap-2"
+      (click)="share('twitter')"
+    >
+      <i class="fa-brands fa-twitter text-sky-500"></i> Twitter / X
+    </button>
+
+    <button
+      class="w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center gap-2"
+      (click)="share('whatsapp')"
+    >
+      <i class="fa-brands fa-whatsapp text-green-500"></i> WhatsApp
+    </button>
+
+    <button
+      class="w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center gap-2"
+      (click)="share('instagram')"
+    >
+      <i class="fa-brands fa-instagram text-pink-500"></i> Instagram
+    </button>
+
+    <button
+      class="w-full text-left px-4 py-2 hover:bg-gray-100 flex items-center gap-2"
+      (click)="share('tiktok')"
+    >
+      <i class="fa-brands fa-tiktok text-black"></i> TikTok
+    </button>
+  </div>
+</div>

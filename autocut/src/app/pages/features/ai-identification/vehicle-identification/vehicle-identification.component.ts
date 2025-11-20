@@ -11,6 +11,7 @@ import { VehicleCategory } from '../../../../core/enums/vehicle_category.enum';
 import { VehicleColor } from '../../../../core/enums/vehicle_color.enum';
 import { VehiclePreviewModalComponent } from '../vehicle-preview-modal/vehicle-preview-modal.component';
 import { TranslateColorPipe } from '../../../../core/pipes/translate-color.pipe';
+import { ShareButtonComponent } from '../../../../components/shared/share/share-button.component';
 
 @Component({
   selector: 'app-vehicle-identification',
@@ -20,6 +21,7 @@ import { TranslateColorPipe } from '../../../../core/pipes/translate-color.pipe'
     FileUploaderComponent,
     VehiclePreviewModalComponent,
     TranslateColorPipe,
+    ShareButtonComponent   
   ],
   templateUrl: './vehicle-identification.component.html',
 })
