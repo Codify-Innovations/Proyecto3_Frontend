@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, effect, EventEmitter, inject, Input, Output } from '@angular/core';
-import { validateFiles } from '../../../core/utils/file-validator';
+import { validateFiles, validateSingleImage } from '../../../core/utils/file-validator';
 import { AlertService } from '../../../core/services/alert.service';
 import { UploaderService } from '../../../core/services/cloudinary/uploader.service';
 
@@ -39,7 +39,7 @@ export class FileUploaderComponent {
       if (this.uploaderService.uploaded$()) {
         this.fileNames = [];
         this.selectedFiles = [];
-        this.uploaderService.uploadProgress.set(0); 
+        this.uploaderService.uploadProgress.set(0);
 
       }
     });
@@ -62,6 +62,11 @@ export class FileUploaderComponent {
 
     if (!isValid) {
       return;
+    }
+
+    if (this.fileValidatorFn === validateSingleImage) {
+      this.selectedFiles = [];
+      this.fileNames = [];
     }
 
     filesArray.forEach((file) => {
