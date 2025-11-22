@@ -1,35 +1,65 @@
-<div class="table-container table-responsive">
-  <table class="table table-striped">
-    <thead>
+<div class="overflow-x-auto w-full bg-[#F5F5F5] p-6 rounded-xl shadow-md">
+  <table class="min-w-full bg-white rounded-lg shadow">
+    <thead class="bg-[#880e0e] text-white">
       <tr>
-        <th scope="col">ID</th>
-        <th scope="col">Name</th>
-        <th scope="col">Lastname</th>
-        <th scope="col">email</th>
-        <th scope="col">Created</th>
-        <th scope="col">Updated</th>
-        <th class="text-center" scope="col">Actions</th>
+        <th class="px-6 py-3 text-left text-xs font-bold uppercase">Nombre</th>
+        <th class="px-6 py-3 text-left text-xs font-bold uppercase">Apellido</th>
+        <th class="px-6 py-3 text-left text-xs font-bold uppercase">Email</th>
+        <th class="px-6 py-3 text-left text-xs font-bold uppercase">Creado</th>
+        <th class="px-6 py-3 text-left text-xs font-bold uppercase">Actualizado</th>
+        <th class="px-6 py-3 text-center text-xs font-bold uppercase">Estado</th>
+        <th class="px-6 py-3 text-center text-xs font-bold uppercase">Acciones</th>
       </tr>
     </thead>
-    <tbody>
-      @for (item of users; track item.id) {
-        <tr>
-          <th scope="row">{{item.id}}</th>
-          <td>{{item.name}}</td>
-          <td>{{item.lastname}}</td>
-          <td>{{item.email}}</td>
-          <td>{{item.createdAt | date: 'dd/MM/yyyy HH:mm'}}</td>
-          <td>{{item.updatedAt | date: 'dd/MM/yyyy HH:mm'}}</td>
-          <td>
-            <button (click)="callModalAction.emit(item);" class="btn btn-warning me-2" type="button"><i class="fas fa-pen"></i></button>
-            <button (click)="callDeleteAction.emit(item)" class="btn btn-danger" type="button"><i class="fas fa-trash"></i></button>
+
+    <tbody class="divide-y divide-gray-200">
+      @for (u of users; track u.id) {
+        <tr class="hover:bg-[#FBEAEA] transition">
+          <td class="px-6 py-4 text-[#424242]">{{ u.name }}</td>
+          <td class="px-6 py-4 text-[#424242]">{{ u.lastname }}</td>
+          <td class="px-6 py-4 text-[#424242]">{{ u.email }}</td>
+          <td class="px-6 py-4 text-[#424242]">{{ u.createdAt | date: 'dd/MM/yyyy HH:mm' }}</td>
+          <td class="px-6 py-4 text-[#424242]">{{ u.updatedAt | date: 'dd/MM/yyyy HH:mm' }}</td>
+
+          <!-- ESTADO -->
+          <td class="px-6 py-4 text-center">
+            <select
+              class="border border-gray-300 rounded-lg px-3 py-1 text-sm cursor-pointer bg-white shadow-sm 
+                     focus:ring-2 focus:ring-[#880e0e] focus:border-[#880e0e] transition"
+              [(ngModel)]="u.active"
+              (change)="onStatusChange(u)"
+            >
+              <option [ngValue]="true">Activo</option>
+              <option [ngValue]="false">Inactivo</option>
+            </select>
+          </td>
+
+          <!-- BOTONES -->
+          <td class="px-6 py-4 flex gap-3 justify-center">
+
+            <!-- Editar -->
+            <button 
+              (click)="openEdit(u)"
+              class="px-3 py-2 rounded-lg bg-[#880e0e] text-white shadow hover:bg-[#B71C1C] transition"
+            >
+              <i class="fas fa-pen"></i>
+            </button>
+
+            <!-- Eliminar -->
+            <button 
+              (click)="deleteUser(u)" 
+              class="px-3 py-2 rounded-lg bg-[#B71C1C] text-white shadow hover:bg-red-800 transition"
+            >
+              <i class="fas fa-trash"></i>
+            </button>
+
           </td>
         </tr>
       } @empty {
         <tr>
-          <td colspan="7">
-            <div class="d-flex justify-content-center align-items-center w-100">
-              <p class="mb-0">There are not users</p>
+          <td colspan="8">
+            <div class="py-8 text-center text-[#424242] font-medium">
+              No existen usuarios registrados
             </div>
           </td>
         </tr>

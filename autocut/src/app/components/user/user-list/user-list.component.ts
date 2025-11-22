@@ -1,25 +1,49 @@
-import { Component, effect, EventEmitter, inject, Input, Output } from '@angular/core';
-import { UserService } from '../../../pages/features/users/user.service';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { IUser } from '../../../core/interfaces';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ModalComponent } from '../../modal/modal.component';
-import { UserFormComponent } from '../user-from/user-form.component';
-import {MatSnackBar, MatSnackBarModule} from '@angular/material/snack-bar';
-
+import { UserService } from '../../../pages/features/users/user.service';
 
 @Component({
   selector: 'app-user-list',
   standalone: true,
   imports: [
-    CommonModule
+    CommonModule,
+    FormsModule
   ],
   templateUrl: './user-list.component.html',
   styleUrl: './user-list.component.scss'
 })
 export class UserListComponent {
-  @Input() title: string  = '';
+  @Input() title: string = '';
   @Input() users: IUser[] = [];
-  @Output() callModalAction: EventEmitter<IUser> = new EventEmitter<IUser>();
-  @Output() callDeleteAction: EventEmitter<IUser> = new EventEmitter<IUser>();
+
+  @Output() callModalAction = new EventEmitter<IUser>();
+  @Output() callDeleteAction = new EventEmitter<IUser>();
+
+  constructor(private userService: UserService) {}
+
+  openEdit(user: IUser) {
+    this.callModalAction.emit(user);
+  }
+
+  deleteUser(user: IUser) {
+    this.callDeleteAction.emit(user);
+  }
+
+  onStatusChange(user: IUser) {
+    if (!user?.id) return;
+
+    const id = user.id;
+
+    if (user.active === true) {
+      this.userService.activate(id).subscribe({
+        next: () => this.userService.getAll()
+      });
+    } else {
+      this.userService.deactivate(id).subscribe({
+        next: () => this.userService.getAll()
+      });
+    }
+  }
 }
