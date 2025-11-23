@@ -129,3 +129,11 @@ export interface IUsuarioLogro {
   logro: ILogro;
   fechaDesbloqueo: string; 
 }
+
+export interface IRankingUser {
+  userId: number;
+  name: string;
+  lastname: string;
+  totalVehiculos: number;
+  totalLogros: number;
+}
