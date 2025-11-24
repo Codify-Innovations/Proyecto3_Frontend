@@ -6,6 +6,7 @@ import {
   OnInit,
   ViewChild,
   inject,
+  effect
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
@@ -15,11 +16,18 @@ import { VehicleCustomizationService } from '../../pages/features/vehicle-3D/ser
 import { UserCarViewerComponent } from '../../pages/features/vehicle-3D/user-car-viewer/user-car-viewer.component';
 import { VehicleService } from '../../core/services/vehicle.service';
 import { IVehiculo } from '../../core/interfaces';
+import { AchievementService } from '../../core/services/achievement.service';
+import { AchievementListComponent } from '../../components/achievements/achievements-list/achievement-list.component';
 
 @Component({
   selector: 'app-user-profile',
   standalone: true,
-  imports: [CommonModule, UserCarViewerComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    UserCarViewerComponent,
+    AchievementListComponent,
+  ],
   templateUrl: './user-profile.component.html',
 })
 export class UserProfileComponent implements OnInit, AfterViewInit, OnDestroy {
@@ -30,10 +38,15 @@ export class UserProfileComponent implements OnInit, AfterViewInit, OnDestroy {
   private alertService = inject(AlertService);
   private vehicleService = inject(VehicleService);
   private router = inject(Router);
+  private achievementService = inject(AchievementService);
 
   user: any = null;
   userCar: any = null;
   isLoading = true;
+
+  achievements = this.achievementService.achievements$;
+  loading = this.achievementService.loading$;
+  error = this.achievementService.error$;
 
   badges = [
     { name: 'Classic Collector' },
@@ -114,6 +127,12 @@ export class UserProfileComponent implements OnInit, AfterViewInit, OnDestroy {
   private loadMoreVehicles(): void {
     if (!this.user?.id || this.isVehiclesLoading || !this.hasMoreVehicles) {
       return;
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e: any) => (this.selectedImage = e.target.result);
+      reader.readAsDataURL(file);
     }
 
     this.isVehiclesLoading = true;

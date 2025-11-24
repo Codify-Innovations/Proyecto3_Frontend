@@ -2,6 +2,7 @@ import { Component, inject, Input, ChangeDetectorRef, HostListener } from '@angu
 import { CommonModule } from '@angular/common';
 import { RouterModule, Router } from '@angular/router';
 import { AuthService } from '../../../pages/features/auth/auth.service';
+import { IRoleType } from '../../../core/interfaces';
 
 @Component({
   selector: 'app-navbar-client',
@@ -11,29 +12,60 @@ import { AuthService } from '../../../pages/features/auth/auth.service';
   styleUrls: ['./navbar-client.component.scss']
 })
 export class NavbarClientComponent {
-  @Input() AutoCutLogo: string = ''; //Receives the logo parameter
+  @Input() AutoCutLogo: string = '';
+
   isMenuOpen: boolean = false;
   isProfileDropdownOpen: boolean = false;
+
   private authService = inject(AuthService);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
+
+  public menuItems: { label: string; route: string }[] = [];
+
+  constructor() {
+    this.buildMenu();
+  }
+
+  private buildMenu() {
+    const user = this.authService.getUser();
+    const authorities = user?.authorities?.map(a => a.authority) || [];
+    const isSuperAdmin = authorities.includes(IRoleType.superAdmin);
+
+    if (isSuperAdmin) {
+      // MENU PARA SUPER ADMIN
+      this.menuItems = [
+        { label: 'Dashboard', route: '/app/dashboard' },
+        { label: 'Gestión de usuarios', route: '/app/users' },
+        { label: 'Reportes', route: '/app/reports' },
+        { label: 'Settings', route: '/app/settings' },
+      ];
+    } else {
+      // MENU PARA USUARIOS NORMALES
+      this.menuItems = [
+        { label: 'Dashboard', route: '/app/dashboard' },
+        { label: 'AI Detection', route: '/app/ai-detection' },
+        { label: 'Editor', route: '/app/video-editor' },
+        { label: 'AI Generate', route: '/app/ia/generator' },
+        { label: 'AI QA', route: '/app/analyze-media' },
+        { label: 'Smart Share', route: '/app/smart-share' },
+        { label: 'Achievements', route: '/app/achievements' },
+        { label: 'Public', route: '/app/public' },
+      ];
+    }
+  }
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: MouseEvent): void {
     const target = event.target as HTMLElement;
     const clickedInside = target.closest('.profile-dropdown-container');
-    
-    if (!clickedInside && this.isProfileDropdownOpen) {
+    if (!clickedInside) {
       this.isProfileDropdownOpen = false;
       this.cdr.detectChanges();
     }
   }
 
-  toggleMenu(): void {
-    this.isMenuOpen = !this.isMenuOpen;
-    this.cdr.detectChanges();
-  }
-
+  
   toggleProfileDropdown(event: Event): void {
     event.stopPropagation();
     this.isProfileDropdownOpen = !this.isProfileDropdownOpen;

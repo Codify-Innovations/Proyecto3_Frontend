@@ -116,3 +116,28 @@ export interface IVehiculo {
   imagenHotWheels?: string;
   color: string
 }
+export interface ILogro {
+  id: number;
+  nombre: string;
+  descripcion: string;
+  categoria: string | null;
+  criterio: string;
+  cantidadRequerida: number;
+  activo: boolean;
+  iconoUrl: string | null;
+}
+
+export interface IUsuarioLogro {
+  id: number;
+  usuario: number;
+  logro: ILogro;
+  fechaDesbloqueo: string; 
+}
+
+export interface IRankingUser {
+  userId: number;
+  name: string;
+  lastname: string;
+  totalVehiculos: number;
+  totalLogros: number;
+}
