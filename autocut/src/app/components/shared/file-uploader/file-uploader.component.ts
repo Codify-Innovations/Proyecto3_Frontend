@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, effect, EventEmitter, inject, Input, Output } from '@angular/core';
-import { validateFiles } from '../../../core/utils/file-validator';
+import { validateFiles, validateSingleImage } from '../../../core/utils/file-validator';
 import { AlertService } from '../../../core/services/alert.service';
 import { UploaderService } from '../../../core/services/cloudinary/uploader.service';
 
@@ -39,6 +39,8 @@ export class FileUploaderComponent {
       if (this.uploaderService.uploaded$()) {
         this.fileNames = [];
         this.selectedFiles = [];
+        this.uploaderService.uploadProgress.set(0);
+
       }
     });
   }
@@ -46,7 +48,11 @@ export class FileUploaderComponent {
   onFileChange(event: any) {
     const input = event.target as HTMLInputElement;
     const files = input.files;
+
     this.uploaderService.uploaded$.set(false);
+    this.uploaderService.uploadProgress.set(0);
+
+
     if (!files || files.length === 0) return;
     console.log(files);
     console.log(this.selectedFiles);
@@ -58,6 +64,11 @@ export class FileUploaderComponent {
       return;
     }
 
+    if (this.fileValidatorFn === validateSingleImage) {
+      this.selectedFiles = [];
+      this.fileNames = [];
+    }
+
     filesArray.forEach((file) => {
       this.selectedFiles.push(file);
       this.fileNames.push(file.name);
@@ -67,7 +78,10 @@ export class FileUploaderComponent {
   onDrop(event: DragEvent) {
     event.preventDefault();
     this.dragging = false;
+
     this.uploaderService.uploaded$.set(false);
+    this.uploaderService.uploadProgress.set(0);
+
     const files = event.dataTransfer?.files;
     if (!files || files.length === 0) return;
     const filesArray = Array.from(files);
@@ -104,6 +118,7 @@ export class FileUploaderComponent {
       );
       return;
     }
+    this.uploaderService.uploadProgress.set(0);
     this.filesSelected.emit(this.selectedFiles);
   }
 }
