@@ -36,15 +36,6 @@ export class UploaderService extends BaseService<any> {
         if (response.data && Array.isArray(response.data)) {
           this.urlSignal.set(response.data);
         }
-
-        this.alertService.displayAlert(
-          'success',
-          'Archivos subidos correctamente',
-          'center',
-          'top',
-          ['success-snackbar']
-        );
-
         this.isUploading.set(false);
         this.uploaded.set(true);
       },
