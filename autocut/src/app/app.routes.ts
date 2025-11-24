@@ -3,65 +3,76 @@ import { LoginComponent } from './pages/features/auth/login/login.component';
 import { AppLayoutComponent } from './components/app-layout/app-layout.component';
 import { SignUpComponent } from './pages/features/auth/sign-up/signup.component';
 import { UsersComponent } from './pages/features/users/users.component';
-import { AuthGuard } from '././core/guards/auth.guard';
+import { AuthGuard } from './core/guards/auth.guard';
 import { AccessDeniedComponent } from './pages/features/auth/access-denied/access-denied.component';
-import { AdminRoleGuard } from '././core/guards/admin-role.guard';
-import { GuestGuard } from '././core/guards/guest.guard';
+import { AdminRoleGuard } from './core/guards/admin-role.guard';
+import { GuestGuard } from './core/guards/guest.guard';
 import { IRoleType } from './core/interfaces';
 import { DashboardComponent } from './pages/features/dashboard/dashboard.component';
 import { LandingPageComponent } from './pages/features/landing/landing-page/landing-page.component';
 import { LandingAutocutPage } from './pages/features/landing/landing-autocut/page/landing.page';
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
 import { UserSettingsComponent } from './pages/user-settings/user-settings.component';
-import { AnalyzeMediaComponent } from './pages/analyze-media/analyze-media.component'; // 🧠 Nuevo componente IA
-import {IaGeneratorComponent} from './pages/features/ia-generator/ia-generator.component'
+import { AnalyzeMediaComponent } from './pages/analyze-media/analyze-media.component';
+import { IaGeneratorComponent } from './pages/features/ia-generator/ia-generator.component';
 import { VideoEditorComponent } from './pages/features/video-editor/video-editor';
 import { VehicleIdentificationComponent } from './pages/features/ai-identification/vehicle-identification/vehicle-identification.component';
 import { VehicleCustomizerPage } from './pages/features/vehicle-3D/vehicle-customizer/vehicle-customizer.page';
-
+import { PublicUsersComponent } from './pages/public-users/public-users.component';
 
 export const routes: Routes = [
+
   {
     path: '',
     component: LandingPageComponent,
   },
+
   {
     path: 'landing',
     component: LandingPageComponent,
   },
+
   {
     path: 'login',
     component: LoginComponent,
     canActivate: [GuestGuard],
   },
+
   {
     path: 'signup',
     component: SignUpComponent,
     canActivate: [GuestGuard],
   },
+
   {
     path: 'access-denied',
     component: AccessDeniedComponent,
   },
+
   {
     path: '',
     redirectTo: 'landing-autocut',
     pathMatch: 'full',
   },
+
   {
     path: 'landing-autocut',
     component: LandingAutocutPage,
   },
+
+ 
   {
     path: 'app',
     component: AppLayoutComponent,
     canActivate: [AuthGuard],
     children: [
+
       {
         path: '',
         redirectTo: 'dashboard',
         pathMatch: 'full',
       },
+
       {
         path: 'dashboard',
         component: DashboardComponent,
@@ -71,6 +82,52 @@ export const routes: Routes = [
           showInSidebar: true,
         },
       },
+
+ 
+      {
+        path: 'public-users',
+        component: PublicUsersComponent,
+        data: {
+          authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
+          name: 'Explorar Usuarios',
+          showInSidebar: true,
+        },
+      },
+
+ 
+      {
+        path: 'profile/settings',
+        component: UserSettingsComponent,
+        data: {
+          authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
+          name: 'Configuración de Perfil',
+          showInSidebar: false,
+        },
+      },
+
+      {
+        path: 'profile',
+        component: UserProfileComponent,
+        data: {
+          authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
+          name: 'Mi Perfil',
+          showInSidebar: false,
+        },
+      },
+
+      
+      {
+        path: 'profile/:username',
+        loadComponent: () =>
+          import('./pages/public-profile/public-profile.component')
+            .then(m => m.PublicProfileComponent),
+        data: {
+          authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
+          showInSidebar: false,
+        },
+      },
+
+     
       {
         path: 'analyze-media',
         component: AnalyzeMediaComponent,
@@ -80,15 +137,17 @@ export const routes: Routes = [
           showInSidebar: true,
         },
       },
-            {
+
+      {
         path: 'vehicle-3d',
         component: VehicleCustomizerPage,
         data: {
           authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
-                  name: 'Personalizador 3D',
-                  showInSidebar: true,
+          name: 'Personalizador 3D',
+          showInSidebar: true,
         },
       },
+
       {
         path: 'users',
         component: UsersComponent,
@@ -99,53 +158,37 @@ export const routes: Routes = [
           showInSidebar: true,
         },
       },
-      {
-        path: 'profile',
-        component: UserProfileComponent,
-        data: {
-          authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
-          name: 'Perfil',
-          showInSidebar: true,
-        },
-      },
-      {
-        path: 'profile/settings',
-        component: UserSettingsComponent,
-        data: {
-          authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
-          name: 'Configuración de Perfil',
-          showInSidebar: false,
-        },
-      },
+
       {
         path: 'ia/generator',
         component: IaGeneratorComponent,
         data: {
           authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
-          name: 'Generador de Video con IA',
           showInSidebar: false,
         },
       },
+
       {
         path: 'video-editor',
         component: VideoEditorComponent,
         data: {
           authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
-          name: 'Editor de Video',
           showInSidebar: false,
         },
       },
-       {
+
+      {
         path: 'ai-detection',
         component: VehicleIdentificationComponent,
         data: {
           authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
-          name: 'Identificacion con IA',
           showInSidebar: true,
         },
-      },      
+      },
+
     ],
   },
+
   {
     path: '**',
     loadComponent: () =>
