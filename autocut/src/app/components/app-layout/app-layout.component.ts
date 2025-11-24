@@ -4,6 +4,7 @@ import { NavbarClientComponent } from '../shared/navbar-client/navbar-client.com
 import { CommonModule } from '@angular/common';
 import { LayoutService } from '../../core/services/layout.service';
 import { SvgIconComponent } from '../svg-icon/svg-icon.component';
+import { NotificationManagerComponent } from '../../core/components/notification-manager/notification-manager.component';
 
 @Component({
   selector: 'app-layout',
@@ -12,6 +13,7 @@ import { SvgIconComponent } from '../svg-icon/svg-icon.component';
     CommonModule,
     RouterOutlet,
     NavbarClientComponent,
+    NotificationManagerComponent
   ],
   templateUrl: './app-layout.component.html',
   styleUrls: ['./app-layout.component.scss']
@@ -23,4 +25,6 @@ export class AppLayoutComponent {
   constructor(public layoutService: LayoutService) {
     this.layoutService.title.subscribe((title) => (this.title = title));
   }
+
+  
 }
