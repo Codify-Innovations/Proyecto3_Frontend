@@ -78,21 +78,25 @@ export const routes: Routes = [
         },
       },
       {
-        path: 'profile/settings',
-        component: UserSettingsComponent,
-        data: {
-          authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
-          name: 'Configuración de Perfil',
-          showInSidebar: false,
-      {
-        path: 'vehicle-3d',
-        component: VehicleCustomizerPage,
-        data: {
-          authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
-          name: 'Personalizador 3D',
-          showInSidebar: true,
-        },
-      },
+  path: 'profile/settings',
+  component: UserSettingsComponent,
+  data: {
+    authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
+    name: 'Configuración de Perfil',
+    showInSidebar: false,
+  },
+},
+{
+  path: 'vehicle-3d',
+  component: VehicleCustomizerPage,
+  data: {
+    authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
+    name: 'Personalizador 3D',
+    showInSidebar: true,
+  },
+},
+
+    
       {
         path: 'profile',
         component: UserProfileComponent,
