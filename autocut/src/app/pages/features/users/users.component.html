@@ -1,35 +1,75 @@
 @defer {
   <div class="row p-4">
-    <div class="col-12">
+
+    <div class="col-12 mb-2">
       <div class="d-flex justify-content-between align-items-center">
-        <h2>Orders</h2>
-        <button (click)="modalService.displayModal('md', addUsersModal)" type="button" class="btn btn-primary"><i class="fas fa-plus"></i></button>
+        <h2>Users</h2>
       </div>
     </div>
+
+    <div class="d-flex justify-content-center w-100">
+      <div class="row mb-4" style="max-width: 900px; width: 100%;">
+
+        <div class="col-md-4">
+          <input
+            type="text"
+            class="form-control"
+            placeholder="Buscar por nombre"
+            [(ngModel)]="filters.name"
+            (input)="applyFilters()"
+          />
+        </div>
+
+        <div class="col-md-4">
+          <input
+            type="email"
+            class="form-control"
+            placeholder="Buscar por email"
+            [(ngModel)]="filters.email"
+            (input)="applyFilters()"
+          />
+        </div>
+
+        <div class="col-md-4">
+          <select
+            class="form-control"
+            [(ngModel)]="filters.active"
+            (change)="applyFilters()"
+          >
+            <option value="">Todos los estados</option>
+            <option value="true">Activo</option>
+            <option value="false">Inactivo</option>
+          </select>
+        </div>
+
+      </div>
+    </div>
+
     <div class="col-12">
       <app-user-list
-        (callModalAction)="callEdition($event)"
-        (callDeleteAction)="userService.delete($event)"
-        [users]="userService.users$()"
-      />
-      @if(userService.users$().length) {
-        <app-pagination
-          [service]="userService"
-        />
+      [users]="userService.users$()"
+      (callModalAction)="callEdition($event)"
+      (callDeleteAction)="deleteUser($event)">
+      </app-user-list>
+    
+
+
+      @if (userService.users$().length) {
+        <app-pagination [service]="userService" />
       }
     </div>
+
   </div>
-} @loading (minimum 1.5s){
+} @loading (minimum 1.5s) {
   <app-loader></app-loader>
 }
 
 <ng-template #addUsersModal>
-  <app-modal
-    [hideFooter]="true"
-  >
+  <app-modal [hideFooter]="true">
     <div>
       <app-user-form
         [userForm]="userForm"
+        [isEditMode]="isEditMode"
         (callSaveMethod)="saveUser($event)"
         (callUpdateMethod)="updateUser($event)"
       />
