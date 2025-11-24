@@ -21,58 +21,43 @@ import { VehicleCustomizerPage } from './pages/features/vehicle-3D/vehicle-custo
 import { PublicUsersComponent } from './pages/public-users/public-users.component';
 
 export const routes: Routes = [
-
-  {
-    path: '',
-    component: LandingPageComponent,
-  },
-
-  {
-    path: 'landing',
-    component: LandingPageComponent,
-  },
-
-  {
-    path: 'login',
-    component: LoginComponent,
-    canActivate: [GuestGuard],
-  },
-
-  {
-    path: 'signup',
-    component: SignUpComponent,
-    canActivate: [GuestGuard],
-  },
-
-  {
-    path: 'access-denied',
-    component: AccessDeniedComponent,
-  },
-
   {
     path: '',
     redirectTo: 'landing-autocut',
     pathMatch: 'full',
   },
-
+  {
+    path: 'landing',
+    component: LandingPageComponent,
+  },
+  {
+    path: 'login',
+    component: LoginComponent,
+    canActivate: [GuestGuard],
+  },
+  {
+    path: 'signup',
+    component: SignUpComponent,
+    canActivate: [GuestGuard],
+  },
+  {
+    path: 'access-denied',
+    component: AccessDeniedComponent,
+  },
   {
     path: 'landing-autocut',
     component: LandingAutocutPage,
   },
-
- 
   {
     path: 'app',
     component: AppLayoutComponent,
     canActivate: [AuthGuard],
     children: [
-
       {
         path: '',
         redirectTo: 'dashboard',
         pathMatch: 'full',
       },
-
       {
         path: 'dashboard',
         component: DashboardComponent,
@@ -82,8 +67,6 @@ export const routes: Routes = [
           showInSidebar: true,
         },
       },
-
- 
       {
         path: 'public-users',
         component: PublicUsersComponent,
@@ -93,8 +76,6 @@ export const routes: Routes = [
           showInSidebar: true,
         },
       },
-
- 
       {
         path: 'profile/settings',
         component: UserSettingsComponent,
@@ -104,7 +85,6 @@ export const routes: Routes = [
           showInSidebar: false,
         },
       },
-
       {
         path: 'profile',
         component: UserProfileComponent,
@@ -114,20 +94,17 @@ export const routes: Routes = [
           showInSidebar: false,
         },
       },
-
-      
       {
         path: 'profile/:username',
         loadComponent: () =>
-          import('./pages/public-profile/public-profile.component')
-            .then(m => m.PublicProfileComponent),
+          import('./pages/public-profile/public-profile.component').then(
+            (m) => m.PublicProfileComponent
+          ),
         data: {
           authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
           showInSidebar: false,
         },
       },
-
-     
       {
         path: 'analyze-media',
         component: AnalyzeMediaComponent,
@@ -137,7 +114,6 @@ export const routes: Routes = [
           showInSidebar: true,
         },
       },
-
       {
         path: 'vehicle-3d',
         component: VehicleCustomizerPage,
@@ -147,7 +123,6 @@ export const routes: Routes = [
           showInSidebar: true,
         },
       },
-
       {
         path: 'users',
         component: UsersComponent,
@@ -158,7 +133,6 @@ export const routes: Routes = [
           showInSidebar: true,
         },
       },
-
       {
         path: 'ia/generator',
         component: IaGeneratorComponent,
@@ -167,7 +141,6 @@ export const routes: Routes = [
           showInSidebar: false,
         },
       },
-
       {
         path: 'video-editor',
         component: VideoEditorComponent,
@@ -176,7 +149,6 @@ export const routes: Routes = [
           showInSidebar: false,
         },
       },
-
       {
         path: 'ai-detection',
         component: VehicleIdentificationComponent,
@@ -185,10 +157,8 @@ export const routes: Routes = [
           showInSidebar: true,
         },
       },
-
     ],
   },
-
   {
     path: '**',
     loadComponent: () =>
