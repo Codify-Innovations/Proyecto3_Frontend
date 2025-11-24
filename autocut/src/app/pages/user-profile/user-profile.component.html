@@ -93,19 +93,47 @@
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-      <div
-        class="border border-[#E0E0E0] rounded-xl bg-white shadow-sm hover:shadow-md transition p-4 flex flex-col items-center"
-        *ngFor="let car of cars">
-        <div class="w-48 h-36 bg-[#F5F5F5] rounded-md mb-4 flex items-center justify-center">
-          <img *ngIf="car.image" [src]="car.image" alt="Car" class="w-full h-full object-cover rounded-md" />
-          <span *ngIf="!car.image" class="text-gray-400 text-sm">
-            Imagen del modelo
-          </span>
+      <ng-container *ngIf="userVehicles.length; else emptyState">
+        <div
+          class="border border-[#E0E0E0] rounded-xl bg-white shadow-sm hover:shadow-md transition p-4 flex flex-col items-center"
+          *ngFor="let car of userVehicles; trackBy: trackByVehicle"
+        >
+          <div
+            class="w-48 h-36 bg-[#F5F5F5] rounded-md mb-4 flex items-center justify-center overflow-hidden"
+          >
+            <img
+              *ngIf="car.imagenHotWheels || car.imagenURL"
+              [src]="car.imagenHotWheels || car.imagenURL"
+              [alt]="car.modelo"
+              class="w-full h-full object-cover rounded-md"
+            />
+            <span
+              *ngIf="!car.imagenHotWheels && !car.imagenURL"
+              class="text-gray-400 text-sm"
+            >
+              Sin imagen disponible
+            </span>
+          </div>
+          <p class="font-semibold text-[#1C1C1C]">{{ car.modelo }}</p>
+          <p class="text-[#757575] text-sm">{{ car.marca }}</p>
+          <p class="text-[#757575] text-sm">Año {{ car.anio }}</p>
         </div>
-        <p class="font-semibold text-[#1C1C1C]">{{ car.model }}</p>
-        <p class="text-[#757575] text-sm">{{ car.brand }}</p>
-        <p class="text-[#757575] text-sm">{{ car.year }}</p>
-      </div>
+      </ng-container>
+
+      <ng-template #emptyState>
+        <div
+          class="col-span-full text-center text-[#757575] text-sm"
+          *ngIf="hasLoadedVehicles && !isVehiclesLoading"
+        >
+          Aún no has agregado vehículos a tu colección.
+        </div>
+      </ng-template>
     </div>
+
+    <div class="flex justify-center mt-6" *ngIf="isVehiclesLoading">
+      <span class="h-6 w-6 border-2 border-[#880e0e] border-t-transparent rounded-full animate-spin"></span>
+    </div>
+
+    <div #vehiclesAnchor class="w-full h-1"></div>
   </div>
 </div>
