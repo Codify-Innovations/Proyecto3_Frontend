@@ -1,4 +1,4 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, effect, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { FormsModule } from '@angular/forms';
@@ -6,11 +6,18 @@ import { UserService } from '../../pages/features/users/user.service';
 import { AlertService } from '../../core/services/alert.service';
 import { VehicleCustomizationService } from '../../pages/features/vehicle-3D/services/vehicle-customization.service';
 import { UserCarViewerComponent } from '../../pages/features/vehicle-3D/user-car-viewer/user-car-viewer.component';
+import { AchievementService } from '../../core/services/achievement.service';
+import { AchievementListComponent } from '../../components/achievements/achievements-list/achievement-list.component';
 
 @Component({
   selector: 'app-user-profile',
   standalone: true,
-  imports: [CommonModule, FormsModule, UserCarViewerComponent],
+  imports: [
+    CommonModule,
+    FormsModule,
+    UserCarViewerComponent,
+    AchievementListComponent,
+  ],
   templateUrl: './user-profile.component.html',
 })
 export class UserProfileComponent implements OnInit {
@@ -18,10 +25,15 @@ export class UserProfileComponent implements OnInit {
   private customizationService = inject(VehicleCustomizationService);
   private alertService = inject(AlertService);
   private router = inject(Router);
+  private achievementService = inject(AchievementService);
 
   user: any = null;
   userCar: any = null;
   isLoading = true;
+
+  achievements = this.achievementService.achievements$;
+  loading = this.achievementService.loading$;
+  error = this.achievementService.error$;
 
   badges = [
     { name: 'Classic Collector' },
@@ -89,7 +101,6 @@ export class UserProfileComponent implements OnInit {
     this.router.navigate(['/app/ai-detection']);
   }
 
-
   onFileSelected(event: any): void {
     const file = event.target.files[0];
     if (file) {
@@ -98,14 +109,4 @@ export class UserProfileComponent implements OnInit {
       reader.readAsDataURL(file);
     }
   }
-
-  // addCar(): void {
-  //   this.cars.push({
-  //     model: this.newCar.model,
-  //     brand: this.newCar.brand,
-  //     year: this.newCar.year,
-  //     image: this.selectedImage || '',
-  //   });
-  //   this.closeModal();
-  // }
 }

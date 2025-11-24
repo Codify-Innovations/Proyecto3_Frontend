@@ -18,7 +18,7 @@ import { IaGeneratorComponent } from './pages/features/ia-generator/ia-generator
 import { VideoEditorComponent } from './pages/features/video-editor/video-editor';
 import { VehicleIdentificationComponent } from './pages/features/ai-identification/vehicle-identification/vehicle-identification.component';
 import { VehicleCustomizerPage } from './pages/features/vehicle-3D/vehicle-customizer/vehicle-customizer.page';
-
+import { AchievementsComponent } from './pages/features/achievements/achievements.component';
 
 export const routes: Routes = [
   {
@@ -137,6 +137,15 @@ export const routes: Routes = [
         data: {
           authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
           name: 'Identificación con IA',
+          showInSidebar: true,
+        },
+      },
+      {
+        path: 'achievements',
+        component: AchievementsComponent,
+        data: {
+          authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
+          name: 'Logros',
           showInSidebar: true,
         },
       },
