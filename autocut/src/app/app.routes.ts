@@ -3,22 +3,22 @@ import { LoginComponent } from './pages/features/auth/login/login.component';
 import { AppLayoutComponent } from './components/app-layout/app-layout.component';
 import { SignUpComponent } from './pages/features/auth/sign-up/signup.component';
 import { UsersComponent } from './pages/features/users/users.component';
-import { AuthGuard } from '././core/guards/auth.guard';
+import { AuthGuard } from './core/guards/auth.guard';
 import { AccessDeniedComponent } from './pages/features/auth/access-denied/access-denied.component';
-import { AdminRoleGuard } from '././core/guards/admin-role.guard';
-import { GuestGuard } from '././core/guards/guest.guard';
+import { AdminRoleGuard } from './core/guards/admin-role.guard';
+import { GuestGuard } from './core/guards/guest.guard';
 import { IRoleType } from './core/interfaces';
 import { DashboardComponent } from './pages/features/dashboard/dashboard.component';
 import { LandingPageComponent } from './pages/features/landing/landing-page/landing-page.component';
 import { LandingAutocutPage } from './pages/features/landing/landing-autocut/page/landing.page';
 import { UserProfileComponent } from './pages/user-profile/user-profile.component';
 import { UserSettingsComponent } from './pages/user-settings/user-settings.component';
-import { AnalyzeMediaComponent } from './pages/analyze-media/analyze-media.component'; // 🧠 Nuevo componente IA
-import {IaGeneratorComponent} from './pages/features/ia-generator/ia-generator.component'
+import { AnalyzeMediaComponent } from './pages/analyze-media/analyze-media.component';
+import { IaGeneratorComponent } from './pages/features/ia-generator/ia-generator.component';
 import { VideoEditorComponent } from './pages/features/video-editor/video-editor';
 import { VehicleIdentificationComponent } from './pages/features/ai-identification/vehicle-identification/vehicle-identification.component';
 import { VehicleCustomizerPage } from './pages/features/vehicle-3D/vehicle-customizer/vehicle-customizer.page';
-
+import { AchievementsComponent } from './pages/features/achievements/achievements.component';
 
 export const routes: Routes = [
   {
@@ -58,11 +58,7 @@ export const routes: Routes = [
     canActivate: [AuthGuard],
     children: [
       {
-        path: '',
-        redirectTo: 'dashboard',
-        pathMatch: 'full',
-      },
-      {
+
         path: 'dashboard',
         component: DashboardComponent,
         data: {
@@ -80,13 +76,13 @@ export const routes: Routes = [
           showInSidebar: true,
         },
       },
-            {
+      {
         path: 'vehicle-3d',
         component: VehicleCustomizerPage,
         data: {
           authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
-                  name: 'Personalizador 3D',
-                  showInSidebar: true,
+          name: 'Personalizador 3D',
+          showInSidebar: true,
         },
       },
       {
@@ -135,15 +131,24 @@ export const routes: Routes = [
           showInSidebar: false,
         },
       },
-       {
+      {
         path: 'ai-detection',
         component: VehicleIdentificationComponent,
         data: {
           authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
-          name: 'Identificacion con IA',
+          name: 'Identificación con IA',
           showInSidebar: true,
         },
-      },      
+      },
+      {
+        path: 'achievements',
+        component: AchievementsComponent,
+        data: {
+          authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
+          name: 'Logros',
+          showInSidebar: true,
+        },
+      },
     ],
   },
   {

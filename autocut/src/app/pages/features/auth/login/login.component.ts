@@ -6,6 +6,7 @@ import { AuthService } from '../../../../pages/features/auth/auth.service';
 import { environment } from '../../../../../environments/environment.development';
 import { AlertService } from '../../../../core/services/alert.service';
 import { finalize } from 'rxjs';
+import { IRoleType } from '../../../../core/interfaces';
 
 declare const google: any;
 
@@ -21,7 +22,6 @@ export class LoginComponent implements AfterViewInit {
   private router = inject(Router);
   private alertService = inject(AlertService);
 
-  public loginError = '';
   public loading = false;
 
   @ViewChild('email') emailModel!: NgModel;
@@ -32,9 +32,6 @@ export class LoginComponent implements AfterViewInit {
     password: '',
   };
 
-  // =====================================================
-  // LOGIN TRADICIONAL
-  // =====================================================
   public handleLogin(frm: NgForm): void {
     if (frm.invalid || this.loading) {
       if (!this.emailModel.valid) this.emailModel.control.markAsTouched();
@@ -42,25 +39,33 @@ export class LoginComponent implements AfterViewInit {
       return;
     }
 
-    this.loading = true; 
+    this.loading = true;
 
     this.authService
       .login(this.loginForm)
       .pipe(finalize(() => (this.loading = false)))
       .subscribe({
-        next: () => {
-          this.router.navigateByUrl('/app/dashboard');
-        },
+        next: () => this.redirectByRole(),
         error: (err: any) => {
-          const msg = err.error?.message || 'Error al iniciar sesión.';
-          this.alertService.error(msg);
+          const rawMessage =
+            err.error?.message ||
+            err.error ||
+            '';
+
+          let finalMsg = 'Error al iniciar sesión.';
+
+          // Detectar mensajes del backend
+          if (rawMessage.toLowerCase().includes('inactiva')) {
+            finalMsg = 'Tu cuenta está inactiva. Contacta al administrador.';
+          } else if (rawMessage.toLowerCase().includes('credenciales')) {
+            finalMsg = 'Credenciales inválidas. Verifica tus datos.';
+          }
+
+          this.alertService.error(finalMsg);
         },
       });
   }
 
-  // =====================================================
-  // LOGIN CON GOOGLE
-  // =====================================================
   private handleGoogleResponse(response: any): void {
     const idToken = response.credential;
     if (!idToken || this.loading) return;
@@ -71,17 +76,27 @@ export class LoginComponent implements AfterViewInit {
       .loginWithGoogle(idToken)
       .pipe(finalize(() => (this.loading = false)))
       .subscribe({
-        next: () => this.router.navigateByUrl('/app/dashboard'),
-        error: (err: any) => {
-          const msg = err.error?.message || 'No se pudo iniciar sesión con Google.';
-          this.alertService.error(msg);
+        next: () => this.redirectByRole(),
+        error: () => {
+          this.alertService.error(
+            'No fue posible iniciar sesión con Google.'
+          );
         },
       });
   }
 
-  // =====================================================
-  // INICIALIZAR GOOGLE LOGIN
-  // =====================================================
+  private redirectByRole(): void {
+    const user = this.authService.getUser();
+    const authorities = user?.authorities?.map(a => a.authority) || [];
+
+    if (authorities.includes(IRoleType.superAdmin)) {
+      this.router.navigateByUrl('/app/users');
+      return;
+    }
+
+    this.router.navigateByUrl('/app/dashboard');
+  }
+
   ngAfterViewInit(): void {
     google.accounts.id.initialize({
       client_id: environment.googleClientId,
