@@ -9,6 +9,41 @@
       </div>
 
       <div class="hidden md:flex items-center space-x-6 gap-10">
+        <button (click)="navigateTo('/app/dashboard')" 
+        class="text-[#424242] hover:text-[#1C1C1C] transition-colors">
+          Dashboard
+        </button>
+        <button (click)="navigateTo('/app/ai-detection')" 
+                class="text-[#424242] hover:text-[#1C1C1C] transition-colors">
+          AI Detection
+        </button>
+        <button (click)="navigateTo('/app/video-editor')" 
+                class="text-[#424242] hover:text-[#1C1C1C] transition-colors">
+          Editor
+        </button>
+        <button (click)="navigateTo('/app/ia/generator')" 
+                class="text-[#424242] hover:text-[#1C1C1C] transition-colors">
+          AI Generate
+        </button>
+        <button (click)="navigateTo('/app/analyze-media')" 
+                class="text-[#424242] hover:text-[#1C1C1C] transition-colors">
+          AI QA
+        </button>
+        <button (click)="navigateTo('/app/smart-share')" 
+                class="text-[#424242] hover:text-[#1C1C1C] transition-colors">
+          Smart Share
+        </button>
+        <button (click)="navigateTo('/app/achievements')" 
+                class="text-[#424242] hover:text-[#1C1C1C] transition-colors">
+          Logros
+        </button>
+
+  
+        <button (click)="navigateTo('/app/public-users')" 
+        class="text-[#424242] hover:text-[#1C1C1C] transition-colors">
+  Public Users
+</button>
+
         <button 
           *ngFor="let item of menuItems"
           (click)="navigateTo(item.route)"
