@@ -49,7 +49,7 @@ export class NavbarClientComponent {
         { label: 'AI Generate', route: '/app/ia/generator' },
         { label: 'AI QA', route: '/app/analyze-media' },
         { label: 'Smart Share', route: '/app/smart-share' },
-        { label: 'Badges', route: '/app/badges' },
+        { label: 'Achievements', route: '/app/achievements' },
         { label: 'Public', route: '/app/public' },
       ];
     }
