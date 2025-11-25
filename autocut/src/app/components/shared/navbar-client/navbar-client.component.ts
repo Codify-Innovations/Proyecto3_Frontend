@@ -48,7 +48,6 @@ export class NavbarClientComponent {
         { label: 'Editor', route: '/app/video-editor' },
         { label: 'AI Generate', route: '/app/ia/generator' },
         { label: 'AI QA', route: '/app/analyze-media' },
-        { label: 'Smart Share', route: '/app/smart-share' },
         { label: 'Achievements', route: '/app/achievements' },
         { label: 'Public Users', route: '/app/public-users' },
       ];
