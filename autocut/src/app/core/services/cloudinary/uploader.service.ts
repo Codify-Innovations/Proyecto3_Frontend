@@ -80,11 +80,6 @@ export class UploaderService extends BaseService<any> {
   });
 }
 
-        console.error('❌ Error en upload:', err);
-      },
-    });
-  }
-
   async uploadBlob(
     blob: Blob,
     folderName: string,

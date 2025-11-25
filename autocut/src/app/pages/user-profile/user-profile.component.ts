@@ -6,9 +6,10 @@ import {
   OnInit,
   ViewChild,
   inject,
-  effect
+  effect,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { UserService } from '../../pages/features/users/user.service';
 import { AlertService } from '../../core/services/alert.service';
@@ -42,6 +43,7 @@ export class UserProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
   user: any = null;
   userCar: any = null;
+  selectedImage: string | ArrayBuffer | null = null;
   isLoading = true;
 
   achievements = this.achievementService.achievements$;
@@ -127,12 +129,6 @@ export class UserProfileComponent implements OnInit, AfterViewInit, OnDestroy {
   private loadMoreVehicles(): void {
     if (!this.user?.id || this.isVehiclesLoading || !this.hasMoreVehicles) {
       return;
-  onFileSelected(event: any): void {
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e: any) => (this.selectedImage = e.target.result);
-      reader.readAsDataURL(file);
     }
 
     this.isVehiclesLoading = true;
@@ -166,6 +162,17 @@ export class UserProfileComponent implements OnInit, AfterViewInit, OnDestroy {
           this.isVehiclesLoading = false;
         },
       });
+  }
+
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (!file) {
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = (e: any) => (this.selectedImage = e.target.result);
+    reader.readAsDataURL(file);
   }
 
   private setupIntersectionObserver(): void {
