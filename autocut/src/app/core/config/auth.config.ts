@@ -1,5 +1,5 @@
 import { AuthConfig } from 'angular-oauth2-oidc';
-import { environment } from '../../../environments/environment.development';
+import { environment } from '../../../environments/environment.example';
 
 export const googleAuthConfig: AuthConfig = {
   issuer: 'https://accounts.google.com',

@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
 import { AlertService } from '../../core/services/alert.service';
 import { AnalyzeMediaService } from '../../core/services/analyze-media.service';
+import { ShareButtonComponent } from '../../components/shared/share/share-button.component';
 
 @Component({
   selector: 'app-analyze-media',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, ShareButtonComponent],
   templateUrl: './analyze-media.component.html',
 })
 export class AnalyzeMediaComponent {

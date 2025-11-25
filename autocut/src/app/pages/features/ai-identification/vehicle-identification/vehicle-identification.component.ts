@@ -11,6 +11,7 @@ import { VehicleCategory } from '../../../../core/enums/vehicle_category.enum';
 import { VehicleColor } from '../../../../core/enums/vehicle_color.enum';
 import { VehiclePreviewModalComponent } from '../vehicle-preview-modal/vehicle-preview-modal.component';
 import { TranslateColorPipe } from '../../../../core/pipes/translate-color.pipe';
+import { ShareButtonComponent } from '../../../../components/shared/share/share-button.component';
 import { HotWheelsImageService } from '../../../../core/services/ai/hot-wheels-image.service';
 
 @Component({
@@ -21,6 +22,7 @@ import { HotWheelsImageService } from '../../../../core/services/ai/hot-wheels-i
     FileUploaderComponent,
     VehiclePreviewModalComponent,
     TranslateColorPipe,
+    ShareButtonComponent   
   ],
   templateUrl: './vehicle-identification.component.html',
 })
