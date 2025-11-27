@@ -4,6 +4,7 @@ import { ReactiveFormsModule, FormBuilder, FormGroup } from '@angular/forms';
 import { AlertService } from '../../core/services/alert.service';
 import { AnalyzeMediaService } from '../../core/services/analyze-media.service';
 import { ShareButtonComponent } from '../../components/shared/share/share-button.component';
+import { AnalyzedContentService } from '../../core/services/analized-content.service';
 
 @Component({
   selector: 'app-analyze-media',
@@ -15,6 +16,7 @@ export class AnalyzeMediaComponent {
   private fb = inject(FormBuilder);
   private alertService = inject(AlertService);
   private aiService = inject(AnalyzeMediaService);
+  private analyzedContentService = inject(AnalyzedContentService);
 
   form!: FormGroup;
 
@@ -91,6 +93,12 @@ export class AnalyzeMediaComponent {
 
           const response = event.data;
           this.analysisResult = response.data;
+
+          this.analyzedContentService.saveAnalysis({
+            sourceUrl: "", // not provided by AI service and not uploaded anywhere
+            analysisType: response.data.type || "unknown",
+            score: response.data.score || 0
+          });
 
           this.loading = false;
           this.stepIndex = 2;
