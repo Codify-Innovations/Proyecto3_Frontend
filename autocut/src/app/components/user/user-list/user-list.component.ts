@@ -21,14 +21,31 @@ export class UserListComponent {
   @Output() callModalAction = new EventEmitter<IUser>();
   @Output() callDeleteAction = new EventEmitter<IUser>();
 
+  showDeleteModal = false;
+  userToDelete: IUser | null = null;
+
   constructor(private userService: UserService) {}
 
   openEdit(user: IUser) {
     this.callModalAction.emit(user);
   }
 
-  deleteUser(user: IUser) {
+  openDeleteModal(user: IUser) {
     this.callDeleteAction.emit(user);
+    this.userToDelete = user;
+    this.showDeleteModal = true;
+  }
+
+  cancelDelete() {
+    this.showDeleteModal = false;
+    this.userToDelete = null;
+  }
+
+  confirmDelete() {
+    if (!this.userToDelete) return;
+    this.userService.delete(this.userToDelete);
+    this.showDeleteModal = false;
+    this.userToDelete = null;
   }
 
   onStatusChange(user: IUser) {
