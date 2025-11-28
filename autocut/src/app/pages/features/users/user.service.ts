@@ -8,7 +8,9 @@ import { AlertService } from '../../../core/services/alert.service';
   providedIn: 'root',
 })
 export class UserService extends BaseService<IUser> {
+
   protected override source: string = 'users';
+
   private userListSignal = signal<IUser[]>([]);
 
   get users$() {
@@ -21,10 +23,11 @@ export class UserService extends BaseService<IUser> {
   };
 
   public totalItems: any = [];
+
   private alertService: AlertService = inject(AlertService);
 
-  getUserProfile(): Observable<IUser> {
-    return this.http.get<IUser>(`${this.source}/profile`);
+  getUserProfile(): Observable<any> {
+    return this.http.get<any>(`${this.source}/profile`);
   }
 
   updateUserProfile(user: IUser): Observable<any> {
@@ -33,6 +36,10 @@ export class UserService extends BaseService<IUser> {
 
   getUserCollections(): Observable<any[]> {
     return this.http.get<any[]>(`${this.source}/collections`);
+  }
+
+  getPublicProfile(valor: string): Observable<any> {
+    return this.http.get<any>(`${this.source}/explore-users/${valor}`);
   }
 
   getAll() {
@@ -60,7 +67,6 @@ export class UserService extends BaseService<IUser> {
       }
     });
   }
-
   save(user: IUser) {
     this.add(user).subscribe({
       next: (response: any) => {

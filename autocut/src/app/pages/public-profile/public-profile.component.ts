@@ -1,49 +1,26 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { UserService } from '../../core/services/user.service';
+import { UserProfileComponent } from '../user-profile/user-profile.component';
 import { CommonModule } from '@angular/common';
-import { UserCarViewerComponent } from '../../pages/features/vehicle-3D/user-car-viewer/user-car-viewer.component';
 
 @Component({
   selector: 'app-public-profile',
   standalone: true,
-  imports: [CommonModule, UserCarViewerComponent],
-  templateUrl: './public-profile.component.html',
+  imports: [CommonModule, UserProfileComponent],
+  template: `
+    <app-user-profile 
+        [isVisitor]="true"
+        [username]="username">
+    </app-user-profile>
+  `
 })
 export class PublicProfileComponent implements OnInit {
 
-  loading = signal<boolean>(true);
-  error = signal<string | null>(null);
-  profile = signal<any | null>(null);
+  username!: string;
 
-  constructor(
-    private route: ActivatedRoute,
-    private userService: UserService
-  ) {}
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    const username = this.route.snapshot.paramMap.get('username')!;
-
-    this.userService.getPublicProfile(username).subscribe({
-      next: (res: any) => {
-        const { allowed, profile } = res.data;
-
-        if (!allowed) {
-          this.error.set("Este usuario tiene un perfil privado.");
-          this.loading.set(false);
-          return;
-        }
-
-    
-        profile.username = profile.username ?? username;
-
-        this.profile.set(profile);
-        this.loading.set(false);
-      },
-      error: () => {
-        this.error.set("Error al cargar el perfil público.");
-        this.loading.set(false);
-      }
-    });
+    this.username = this.route.snapshot.paramMap.get('username')!;
   }
 }
