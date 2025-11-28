@@ -83,19 +83,26 @@
 
 
   <div class="w-full max-w-6xl mt-14 mb-10 px-4">
-    <div class="flex items-center justify-center gap-2 mb-6">
-      <h3 class="text-2xl font-semibold text-[#1C1C1C]">Your Collection</h3>
-      <button (click)="identifyCar()"
-        class="text-[#007BFF] text-3xl font-bold leading-none hover:text-[#0056b3] transition"
-        title="Agregar nueva colección">
-        +
-      </button>
+    <div class="flex flex-col items-center text-center mb-10">
+      <div
+        class="w-14 h-14 rounded-full bg-white shadow-[0_4px_14px_rgba(136,14,14,0.30)] flex items-center justify-center border border-[#880e0e]/20 mb-4"
+      >
+        <span class="text-3xl">🚗</span>
+      </div>
+      <div class="flex items-center justify-center gap-3">
+        <h3 class="text-4xl font-extrabold text-[#1C1C1C] tracking-tight">
+          Mi Colección
+        </h3>
+      </div>
+      <p class="text-gray-600 text-sm mt-2 max-w-xl">
+        Gestiona los vehículos que has agregado a tu garaje personal en AutoCut.
+      </p>
     </div>
 
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
       <ng-container *ngIf="userVehicles.length; else emptyState">
         <div
-          class="border border-[#E0E0E0] rounded-xl bg-white shadow-sm hover:shadow-md transition p-4 flex flex-col items-center"
+          class="relative border border-[#E0E0E0] rounded-xl bg-white shadow-[0_0_18px_rgba(136,14,14,0.30)] hover:shadow-[0_0_32px_rgba(136,14,14,0.55)] hover:-translate-y-1 transition-all duration-300 p-4 flex flex-col items-center"
           *ngFor="let car of userVehicles; trackBy: trackByVehicle"
         >
           <div
