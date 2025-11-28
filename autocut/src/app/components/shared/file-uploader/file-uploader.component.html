@@ -27,8 +27,7 @@
     class="group flex flex-col items-center justify-center w-full border-2 border-dashed border-gray-300 rounded-xl py-10 px-6 text-center transition-all duration-300 hover:border-[#880e0e] hover:bg-[blue-50]"
     [class.border-blue-500]="dragging" [class.bg-blue-50]="dragging" (drop)="onDrop($event)"
     (dragover)="onDragOver($event)" (dragleave)="onDragLeave()">
-    <input id="fileInput" type="file" class="hidden" (change)="onFileChange($event)" 
-      accept="image/*,video/*,audio/*"
+    <input id="fileInput" type="file" class="hidden" (change)="onFileChange($event)" accept="image/*,video/*,audio/*"
       multiple />
     <label for="fileInput" class="flex flex-col items-center justify-center text-gray-700 select-none cursor-pointer ">
       <span
@@ -71,7 +70,15 @@
     </button>
   </div>
 
-  <div *ngIf="uploaderService.isUploading()" class="text-sm text-gray-600 mt-3 text-center animate-pulse">
-    <span> Subiendo archivos...</span>
+  <div *ngIf="uploaderService.isUploading()" class="mt-4">
+
+    <div class="w-full bg-gray-200 rounded-full h-3 overflow-hidden">
+      <div class="h-3 bg-[#880e0e] transition-all duration-150" [style.width.%]="uploaderService.uploadProgress()">
+      </div>
+    </div>
+
+    <p class="text-center text-xs text-gray-600 mt-1">
+      {{ uploaderService.uploadProgress() }}%
+    </p>
   </div>
 </div>

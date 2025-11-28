@@ -6,11 +6,12 @@ import { IaService } from '../../../core/services/ia/ia.service';
 import { UploaderService } from '../../../core/services/cloudinary/uploader.service';
 
 import { FileUploaderComponent } from '../../../components/shared/file-uploader/file-uploader.component';
+import { ShareButtonComponent } from '../../../components/shared/share/share-button.component';
 
 @Component({
   selector: 'app-ia-generator',
   standalone: true,
-  imports: [CommonModule, FormsModule, FileUploaderComponent],
+  imports: [CommonModule, FormsModule, FileUploaderComponent, ShareButtonComponent],
   templateUrl: './ia-generator.component.html',
 })
 export class IaGeneratorComponent {

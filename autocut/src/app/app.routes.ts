@@ -18,12 +18,14 @@ import { IaGeneratorComponent } from './pages/features/ia-generator/ia-generator
 import { VideoEditorComponent } from './pages/features/video-editor/video-editor';
 import { VehicleIdentificationComponent } from './pages/features/ai-identification/vehicle-identification/vehicle-identification.component';
 import { VehicleCustomizerPage } from './pages/features/vehicle-3D/vehicle-customizer/vehicle-customizer.page';
+import { PublicUsersComponent } from './pages/public-users/public-users.component';
 import { AchievementsComponent } from './pages/features/achievements/achievements.component';
 
 export const routes: Routes = [
   {
     path: '',
-    component: LandingPageComponent,
+    redirectTo: 'landing-autocut',
+    pathMatch: 'full',
   },
   {
     path: 'landing',
@@ -44,11 +46,6 @@ export const routes: Routes = [
     component: AccessDeniedComponent,
   },
   {
-    path: '',
-    redirectTo: 'landing-autocut',
-    pathMatch: 'full',
-  },
-  {
     path: 'landing-autocut',
     component: LandingAutocutPage,
   },
@@ -65,6 +62,55 @@ export const routes: Routes = [
           authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
           name: 'Dashboard',
           showInSidebar: true,
+        },
+      },
+      {
+        path: 'public-users',
+        component: PublicUsersComponent,
+        data: {
+          authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
+          name: 'Explorar Usuarios',
+          showInSidebar: true,
+        },
+      },
+      {
+  path: 'profile/settings',
+  component: UserSettingsComponent,
+  data: {
+    authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
+    name: 'Configuración de Perfil',
+    showInSidebar: false,
+  },
+},
+{
+  path: 'vehicle-3d',
+  component: VehicleCustomizerPage,
+  data: {
+    authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
+    name: 'Personalizador 3D',
+    showInSidebar: true,
+  },
+},
+
+    
+      {
+        path: 'profile',
+        component: UserProfileComponent,
+        data: {
+          authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
+          name: 'Mi Perfil',
+          showInSidebar: false,
+        },
+      },
+      {
+        path: 'profile/:username',
+        loadComponent: () =>
+          import('./pages/public-profile/public-profile.component').then(
+            (m) => m.PublicProfileComponent
+          ),
+        data: {
+          authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
+          showInSidebar: false,
         },
       },
       {
@@ -96,29 +142,10 @@ export const routes: Routes = [
         },
       },
       {
-        path: 'profile',
-        component: UserProfileComponent,
-        data: {
-          authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
-          name: 'Perfil',
-          showInSidebar: true,
-        },
-      },
-      {
-        path: 'profile/settings',
-        component: UserSettingsComponent,
-        data: {
-          authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
-          name: 'Configuración de Perfil',
-          showInSidebar: false,
-        },
-      },
-      {
         path: 'ia/generator',
         component: IaGeneratorComponent,
         data: {
           authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
-          name: 'Generador de Video con IA',
           showInSidebar: false,
         },
       },
@@ -127,7 +154,6 @@ export const routes: Routes = [
         component: VideoEditorComponent,
         data: {
           authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
-          name: 'Editor de Video',
           showInSidebar: false,
         },
       },
@@ -140,6 +166,7 @@ export const routes: Routes = [
           showInSidebar: true,
         },
       },
+
       {
         path: 'achievements',
         component: AchievementsComponent,
