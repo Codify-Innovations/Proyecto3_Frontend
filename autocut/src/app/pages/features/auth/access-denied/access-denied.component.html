@@ -1,9 +1,47 @@
+<div class="w-screen h-screen bg-[#0A0A0A] flex items-center justify-center relative overflow-hidden">
 
-<div class="contaniner h-100">
-  <div class="d-flex align-items-center justify-content-center">
-    <div class="w-100 text-center">
-      <p class="text-warning">Access denied to resource</p>
-      <a href="/app/dashboard">volver</a>
+    <!-- Radial Background Glow -->
+    <div class="absolute inset-0 bg-gradient-radial from-[#eab30833] via-transparent to-transparent blur-3xl"></div>
+
+    <!-- Grid -->
+    <div class="absolute inset-0 opacity-[0.08] bg-[url('/assets/grid.svg')] bg-cover"></div>
+
+    <div class="relative z-10 text-center px-6">
+
+        <h1
+            class="text-[110px] md:text-[150px] font-extrabold tracking-widest text-white drop-shadow-[0_0_15px_#eab308AA]">
+            403
+        </h1>
+
+        <p class="text-gray-300 text-xl md:text-2xl mt-2 font-light">
+            No tienes permiso para acceder a este recurso.
+        </p>
+
+        <div class="mx-auto w-24 h-1 bg-[#eab308] rounded-full mt-6 mb-8"></div>
+
+        <div class="flex justify-center gap-4 mt-4">
+
+            <a href="/app/dashboard"
+                class="px-6 py-3 rounded-lg text-white font-medium
+                bg-[#eab308] hover:bg-[#facc15] transition-all
+                shadow-[0_0_15px_#eab30855] hover:shadow-[0_0_25px_#eab308AA]
+                no-underline cursor-pointer [text-decoration:none!important]">
+                Volver al Dashboard
+            </a>
+
+            <a href="/"
+                class="px-6 py-3 rounded-lg border border-gray-500 text-white font-medium
+                hover:border-white hover:text-white transition-all 
+                [text-decoration:none!important]">
+                Ir al Inicio
+            </a>
+
+        </div>
+
     </div>
-  </div>
+
+    <!-- Glow Ball -->
+    <div class="absolute bottom-10 right-10 w-32 h-32 bg-[#eab308] rounded-full blur-2xl 
+                animate-pulse [animation-duration:4s]"></div>
+
 </div>

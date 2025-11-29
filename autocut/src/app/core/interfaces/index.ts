@@ -184,3 +184,13 @@ export interface IUserSummary {
   totalLogrosDesbloqueados: number;
   promedioScoreAnalisis: number;
 }
+
+export interface IAdminMetricas {
+  totalVideos: number;
+  totalVehiculos: number;
+  totalAnalisis: number;
+  totalLogros: number;
+  nuevosUsuarios: number;
+  usuariosActivos: number;
+  usuariosInactivos: number;
+}
