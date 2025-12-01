@@ -1,51 +1,60 @@
 <div class="min-h-screen flex flex-col items-center bg-[#F5F5F5]">
-
   <div
-    class="relative w-full max-w-5xl bg-white mt-10 rounded-2xl shadow-md p-10 border border-[#E0E0E0] flex flex-col items-center">
-
-    <button (click)="goToSettings()" class="absolute top-6 right-6
-         px-4 py-2
-         bg-[#880e0e] !bg-[#880e0e]
-         text-white text-lg font-bold
-         rounded-lg !rounded-lg
-         shadow-sm !shadow-sm
-         hover:!bg-[#b94c4c] hover:!shadow-md
-         transition-all duration-200" title="Editar Perfil">
+    class="relative w-full max-w-5xl bg-white mt-10 rounded-2xl shadow-md p-10 border border-[#E0E0E0] flex flex-col items-center"
+  >
+    <button
+      (click)="goToSettings()"
+      class="absolute top-6 right-6 px-4 py-2 bg-[#880e0e] !bg-[#880e0e] text-white text-lg font-bold rounded-lg !rounded-lg shadow-sm !shadow-sm hover:!bg-[#b94c4c] hover:!shadow-md transition-all duration-200"
+      title="Editar Perfil"
+    >
       <i class="fas fa-pencil"></i>
     </button>
 
-    <app-user-car-viewer *ngIf="userCar" [model]="userCar.modelo" [color]="userCar.carroceria"
-      [glassTint]="userCar.vidriosPolarizados" [interior]="userCar.interior" [frontLight]="userCar.lucesFront"
-      [wheelStyle]="userCar.rines" class="mb-6"></app-user-car-viewer>
-
+    <app-user-car-viewer
+      *ngIf="userCar"
+      [model]="userCar.modelo"
+      [color]="userCar.carroceria"
+      [glassTint]="userCar.vidriosPolarizados"
+      [interior]="userCar.interior"
+      [frontLight]="userCar.lucesFront"
+      [wheelStyle]="userCar.rines"
+      class="mb-6"
+    ></app-user-car-viewer>
 
     <h2 class="text-3xl font-bold text-[#1C1C1C] mb-1">
-      {{ '@' + (user?.name || 'Usuario') }}
+      {{ "@" + (user?.name || "Usuario") }}
     </h2>
     <p class="text-lg text-[#424242] font-medium">
-      {{ user?.email || 'correo@autocut.com' }}
+      {{ user?.email || "correo@autocut.com" }}
     </p>
 
     <div class="flex items-center gap-2 mt-2">
-      <span class="inline-block w-2 h-2 rounded-full"
-        [ngClass]="user?.visibility === 'private' ? 'bg-red-500' : 'bg-green-500'"></span>
+      <span
+        class="inline-block w-2 h-2 rounded-full"
+        [ngClass]="
+          user?.visibility === 'private' ? 'bg-red-500' : 'bg-green-500'
+        "
+      ></span>
       <span class="text-sm text-[#757575] font-medium">
-        {{ user?.visibility === 'private' ? 'Perfil privado' : 'Perfil público' }}
+        {{
+          user?.visibility === "private" ? "Perfil privado" : "Perfil público"
+        }}
       </span>
     </div>
 
-
     <p class="text-center text-[#757575] max-w-2xl mt-4">
-      {{ user?.bio || 'Aún no has agregado una biografía. Personaliza tu perfil en Configuración.' }}
+      {{
+        user?.bio ||
+          "Aún no has agregado una biografía. Personaliza tu perfil en Configuración."
+      }}
     </p>
   </div>
 
   <section class="mt-16 w-full">
-
     <div class="flex flex-col items-center text-center mb-10">
-
-      <div class="w-14 h-14 rounded-full bg-white shadow-[0_4px_14px_rgba(136,14,14,0.30)]
-                flex items-center justify-center border border-[#880e0e]/20 mb-4">
+      <div
+        class="w-14 h-14 rounded-full bg-white shadow-[0_4px_14px_rgba(136,14,14,0.30)] flex items-center justify-center border border-[#880e0e]/20 mb-4"
+      >
         <span class="text-3xl">🏅</span>
       </div>
 
@@ -56,7 +65,6 @@
       <p class="text-gray-600 text-sm mt-2 max-w-xl">
         Mira los logros que ya has desbloqueado dentro de AutoCut.
       </p>
-
     </div>
 
     <div *ngIf="loading()" class="text-gray-500 py-4 text-center">
@@ -69,18 +77,19 @@
     </div>
 
     <!-- SIN LOGROS -->
-    <div *ngIf="!loading() && !error() && achievements()?.length === 0" class="text-gray-500 py-10 text-center">
+    <div
+      *ngIf="!loading() && !error() && achievements()?.length === 0"
+      class="text-gray-500 py-10 text-center"
+    >
       Aún no has desbloqueado ningún logro.
     </div>
 
-
-    <app-achievement-list *ngIf="!loading() && !error()" [logros]="achievements()">
+    <app-achievement-list
+      *ngIf="!loading() && !error()"
+      [logros]="achievements()"
+    >
     </app-achievement-list>
-
   </section>
-
-
-
 
   <div class="w-full max-w-6xl mt-14 mb-10 px-4">
     <div class="flex flex-col items-center text-center mb-10">
@@ -121,12 +130,16 @@
               Sin imagen disponible
             </span>
           </div>
+
           <p class="font-semibold text-[#1C1C1C]">{{ car.modelo }}</p>
           <p class="text-[#757575] text-sm">{{ car.marca }}</p>
           <p class="text-[#757575] text-sm">Año {{ car.anio }}</p>
+
+          <app-share-button
+            [url]="car.imagenHotWheels || car.imagenURL"
+          ></app-share-button>
         </div>
       </ng-container>
-
       <ng-template #emptyState>
         <div
           class="col-span-full text-center text-[#757575] text-sm"
@@ -138,7 +151,9 @@
     </div>
 
     <div class="flex justify-center mt-6" *ngIf="isVehiclesLoading">
-      <span class="h-6 w-6 border-2 border-[#880e0e] border-t-transparent rounded-full animate-spin"></span>
+      <span
+        class="h-6 w-6 border-2 border-[#880e0e] border-t-transparent rounded-full animate-spin"
+      ></span>
     </div>
 
     <div #vehiclesAnchor class="w-full h-1"></div>
