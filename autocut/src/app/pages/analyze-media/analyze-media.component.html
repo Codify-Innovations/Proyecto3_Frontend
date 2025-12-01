@@ -1,36 +1,53 @@
 <div class="min-h-screen flex flex-col items-center bg-[#F5F5F5] py-12 px-6">
 
-  <div class="w-full max-w-4xl mx-auto flex items-center justify-between mb-12">
+  <div class="w-full max-w-5xl mx-auto mb-12">
+    <div class="relative bg-white border border-[#F1D5D5] rounded-3xl px-10 py-4 shadow-xl shadow-[#880E0E]/10">
+      <div class="absolute inset-x-16 top-1/2 h-[3px] -translate-y-1/2 rounded-full bg-[#FADCDC]">
+        <div
+          class="h-full rounded-full bg-gradient-to-r from-[#880E0E] via-[#B71C1C] to-[#8BC34A] transition-all duration-500 ease-out"
+          [style.width.%]="stepIndex === 0 ? 6 : stepIndex === 1 ? 52 : 100">
+        </div>
+      </div>
 
-    <div class="flex flex-col items-center">
-      <div class="w-10 h-10 flex items-center justify-center rounded-full border-2 font-bold"
-        [ngClass]="{
-          'bg-[#880E0E] text-white border-[#880E0E]': stepIndex === 0,
-          'bg-green-600 text-white border-green-600': stepIndex > 0
-        }">1</div>
-      <p class="mt-2 text-sm font-medium">Upload</p>
+      <div class="relative grid grid-cols-3 gap-6">
+        <div
+          *ngFor="let label of ['Upload', 'Rating', 'Results']; let i = index"
+          class="flex flex-col items-center text-center space-y-2">
+
+          <div class="relative">
+            <div
+              class="w-16 h-16 flex items-center justify-center rounded-full border-[3px] font-bold text-xl transition-all duration-300"
+              [ngClass]="{
+                'bg-[#880E0E] border-[#880E0E] shadow-lg shadow-[#880E0E]/30 text-white': stepIndex === i,
+                'bg-[#8BC34A] border-[#8BC34A] shadow-lg shadow-[#8BC34A]/30 text-white': stepIndex > i,
+                'bg-white border-[#F5B5B5]': stepIndex < i,
+                'text-white': i === 0,
+                'text-black': i > 0 && stepIndex < i
+              }">
+              {{ i + 1 }}
+            </div>
+            <span
+              *ngIf="stepIndex > i"
+              class="absolute -top-3 -right-3 w-6 h-6 rounded-full bg-white border border-[#8BC34A] text-[#8BC34A] text-xs font-semibold flex items-center justify-center">
+              ✓
+            </span>
+          </div>
+
+          <div class="relative">
+            <p class="text-base font-semibold text-[#311515]">{{ label }}</p>
+            <p
+              class="text-xs tracking-wide font-medium uppercase"
+              [ngClass]="{
+                'text-[#8BC34A]': stepIndex > i,
+                'text-[#880E0E]': stepIndex === i,
+                'text-[#9E9E9E]': stepIndex < i
+              }">
+              {{ stepIndex > i ? 'Completado' : stepIndex === i ? 'En progreso' : 'Pendiente' }}
+            </p>
+          </div>
+        </div>
+      </div>
     </div>
-
-    <div class="flex-1 h-1 mx-4 bg-gray-300" [ngClass]="{ 'bg-green-600': stepIndex > 0 }"></div>
-
-    <div class="flex flex-col items-center">
-      <div class="w-10 h-10 flex items-center justify-center rounded-full border-2 font-bold"
-        [ngClass]="{
-          'bg-[#880E0E] text-white border-[#880E0E]': stepIndex === 1,
-          'bg-green-600 text-white border-green-600': stepIndex > 1
-        }">2</div>
-      <p class="mt-2 text-sm font-medium">Rating</p>
-    </div>
-
-    <div class="flex-1 h-1 mx-4 bg-gray-300" [ngClass]="{ 'bg-green-600': stepIndex > 1 }"></div>
-    <div class="flex flex-col items-center">
-      <div class="w-10 h-10 flex items-center justify-center rounded-full border-2 font-bold"
-        [ngClass]="{
-          'bg-[#880E0E] text-white border-[#880E0E]': stepIndex === 2
-        }">3</div>
-      <p class="mt-2 text-sm font-medium">Results</p>
-    </div>
-
   </div>
 
   <div *ngIf="stepIndex === 0"

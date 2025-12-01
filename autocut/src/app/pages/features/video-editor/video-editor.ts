@@ -1,7 +1,7 @@
 import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import CreativeEditorSDK, { Configuration } from '@cesdk/cesdk-js';
 import { VideoEditorMediaService } from '../../../core/services/video-editor/video-editor-media.service';
-import { environment } from '../../../../environments/environment.example';
+import { environment } from '../../../../environments/environment';
 
 @Component({
   selector: 'app-video-editor',

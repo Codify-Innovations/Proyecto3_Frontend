@@ -20,6 +20,7 @@ import { VehicleService } from '../../core/services/vehicle.service';
 import { IVehiculo } from '../../core/interfaces';
 import { AchievementService } from '../../core/services/achievement.service';
 import { AchievementListComponent } from '../../components/achievements/achievements-list/achievement-list.component';
+import { ShareButtonComponent } from '../../components/shared/share/share-button.component';
 
 @Component({
   selector: 'app-user-profile',
@@ -29,6 +30,7 @@ import { AchievementListComponent } from '../../components/achievements/achievem
     FormsModule,
     UserCarViewerComponent,
     AchievementListComponent,
+    ShareButtonComponent
   ],
   templateUrl: './user-profile.component.html',
 })
