@@ -3,8 +3,14 @@
     class="flex w-full bg-white rounded-[1.5rem] shadow-[0_10px_40px_rgba(0,0,0,0.08)] border border-gray-200 overflow-hidden"
   >
     <div
-      class="w-[40%] flex flex-col justify-start items-center text-white px-10 py-14 relative overflow-y-visible rounded-l-[1.5rem] scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent bg-gradient-to-b from-[#1C1C1C] to-[#424242]"
+      class="w-[40%] flex flex-col justify-start items-center text-white px-10 py-14 relative overflow-y-visible rounded-l-[1.5rem] scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-transparent bg-[#1C1C1C]"
     >
+      <img
+        src="/assets/R35.jpg"
+        alt="Nissan GT-R R35"
+        class="absolute inset-0 h-full w-full object-[30%_center] object-cover opacity-50 rounded-l-[1.5rem] pointer-events-none"
+        aria-hidden="true"
+      />
       <div class="relative z-10">
         <h1 class="text-4xl font-bold tracking-tight mb-3">
           Detección de Vehículos
@@ -169,9 +175,6 @@
         [isVisible]="showModal"
         (close)="closePreview()"
       ></app-vehicle-preview-modal>
-      <div class="flex justify-center mt-6 mb-4">
-        <app-share-button [url]="imageURL"></app-share-button>
-      </div>
     </div>
   </div>
 </div>

@@ -6,7 +6,7 @@ import { Injectable } from '@angular/core';
 export class ShareService {
 
   // MENSAJE PERSONALIZADO
-  private baseMessage = "Hey, mira mi nuevo contenido en Autocut!";
+  private baseMessage = "Hey, mira mi nuevo contenido generado en Autocut!";
 
   // FACEBOOK — NO PERMITE TEXTO EXTRA, SOLO URL
   openFacebookShare(url: string) {

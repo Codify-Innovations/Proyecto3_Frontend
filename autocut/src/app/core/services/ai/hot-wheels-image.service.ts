@@ -1,4 +1,5 @@
 import { Injectable, inject } from '@angular/core';
+// @ts-ignore: No type declarations for 'bytez.js' are available
 import Bytez from 'bytez.js';
 import { environment } from '../../../../environments/environment';
 import { UploaderService } from '../cloudinary/uploader.service';
