@@ -47,12 +47,9 @@
 
     <div class="col-12">
       <app-user-list
-      [users]="userService.users$()"
-      (callModalAction)="callEdition($event)"
-      (callDeleteAction)="deleteUser($event)">
+        [users]="userService.users$()"
+        (callModalAction)="callEdition($event)">
       </app-user-list>
-    
-
 
       @if (userService.users$().length) {
         <app-pagination [service]="userService" />
