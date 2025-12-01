@@ -37,7 +37,7 @@ export class NavbarClientComponent {
       this.menuItems = [
         { label: 'Dashboard', route: '/app/admin-dashboard' },
         { label: 'Gestión de usuarios', route: '/app/users' },
-        { label: 'Reportes', route: '/app/reports' },
+        { label: 'Reportes', route: '/app/admin-reports' },
         { label: 'Settings', route: '/app/settings' },
       ];
     } else {

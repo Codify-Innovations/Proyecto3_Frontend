@@ -194,3 +194,24 @@ export interface IAdminMetricas {
   usuariosActivos: number;
   usuariosInactivos: number;
 }
+
+
+export interface IReporteRequest {
+  global: boolean;
+  startDate: string | null;
+  endDate: string | null;
+  format: 'PDF' | 'CSV';
+  adminUserId: number;
+}
+
+export interface IReporteHistorial {
+  id: number;
+  nombreArchivo: string;
+  tipo: string;
+  esGlobal: boolean;
+  fechaInicio: string | null;
+  fechaFin: string | null;
+  fechaGenerado: string;
+  tamanioBytes: number;
+}
+

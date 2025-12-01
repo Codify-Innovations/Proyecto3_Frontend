@@ -6,12 +6,14 @@ import { AlertService } from '../../../core/services/alert.service';
 
 import { Chart, registerables } from 'chart.js';
 import { AdminMetricsService } from '../../../core/services/admin-metrics.service';
+import { ReportExporterComponent } from '../../report-exporter/report-exporter.component';
+import { AuthService } from '../../../pages/features/auth/auth.service';
 Chart.register(...registerables);
 
 @Component({
   selector: 'app-dashboard-admin-metrics',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, ReportExporterComponent],
   templateUrl: './dashboard-admin-metrics.component.html',
 })
 export class DashboardAdminMetricsComponent implements OnInit {
@@ -20,20 +22,67 @@ export class DashboardAdminMetricsComponent implements OnInit {
   private alertService = inject(AlertService);
   private cdr = inject(ChangeDetectorRef);
 
-  // Signals
   metricas = this.adminMetricsService.metricas$;
   loading = this.adminMetricsService.loading$;
+
+  mode: 'range' | 'global' = 'range';
 
   startDate: string = '';
   endDate: string = '';
 
-  // Charts
   donutChart: Chart | null = null;
   barChart: Chart | null = null;
 
-  ngOnInit(): void {
-    // No carga nada hasta que seleccione fechas
+  resetToRangeMode() {
+    this.mode = 'range';
+    this.metricas.set(null);
+    this.startDate = '';
+    this.endDate = '';
   }
+
+  private chartTimeout: any = null;
+
+  ngOnInit(): void {
+    this.mode = 'range';
+
+    this.metricas.set(null);
+    this.startDate = '';
+    this.endDate = '';
+
+    if (this.donutChart) { this.donutChart.destroy(); this.donutChart = null; }
+    if (this.barChart) { this.barChart.destroy(); this.barChart = null; }
+  }
+
+
+  ngOnDestroy(): void {
+    if (this.donutChart) {
+      this.donutChart.destroy();
+      this.donutChart = null;
+    }
+
+    if (this.barChart) {
+      this.barChart.destroy();
+      this.barChart = null;
+    }
+
+    if (this.chartTimeout) {
+      clearTimeout(this.chartTimeout);
+    }
+  }
+
+  hasData() {
+    const m = this.metricas();
+    if (!m) return false;
+
+    return (
+      m.totalVideos > 0 ||
+      m.totalVehiculos > 0 ||
+      m.totalAnalisis > 0 ||
+      m.totalLogros > 0 ||
+      m.nuevosUsuarios > 0
+    );
+  }
+
 
   loadMetrics() {
     if (!this.startDate || !this.endDate) {
@@ -46,13 +95,28 @@ export class DashboardAdminMetricsComponent implements OnInit {
       return;
     }
 
+    this.mode = 'range';
+
     this.adminMetricsService.getAdminMetrics(this.startDate, this.endDate);
 
-    // Esperar a que el signal actualice y renderizar
-    setTimeout(() => {
+    this.chartTimeout = setTimeout(() => {
       this.cdr.detectChanges();
       this.renderCharts();
     }, 100);
+  }
+
+  loadGlobalMetrics() {
+    this.mode = 'global';
+
+    this.startDate = '';
+    this.endDate = '';
+
+    this.adminMetricsService.getAdminMetricsGlobal();
+
+    this.chartTimeout = setTimeout(() => {
+      this.cdr.detectChanges();
+      this.renderCharts();
+    }, 120);
   }
 
   private renderCharts() {
@@ -60,9 +124,7 @@ export class DashboardAdminMetricsComponent implements OnInit {
 
     if (!m) return;
 
-    // ====================
-    // DONUT CHART
-    // ====================
+    // ==== GRÁFICO DONUT ==== //
     if (this.donutChart) this.donutChart.destroy();
 
     const donutCanvas = document.getElementById('donutChart') as HTMLCanvasElement;
@@ -131,15 +193,12 @@ export class DashboardAdminMetricsComponent implements OnInit {
               }
             }
           },
-          cutout: '55%', // grosor del donut
+          cutout: '55%',
         }
       });
     }
 
-
-    // ====================
-    // BAR CHART
-    // ====================
+    // ==== GRÁFICO BARRAS ==== //
     if (this.barChart) this.barChart.destroy();
 
     const barCanvas = document.getElementById('barChart') as HTMLCanvasElement;
@@ -188,7 +247,7 @@ export class DashboardAdminMetricsComponent implements OnInit {
           responsive: true,
           plugins: {
             legend: {
-              display: false  
+              display: false
             },
             tooltip: {
               callbacks: {

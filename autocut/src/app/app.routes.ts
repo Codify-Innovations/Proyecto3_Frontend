@@ -21,6 +21,7 @@ import { VehicleCustomizerPage } from './pages/features/vehicle-3D/vehicle-custo
 import { PublicUsersComponent } from './pages/public-users/public-users.component';
 import { AchievementsComponent } from './pages/features/achievements/achievements.component';
 import { AdminDashboardComponent } from './pages/features/admin-dashboard/admin-dashboard.component';
+import { ReportsComponent } from './pages/features/reports/reports.component';
 
 export const routes: Routes = [
   {
@@ -66,12 +67,20 @@ export const routes: Routes = [
         },
       },
       {
-
         path: 'admin-dashboard',
         component: AdminDashboardComponent,
         data: {
           authorities: [IRoleType.admin, IRoleType.superAdmin],
           name: 'Dashboard Admin',
+          showInSidebar: true,
+        },
+      },
+      {
+        path: 'admin-reports',
+        component: ReportsComponent,
+        data: {
+          authorities: [IRoleType.admin, IRoleType.superAdmin],
+          name: 'Reports Admin',
           showInSidebar: true,
         },
       },
