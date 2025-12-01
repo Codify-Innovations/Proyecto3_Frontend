@@ -28,6 +28,7 @@
     "angular-oauth2-oidc": "^19.0.0",
     "axios": "^1.13.2",
     "bytez.js": "^1.1.18",
+    "chart.js": "^4.5.1",
     "emailjs-com": "^3.2.0",
     "gapi-script": "^1.2.0",
     "jwt-decode": "^4.0.0",

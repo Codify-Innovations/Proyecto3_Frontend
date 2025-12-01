@@ -1,129 +1,130 @@
-<div class="w-full rounded-xl bg-white bg-gradient-to-br from-white to-[#fff5f5]
-         shadow-[0_4px_20px_rgba(136,14,14,0.08)] border border-[#f3d4d4]
-         p-6 relative overflow-hidden">
+<div class="min-h-screen w-full pb-20 relative overflow-visible">
 
-  <div class="flex items-center gap-2 mb-6">
-    <div class="w-9 h-9 rounded-full bg-[#880e0e]/10 flex items-center justify-center">
-      <span class="text-lg">🏆</span>
-    </div>
-    <div class="flex flex-col">
-      <h3 class="text-xl font-semibold text-gray-800 tracking-tight">
-        Top Creadores
-      </h3>
-      <p class="text-xs uppercase tracking-[0.18em] text-[#880e0e]/80 mt-0.5">
-        Ranking global de la comunidad
-      </p>
-    </div>
-  </div>
+  <div class="absolute inset-0 -z-10 bg-gradient-to-br from-[#880e0e]/20 via-white to-gray-100"></div>
 
-  <div *ngIf="isLoading" class="space-y-4">
-    <div class="h-10 bg-gray-200/70 animate-pulse rounded-md"></div>
-    <div class="h-10 bg-gray-200/70 animate-pulse rounded-md"></div>
-    <div class="h-10 bg-gray-200/70 animate-pulse rounded-md"></div>
-  </div>
+  <div class="absolute -top-40 left-20 w-96 h-96 bg-[#880e0e]/25 rounded-full blur-3xl opacity-50"></div>
+  <div class="absolute bottom-0 right-10 w-[28rem] h-[28rem] bg-[#880e0e]/20 rounded-full blur-3xl opacity-40"></div>
+  <div class="absolute top-40 right-0 w-72 h-72 bg-[#880e0e]/15 rounded-full blur-2xl opacity-70"></div>
 
-  <div *ngIf="hasError" class="text-red-600 text-sm bg-red-50 border border-red-100 rounded-md px-3 py-2">
-    Error al cargar el ranking. Intenta más tarde.
-  </div>
+  <div class="relative isolate overflow-visible py-14">
 
-  <div *ngIf="!isLoading && !hasError">
+    <div class="max-w-7xl mx-auto px-10 flex items-center gap-16">
 
-    <div *ngIf="topUsers.length >= 3" class="grid grid-cols-3 gap-4 mb-10 text-center">
-
-      <div class="flex flex-col items-center">
-        <div class="text-4xl">🥈</div>
-        <div class="mt-2 text-lg font-semibold text-gray-700">
-          {{ topUsers[1]?.name }} {{ topUsers[1]?.lastname }}
-        </div>
-        <div class="text-sm text-gray-500">
-          {{ topUsers[1]?.totalVehiculos }} vehículos • {{ topUsers[1]?.totalLogros }} logros
-        </div>
-
-        <div class="w-full bg-gray-200 rounded-lg h-24 mt-3 flex items-end justify-center">
-          <div class="w-full h-16 rounded-t-lg" style="background-color: #A9AEB2;"></div>
+      <div class="flex-shrink-0">
+        <div class="w-32 h-32 rounded-full bg-[#880e0e]/10 backdrop-blur-md border border-[#880e0e]/20
+        flex items-center justify-center shadow-xl animate-bounce-slow">
+          <span class="text-[#880e0e] text-5xl font-extrabold">🏆</span>
         </div>
       </div>
 
-      <div class="flex flex-col items-center">
-        <div class="text-5xl">🥇</div>
-        <div class="mt-2 text-xl font-bold text-[#880e0e]">
-          {{ topUsers[0]?.name }} {{ topUsers[0]?.lastname }}
-        </div>
-        <div class="text-sm text-gray-500 font-medium">
-          {{ topUsers[0]?.totalVehiculos }} vehículos • {{ topUsers[0]?.totalLogros }} logros
-        </div>
+      <div class="flex flex-col max-w-xl">
+        <h1 class="text-4xl font-black tracking-tight text-gray-900 drop-shadow-sm">
+          Ranking Global de Creadores
+        </h1>
 
-        <div class="w-full bg-gray-200 rounded-lg h-32 mt-3 flex items-end justify-center">
-          <div class="w-full h-24 rounded-t-lg" style="background-color: #debf24;"></div>
-        </div>
+        <p class="mt-3 text-lg text-gray-700 leading-relaxed">
+          Descubre a los usuarios más activos de AutoCut. Vehículos detectados, logros desbloqueados
+          y actividad en tiempo real.
+        </p>
+
+        <div class="w-120 h-1 bg-[#880e0e] rounded-full mt-5"></div>
       </div>
 
-      <div class="flex flex-col items-center">
-        <div class="text-4xl">🥉</div>
-        <div class="mt-2 text-lg font-semibold text-gray-700">
-          {{ topUsers[2]?.name }} {{ topUsers[2]?.lastname }}
-        </div>
-        <div class="text-sm text-gray-500">
-          {{ topUsers[2]?.totalVehiculos }} vehículos • {{ topUsers[2]?.totalLogros }} logros
-        </div>
+    </div>
+  </div>
 
-        <div class="w-full bg-gray-200 rounded-lg h-20 mt-3 flex items-end justify-center">
-          <div class="w-full h-14 rounded-t-lg" style="background-color: #CD7F32;"></div>
-        </div>
-      </div>
+  <div class="max-w-7xl mx-auto px-10">
+
+    <div *ngIf="isLoading" class="space-y-4 mb-10">
+      <div class="h-10 bg-gray-200/70 animate-pulse rounded-xl"></div>
+      <div class="h-10 bg-gray-200/70 animate-pulse rounded-xl"></div>
+      <div class="h-10 bg-gray-200/70 animate-pulse rounded-xl"></div>
     </div>
 
-    <!-- <div class="space-y-3">
-      <div *ngFor="let user of topUsers.slice(3); let i = index" class="flex items-center justify-between p-3 rounded-lg border border-gray-100
-               bg-white/80 backdrop-blur-[2px]
-               shadow-sm hover:shadow-md hover:-translate-y-[1px]
-               transition duration-150 ease-out">
-        <div class="flex items-center gap-3 ">
-          <span class="flex items-center justify-center w-7 h-7 rounded-full
-                   bg-[#880e0e]/5 text-xs font-semibold text-[#880e0e]">
-            {{ i + 4 }}
-          </span>
+    <!-- ERROR -->
+    <div *ngIf="hasError" class="text-red-600 text-sm bg-red-50 border border-red-100 rounded-xl px-4 py-3 mb-6 shadow">
+      Error al cargar el ranking. Intenta más tarde.
+    </div>
 
-          <div>
-            <p class="font-semibold text-gray-800 pt-2 leading-tight">
-              {{ user.name }} {{ user.lastname }}
-            </p>
-            <p class="text-xs text-gray-500">
-              {{ user.totalVehiculos }} vehículos • {{ user.totalLogros }} logros
-            </p>
+    <div *ngIf="!isLoading && !hasError">
+
+      <div *ngIf="topUsers.length >= 3"
+        class="grid grid-cols-1 sm:grid-cols-3 gap-20 mb-16 text-center place-items-center">
+
+        <!-- SEGUNDO -->
+        <div class="flex flex-col items-center w-full ">
+          <div class="text-5xl mb-2">🥈</div>
+
+          <p class="mt-1 text-lg font-semibold text-gray-700">
+            {{ topUsers[1]?.name }} {{ topUsers[1]?.lastname }}
+          </p>
+          <p class="text-sm text-gray-500">
+            {{ topUsers[1]?.totalVehiculos }} vehículos • {{ topUsers[1]?.totalLogros }} logros
+          </p>
+
+          <div class="w-full bg-gray-200 rounded-xl h-32 mt-4 flex items-end justify-center">
+            <div class="w-full h-20 rounded-t-xl" style="background-color: #A9AEB2;"></div>
+          </div>
+        </div>
+
+        <!-- PRIMERO -->
+        <div class="flex flex-col items-center w-full">
+          <div class="text-6xl mb-2">🥇</div>
+
+          <p class="mt-1 text-2xl font-bold text-[#880e0e]">
+            {{ topUsers[0]?.name }} {{ topUsers[0]?.lastname }}
+          </p>
+          <p class="text-sm font-medium text-gray-500">
+            {{ topUsers[0]?.totalVehiculos }} vehículos • {{ topUsers[0]?.totalLogros }} logros
+          </p>
+
+          <div class="w-full bg-gray-200 rounded-xl h-40 mt-4 flex items-end justify-center">
+            <div class="w-full h-28 rounded-t-xl" style="background-color: #debf24;"></div>
+          </div>
+        </div>
+
+        <!-- TERCERO -->
+        <div class="flex flex-col items-center w-full">
+          <div class="text-5xl mb-2">🥉</div>
+
+          <p class="mt-1 text-lg font-semibold text-gray-700">
+            {{ topUsers[2]?.name }} {{ topUsers[2]?.lastname }}
+          </p>
+          <p class="text-sm text-gray-500">
+            {{ topUsers[2]?.totalVehiculos }} vehículos • {{ topUsers[2]?.totalLogros }} logros
+          </p>
+
+          <div class="w-full bg-gray-200 rounded-xl h-28 mt-4 flex items-end justify-center">
+            <div class="w-full h-16 rounded-t-xl" style="background-color: #CD7F32;"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="space-y-4 ">
+        <div *ngFor="let user of topUsers.slice(3); let i = index" class="flex items-center justify-between p-4 rounded-xl border border-gray-200 bg-white 
+          shadow-[0_4px_16px_rgba(136,14,14,0.12)] hover:shadow-[0_6px_22px_rgba(136,14,14,0.22)] 
+          hover:-translate-y-[2px] transition-all">
+
+          <div class="flex items-center gap-4">
+
+            <span class="flex items-center justify-center w-8 h-8 rounded-full
+                     bg-[#880e0e]/10 text-sm font-bold text-[#880e0e]">
+              {{ i + 4 }}
+            </span>
+
+            <div class="leading-snug">
+              <p class="font-semibold text-gray-800">
+                {{ user.name }} {{ user.lastname }}
+              </p>
+              <p class="text-xs text-gray-500">
+                {{ user.totalVehiculos }} vehículos • {{ user.totalLogros }} logros
+              </p>
+            </div>
+
           </div>
         </div>
       </div>
-    </div> -->
-    <div *ngIf="topUsers.length >= 1" class="space-y-3">
-      <div *ngFor="let user of topUsers.slice(topUsers.length >= 3 ? 3 : 0); let i = index" class="flex items-center justify-between p-3 rounded-lg border border-gray-100
-              bg-white/80 backdrop-blur-[2px]
-              shadow-sm hover:shadow-md hover:-translate-y-[1px]
-              transition duration-150 ease-out">
-
-        <div class="flex items-center gap-3">
-
-          <!-- Número -->
-          <span class="flex items-center justify-center w-7 h-7 rounded-full
-                   bg-[#880e0e]/5 text-xs font-semibold text-[#880e0e]">
-            {{ topUsers.length >= 3 ? i + 4 : i + 1 }}
-          </span>
-
-          <!-- Datos -->
-          <div class="leading-normal">
-            <p class="font-semibold text-gray-800">
-              {{ user.name }} {{ user.lastname }}
-            </p>
-            <p class="text-xs text-gray-500">
-              {{ user.totalVehiculos }} vehículos • {{ user.totalLogros }} logros
-            </p>
-          </div>
-
-        </div>
-      </div>
     </div>
-
-
   </div>
-
 </div>

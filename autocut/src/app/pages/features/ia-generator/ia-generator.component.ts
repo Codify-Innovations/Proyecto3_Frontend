@@ -2,11 +2,11 @@ import { CommonModule } from '@angular/common';
 import { Component, effect, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { AlertService } from '../../../core/services/alert.service';
-import { IaService } from '../../../core/services/ia/ia.service';
 import { UploaderService } from '../../../core/services/cloudinary/uploader.service';
-
 import { FileUploaderComponent } from '../../../components/shared/file-uploader/file-uploader.component';
 import { ShareButtonComponent } from '../../../components/shared/share/share-button.component';
+import { VideoGeneratorService } from '../../../core/services/ai/video-generator.service';
+import { GeneratedVideoService } from '../../../core/services/generated-video.service';
 
 @Component({
   selector: 'app-ia-generator',
@@ -17,8 +17,9 @@ import { ShareButtonComponent } from '../../../components/shared/share/share-but
 export class IaGeneratorComponent {
 
   alertService = inject(AlertService);
-  iaService = inject(IaService);
+  iaService = inject(VideoGeneratorService);
   uploaderService = inject(UploaderService);
+  generatedVideoService = inject(GeneratedVideoService);
 
   files: File[] = [];
   fileNames: string[] = [];
@@ -51,32 +52,32 @@ export class IaGeneratorComponent {
       this.durationError = "Debes ingresar un número entre 1 y 99.";
       return;
     }
-  
+
     // Convertir a string para bloquear 3 dígitos
     const str = String(this.durationPerImage);
-  
+
     // ❌ Si tiene más de 2 dígitos → recortar a 2
     if (str.length > 2) {
       this.durationPerImage = Number(str.slice(0, 2));
       this.durationError = "Máximo permitido: 20 segundos.";
       return;
     }
-  
+
     // Validación numérica real
     const value = Number(this.durationPerImage);
-  
+
     if (value < 1) {
       this.durationPerImage = 1;
       this.durationError = "El mínimo permitido es 1 segundo.";
       return;
     }
-  
+
     if (value > 20) {
       this.durationPerImage = 20;
       this.durationError = "El máximo permitido es 20 segundos.";
       return;
     }
-  
+
     this.durationError = null;
   }
 
@@ -93,7 +94,7 @@ export class IaGeneratorComponent {
         'center',
         'top'
       );
-      this.musicUrl = ""; 
+      this.musicUrl = "";
     }
   }
 
@@ -162,6 +163,13 @@ export class IaGeneratorComponent {
         'center',
         'top'
       );
+
+      this.generatedVideoService.saveGeneratedVideo({
+        imageUrls: this.URLs,
+        style: this.selectedStyle,
+        duration: this.durationPerImage,
+        videoUrl: url
+      });
 
     } catch (error) {
       console.error("❌ Error generando video:", error);

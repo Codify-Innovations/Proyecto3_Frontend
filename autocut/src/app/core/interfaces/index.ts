@@ -1,7 +1,7 @@
 export interface ILoginResponse {
   token: string;
-  expiresIn: number; 
-  authUser: IUser; 
+  expiresIn: number;
+  authUser: IUser;
 }
 
 export interface IResponse<T> {
@@ -23,7 +23,7 @@ export interface IUser {
   lastname?: string;
   email?: string;
   password?: string;
-  confirmPassword?: string; 
+  confirmPassword?: string;
   active?: boolean;
   createdAt?: string;
   updatedAt?: string;
@@ -56,7 +56,7 @@ export interface IRole {
   createdAt: string;
   description: string;
   id: number;
-  name : string;
+  name: string;
   updatedAt: string;
 }
 
@@ -66,7 +66,7 @@ export interface ISearch {
   pageNumber?: number;
   pageSize?: number;
   totalElements?: number;
-  totalPages?:number;
+  totalPages?: number;
 }
 
 export interface ITestimonial {
@@ -131,7 +131,7 @@ export interface IUsuarioLogro {
   id: number;
   usuario: number;
   logro: ILogro;
-  fechaDesbloqueo: string; 
+  fechaDesbloqueo: string;
 }
 
 export interface IRankingUser {
@@ -140,4 +140,47 @@ export interface IRankingUser {
   lastname: string;
   totalVehiculos: number;
   totalLogros: number;
+}
+
+export interface IGeneratedVideo {
+  userId: number;
+  imageUrls: string;
+  style: string;
+  duration: number;
+  videoUrl: string;
+}
+
+export interface IGeneratedVideoPayload {
+  imageUrls: string[];
+  style: string;
+  duration: number;
+  videoUrl: string;
+}
+
+export interface IAnalyzedContent {
+  userId: number;
+  sourceUrl: string;
+  analysisType: string;
+  score: number;
+}
+
+export interface IAnalyzedContentPayload {
+  sourceUrl: string;
+  analysisType: string;
+  score: number;
+}
+
+export interface IDateMetrics {
+  vehiculos: Record<string, number>;
+  videos: Record<string, number>;
+  analisis: Record<string, number>;
+  logros: Record<string, number>;
+}
+
+export interface IUserSummary {
+  totalVehiculos: number;
+  totalVideosGenerados: number;
+  totalContenidoAnalizado: number;
+  totalLogrosDesbloqueados: number;
+  promedioScoreAnalisis: number;
 }
