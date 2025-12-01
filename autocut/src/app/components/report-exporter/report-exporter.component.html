@@ -1,0 +1,22 @@
+<div class="flex items-center gap-4 mt-6">
+    
+    <!-- BOTÓN PDF -->
+    <button
+        class="bg-[#880e0e] text-white px-5 py-2 rounded shadow hover:bg-[#6d0b0b] transition disabled:opacity-50"
+        (click)="export('PDF')"
+        [disabled]="loading">
+
+        <span *ngIf="!loading">Exportar PDF</span>
+        <span *ngIf="loading">Generando...</span>
+    </button>
+
+    <!-- BOTÓN CSV -->
+    <button
+        class="bg-gray-700 text-white px-5 py-2 rounded shadow hover:bg-gray-900 transition disabled:opacity-50"
+        (click)="export('CSV')"
+        [disabled]="loading">
+
+        <span *ngIf="!loading">Exportar CSV</span>
+        <span *ngIf="loading">Generando...</span>
+    </button>
+</div>

@@ -1,0 +1,58 @@
+<div class="overflow-x-auto w-full bg-[#F5F5F5] p-6 rounded-xl shadow-md">
+  <table class="min-w-full bg-white rounded-lg shadow">
+    <thead class="bg-[#880e0e] text-white">
+      <tr>
+        <th class="px-6 py-3 text-left text-xs uppercase">Archivo</th>
+        <th class="px-6 py-3 text-left text-xs uppercase">Tipo</th>
+        <th class="px-6 py-3 text-left text-xs uppercase">Global</th>
+        <th class="px-6 py-3 text-left text-xs uppercase">Fecha Inicio</th>
+        <th class="px-6 py-3 text-left text-xs uppercase">Fecha Fin</th>
+        <th class="px-6 py-3 text-left text-xs uppercase">Generado el</th>
+      </tr>
+    </thead>
+
+    <tbody class="divide-y divide-gray-200">
+
+      @for (r of historial; track r.id) {
+        <tr class="hover:bg-[#FBEAEA] transition">
+          
+          <td class="px-6 py-4 text-[#424242] font-medium">
+            {{ r.nombreArchivo }}
+          </td>
+
+          <td class="px-6 py-4 text-[#424242]">
+            {{ r.tipo }}
+          </td>
+
+          <td class="px-6 py-4 text-[#424242]">
+            {{ r.esGlobal ? 'Sí' : 'No' }}
+          </td>
+
+          <td class="px-6 py-4 text-[#424242]">
+            {{ r.fechaInicio || '—' }}
+          </td>
+
+          <td class="px-6 py-4 text-[#424242]">
+            {{ r.fechaFin || '—' }}
+          </td>
+
+          <td class="px-6 py-4 text-[#424242]">
+            {{ r.fechaGenerado | date:'dd/MM/yyyy HH:mm' }}
+          </td>
+
+        </tr>
+      }
+
+      @empty {
+        <tr>
+          <td colspan="7">
+            <div class="py-8 text-center text-[#424242] font-medium">
+              No hay reportes generados
+            </div>
+          </td>
+        </tr>
+      }
+
+    </tbody>
+  </table>
+</div>

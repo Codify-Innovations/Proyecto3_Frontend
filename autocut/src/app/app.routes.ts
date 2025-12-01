@@ -20,6 +20,8 @@ import { VehicleIdentificationComponent } from './pages/features/ai-identificati
 import { VehicleCustomizerPage } from './pages/features/vehicle-3D/vehicle-customizer/vehicle-customizer.page';
 import { PublicUsersComponent } from './pages/public-users/public-users.component';
 import { AchievementsComponent } from './pages/features/achievements/achievements.component';
+import { AdminDashboardComponent } from './pages/features/admin-dashboard/admin-dashboard.component';
+import { ReportsComponent } from './pages/features/reports/reports.component';
 
 export const routes: Routes = [
   {
@@ -65,6 +67,24 @@ export const routes: Routes = [
         },
       },
       {
+        path: 'admin-dashboard',
+        component: AdminDashboardComponent,
+        data: {
+          authorities: [IRoleType.admin, IRoleType.superAdmin],
+          name: 'Dashboard Admin',
+          showInSidebar: true,
+        },
+      },
+      {
+        path: 'admin-reports',
+        component: ReportsComponent,
+        data: {
+          authorities: [IRoleType.admin, IRoleType.superAdmin],
+          name: 'Reports Admin',
+          showInSidebar: true,
+        },
+      },
+      {
         path: 'public-users',
         component: PublicUsersComponent,
         data: {
@@ -74,25 +94,23 @@ export const routes: Routes = [
         },
       },
       {
-  path: 'profile/settings',
-  component: UserSettingsComponent,
-  data: {
-    authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
-    name: 'Configuración de Perfil',
-    showInSidebar: false,
-  },
-},
-{
-  path: 'vehicle-3d',
-  component: VehicleCustomizerPage,
-  data: {
-    authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
-    name: 'Personalizador 3D',
-    showInSidebar: true,
-  },
-},
-
-    
+        path: 'profile/settings',
+        component: UserSettingsComponent,
+        data: {
+          authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
+          name: 'Configuración de Perfil',
+          showInSidebar: false,
+        },
+      },
+      {
+        path: 'vehicle-3d',
+        component: VehicleCustomizerPage,
+        data: {
+          authorities: [IRoleType.admin, IRoleType.superAdmin, IRoleType.user],
+          name: 'Personalizador 3D',
+          showInSidebar: true,
+        },
+      },
       {
         path: 'profile',
         component: UserProfileComponent,
