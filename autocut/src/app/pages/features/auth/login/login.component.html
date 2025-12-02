@@ -7,17 +7,17 @@
       <form (ngSubmit)="handleLogin(frm)" autocomplete="off" #frm="ngForm">
         <div class="mb-3">
           <h2 class="text-3xl text-center font-semibold text-[#1C1C1C] mt-2 mb-2">
-            Welcome Back
+            Bienvenido de nuevo
           </h2>
           <p class="text-gray-500 text-center mb-6 text-sm">
-            Please log in to continue
+            Por favor, inicia sesión para continuar
           </p>
         </div>
 
         <!-- Email -->
         <div class="form-group mb-4">
           <label for="email" class="text-sm font-medium text-[#424242]">
-            Email Address
+            Dirección de correo electrónico
           </label>
           <input
             #email="ngModel"
@@ -30,15 +30,15 @@
             required email
           />
           <div *ngIf="email.invalid && email.touched" class="text-[#D32F2F] text-sm mt-1">
-            <div *ngIf="email.errors?.['required']">Email is required.</div>
-            <div *ngIf="email.errors?.['email']">Please enter a valid email address.</div>
+            <div *ngIf="email.errors?.['required']">El correo electrónico es obligatorio.</div>
+            <div *ngIf="email.errors?.['email']">Por favor, introduce una dirección de correo electrónico válida.</div>
           </div>
         </div>
 
         <!-- Password -->
         <div class="form-group mb-4">
           <label for="password" class="text-sm font-medium text-[#424242]">
-            Password
+            Contraseña
           </label>
           <input
             #password="ngModel"
@@ -51,15 +51,15 @@
             required minlength="8"
           />
           <div *ngIf="password.invalid && password.touched" class="text-[#D32F2F] text-sm mt-1">
-            <div *ngIf="password.errors?.['required']">Password is required.</div>
-            <div *ngIf="password.errors?.['minlength']">Password must be at least 8 characters.</div>
+            <div *ngIf="password.errors?.['required']">La contraseña es obligatoria.</div>
+            <div *ngIf="password.errors?.['minlength']">La contraseña debe tener al menos 8 caracteres.</div>
           </div>
         </div>
 
         <!-- Forgot Password -->
         <div class="text-right mb-6">
           <a href="/forgot-password" class="text-sm text-[#1C1C1C] hover:text-[#880E0E]">
-            Forgot Password?
+            ¿Olvidaste tu contraseña?
           </a>
         </div>
 
@@ -68,10 +68,10 @@
           <button
             type="submit"
             [disabled]="frm.invalid || loading"
-            class="w-full bg-[#D32F2F] text-white py-3 px-4 rounded-lg shadow-md hover:bg-[#880e0e] disabled:cursor-not-allowed disabled:opacity-50 transition duration-150 ease-in-out"
+            class="w-full bg-[#D32F2F] text-white py-3 px-4 rounded-lg rounded shadow-md hover:bg-[#880e0e] disabled:cursor-not-allowed disabled:opacity-50 transition duration-150 ease-in-out"
           >
             <ng-container *ngIf="!loading; else loadingState">
-              Log In
+              Iniciar Sesión
             </ng-container>
 
             <ng-template #loadingState>
@@ -91,10 +91,20 @@
           </button>
         </div>
 
+        
         <!-- Separador -->
         <div class="text-center mb-6">
-          <span class="text-sm text-[#424242]">Or log in with:</span>
+          <a href="/" class="text-sm text-[#1C1C1C] hover:text-[#880E0E]">
+            Volver
+          </a>
         </div>
+
+        <!-- Separador -->
+        <div class="text-center mb-6">
+          <span class="text-sm text-[#424242]">O</span>
+        </div>
+
+
 
         <!-- Google Login -->
         <div class="flex justify-center mb-6">
@@ -103,9 +113,9 @@
 
         <!-- Sign Up -->
         <p class="text-center text-sm text-[#424242] mt-6">
-          No account yet?
+          ¿No tienes cuenta?
           <a href="/signup" class="text-[#1C1C1C] font-medium hover:text-[#880E0E] transition duration-150">
-            Sign Up
+            Regístrate
           </a>
         </p>
       </form>
