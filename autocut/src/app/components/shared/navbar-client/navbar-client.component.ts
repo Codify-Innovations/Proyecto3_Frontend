@@ -38,18 +38,18 @@ export class NavbarClientComponent {
         { label: 'Dashboard', route: '/app/admin-dashboard' },
         { label: 'Gestión de usuarios', route: '/app/users' },
         { label: 'Reportes', route: '/app/admin-reports' },
-        { label: 'Settings', route: '/app/settings' },
+        { label: 'Ajustes', route: '/app/settings' },
       ];
     } else {
       // MENU PARA USUARIOS NORMALES
       this.menuItems = [
         { label: 'Dashboard', route: '/app/dashboard' },
-        { label: 'AI Detection', route: '/app/ai-detection' },
+        { label: 'Detector IA', route: '/app/ai-detection' },
         { label: 'Editor', route: '/app/video-editor' },
-        { label: 'AI Generate', route: '/app/ia/generator' },
+        { label: 'Generador IA', route: '/app/ia/generator' },
         { label: 'AI QA', route: '/app/analyze-media' },
-        { label: 'Achievements', route: '/app/achievements' },
-        { label: 'Public Users', route: '/app/public-users' },
+        { label: 'Logros', route: '/app/achievements' },
+        { label: 'Explorar Usuarios', route: '/app/public-users' },
       ];
     }
   }
