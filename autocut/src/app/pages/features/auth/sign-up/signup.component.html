@@ -5,36 +5,36 @@
       <div class="login-main">
         <form (ngSubmit)="handleSignup(frm)" autocomplete="off" #frm="ngForm">
           <div class="mb-3">
-            <h2 class="text-3xl text-center font-semibold text-[#1C1C1C] mt-2 mb-2">Sign Up</h2>
-            <p class="text-gray-500 text-center mb-6 text-sm">Enter your information to create an account</p>
+            <h2 class="text-3xl text-center font-semibold text-[#1C1C1C] mt-2 mb-2">Regístrate</h2>
+            <p class="text-gray-500 text-center mb-6 text-sm">Introduce tu información para crear una cuenta</p>
           </div>
 
           <!-- Name and Last Name -->
           <div class="d-flex align-items-center mb-4">
             <div class="form-group px-1 w-1/2">
-              <label for="name" class="text-sm font-medium text-[#424242]">First Name</label>
+              <label for="name" class="text-sm font-medium text-[#424242]">Nombre</label>
               <input #name="ngModel" type="text" id="name" name="name" placeholder="John"
                 class="mt-1 block w-full px-4 py-2 border border-[#424242] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#1C1C1C] focus:border-[#1C1C1C] transition duration-150 ease-in-out"
                 [(ngModel)]="user.name" required />
               <div *ngIf="name.invalid && name.touched" class="text-[#D32F2F] text-sm mt-1">
-                <div *ngIf="name.errors?.['required']">First name is required.</div>
+                <div *ngIf="name.errors?.['required']">El nombre es obligatorio.</div>
               </div>
             </div>
 
             <div class="form-group px-1 w-1/2">
-              <label for="lastname" class="text-sm font-medium text-[#424242]">Last Name</label>
+              <label for="lastname" class="text-sm font-medium text-[#424242]">Apellido</label>
               <input #lastname="ngModel" type="text" id="lastname" name="lastname" placeholder="Doe"
                 class="mt-1 block w-full px-4 py-2 border border-[#424242] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#1C1C1C] focus:border-[#1C1C1C] transition duration-150 ease-in-out"
                 [(ngModel)]="user.lastname" required />
               <div *ngIf="lastname.invalid && lastname.touched" class="text-[#D32F2F] text-sm mt-1">
-                <div *ngIf="lastname.errors?.['required']">Last name is required.</div>
+                <div *ngIf="lastname.errors?.['required']">El apellido es obligatorio.</div>
               </div>
             </div>
           </div>
 
           <!-- Email -->
           <div class="form-group mb-4">
-            <label for="email" class="text-sm font-medium text-[#424242]">Email Address</label>
+            <label for="email" class="text-sm font-medium text-[#424242]">Correo Electrónico</label>
             <input
               #email="ngModel"
               type="text"
@@ -50,14 +50,14 @@
             />
 
             <div *ngIf="email.invalid && email.touched" class="text-[#D32F2F] text-sm mt-1">
-              <div *ngIf="email.errors?.['required']">Email is required.</div>
-              <div *ngIf="email.errors?.['pattern']">Please enter a valid email format.</div>
+              <div *ngIf="email.errors?.['required']">El correo electrónico es obligatorio.</div>
+              <div *ngIf="email.errors?.['pattern']">Por favor, introduce un formato de correo electrónico válido.</div>
             </div>
           </div>
 
           <!-- Password -->
           <div class="form-group mb-4">
-            <label for="password" class="text-sm font-medium text-[#424242]">Password</label>
+            <label for="password" class="text-sm font-medium text-[#424242]">Contraseña</label>
             <input
               #password="ngModel"
               type="password"
@@ -73,26 +73,26 @@
               pattern="^(?=.*[A-Z])(?=.*\d).+$"
             />
             <div *ngIf="password.invalid && password.touched" class="text-[#D32F2F] text-sm mt-1">
-              <div *ngIf="password.errors?.['required']">Password is required.</div>
-              <div *ngIf="password.errors?.['minlength']">Password must be at least 8 characters.</div>
+              <div *ngIf="password.errors?.['required']">La contraseña es obligatoria.</div>
+              <div *ngIf="password.errors?.['minlength']">La contraseña debe tener al menos 8 caracteres.</div>
               <div *ngIf="password.errors?.['pattern']">
-              Password must contain at least one uppercase letter and one number.
+              La contraseña debe contener al menos una letra mayúscula y un número.
               </div>
             </div>
           </div>
 
           <!-- Confirm Password -->
           <div class="form-group mb-6">
-            <label for="confirmPassword" class="text-sm font-medium text-[#424242]">Confirm Password</label>
+            <label for="confirmPassword" class="text-sm font-medium text-[#424242]">Confirmar Contraseña</label>
             <input #confirmPassword="ngModel" type="password" id="confirmPassword" name="confirmPassword" placeholder="••••••••"
               class="mt-1 block w-full px-4 py-2 border border-[#424242] rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-[#1C1C1C] focus:border-[#1C1C1C] transition duration-150 ease-in-out"
               [(ngModel)]="user.confirmPassword" required minlength="8" />
             <div *ngIf="confirmPassword.invalid && confirmPassword.touched" class="text-[#D32F2F] text-sm mt-1">
-              <div *ngIf="confirmPassword.errors?.['required']">Confirm password is required.</div>
+              <div *ngIf="confirmPassword.errors?.['required']">Confirmar contraseña es obligatorio.</div>
               <!-- Muestra error si las contraseñas no coinciden -->
               <div *ngIf="user.password && user.confirmPassword && user.password !== user.confirmPassword"
                   class="text-[#D32F2F] text-sm mt-1">
-                Passwords do not match.
+                Las contraseñas no coinciden.
               </div>
             </div>
           </div>
@@ -102,12 +102,12 @@
             <button
               type="submit"
               [disabled]="frm.invalid || user.password !== user.confirmPassword || loading"
-              class="w-full bg-[#D32F2F] text-white py-3 px-4 rounded-lg shadow-md
+              class="w-full bg-[#D32F2F] text-white py-3 px-4 rounded-lg rounded shadow-md
                   hover:bg-[#880e0e] disabled:cursor-not-allowed disabled:opacity-50
                   transition duration-150 ease-in-out"
             >
               <ng-container *ngIf="!loading; else loadingState">
-                Sign Up
+                Registrarse
               </ng-container>
               <ng-template #loadingState>
                 <div class="flex items-center justify-center gap-2">
@@ -123,7 +123,7 @@
 
           <!-- Or log in with -->
           <div class="text-center mb-6">
-            <span class="text-sm text-[#424242]">Or sign up with:</span>
+            <span class="text-sm text-[#424242]">O regístrate con:</span>
           </div>
 
           <!-- Google Sign Up -->
@@ -133,8 +133,8 @@
 
           <!-- Already have an account? -->
           <p class="text-center text-sm text-[#424242] mt-6">
-            Already have an account?
-            <a href="/login" class="text-[#880e0e] font-medium hover:text-[#1C1C1C] transition duration-150">Go Login</a>
+            ¿Ya tienes una cuenta?
+            <a href="/login" class="text-[#880e0e] font-medium hover:text-[#1C1C1C] transition duration-150">Iniciar Sesión</a>
           </p>
         </form>
       </div>
