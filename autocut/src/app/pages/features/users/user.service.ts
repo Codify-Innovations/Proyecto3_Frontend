@@ -30,6 +30,10 @@ export class UserService extends BaseService<IUser> {
   updateUserProfile(user: IUser): Observable<any> {
     return this.http.put(`${this.source}/profile`, user);
   }
+getPublicProfile(username: string): Observable<any> {
+  return this.http.get<any>(`${this.source}/explore-users/${username}`);
+}
+
 
   getUserCollections(): Observable<any[]> {
     return this.http.get<any[]>(`${this.source}/collections`);

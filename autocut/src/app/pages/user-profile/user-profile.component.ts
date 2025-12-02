@@ -2,15 +2,16 @@ import {
   AfterViewInit,
   Component,
   ElementRef,
+  Input,
   OnDestroy,
   OnInit,
   ViewChild,
-  inject,
-  effect,
+  inject
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+
 import { UserService } from '../../pages/features/users/user.service';
 import { AlertService } from '../../core/services/alert.service';
 import { VehicleCustomizationService } from '../../pages/features/vehicle-3D/services/vehicle-customization.service';
@@ -34,6 +35,10 @@ import { ShareButtonComponent } from '../../components/shared/share/share-button
   templateUrl: './user-profile.component.html',
 })
 export class UserProfileComponent implements OnInit, AfterViewInit, OnDestroy {
+
+  @Input() isVisitor = false;
+  @Input() username?: string;
+
   @ViewChild('vehiclesAnchor') vehiclesAnchor?: ElementRef<HTMLDivElement>;
 
   private userService = inject(UserService);
@@ -45,18 +50,15 @@ export class UserProfileComponent implements OnInit, AfterViewInit, OnDestroy {
 
   user: any = null;
   userCar: any = null;
-  selectedImage: string | ArrayBuffer | null = null;
+
   isLoading = true;
 
   achievements = this.achievementService.achievements$;
   loading = this.achievementService.loading$;
   error = this.achievementService.error$;
 
-  badges = [
-    { name: 'Classic Collector' },
-    { name: 'Muscle Car Expert' },
-    { name: 'Top Speed Designer' },
-  ];
+  visitedAchievements: any[] = [];
+  isPrivateProfile = false;
 
   userVehicles: IVehiculo[] = [];
   private intersectionObserver?: IntersectionObserver;
@@ -67,71 +69,76 @@ export class UserProfileComponent implements OnInit, AfterViewInit, OnDestroy {
   hasLoadedVehicles = false;
 
   ngOnInit(): void {
-    this.loadProfile();
-    this.loadUserCar();
+    if (this.isVisitor) {
+      this.loadPublicProfile();
+    } else {
+      this.loadProfile();
+      this.loadUserCar();
+    }
   }
 
-  ngAfterViewInit(): void {
-    this.setupIntersectionObserver();
-  }
+  ngAfterViewInit(): void {}
 
   ngOnDestroy(): void {
     this.intersectionObserver?.disconnect();
   }
 
+  
   loadProfile(): void {
     this.userService.getUserProfile().subscribe({
       next: (res: any) => {
         this.user = res.data;
+
         if (this.user?.visibility) {
           this.user.visibility = this.user.visibility.toLowerCase().trim();
         }
+
         this.isLoading = false;
+
         this.resetVehiclesFeed();
         this.loadMoreVehicles();
+
+        setTimeout(() => this.setupIntersectionObserver(), 0);
       },
-      error: (err) => {
-        console.error('Error al obtener perfil:', err);
-        this.alertService.error('Error al cargar el perfil del usuario.');
+      error: () => {
+        this.alertService.error('Error al cargar tu perfil.');
         this.isLoading = false;
       },
     });
   }
 
-  loadUserCar(): void {
-    this.customizationService.getMyCustomization$().subscribe({
-      next: (res: any) => {
-        this.userCar = res.data || null;
-        console.log('Carro del usuario:', this.userCar);
-      },
-      error: (err) => {
-        console.warn('No se pudo cargar el carro del usuario:', err);
-      },
-    });
-  }
+  
+  loadPublicProfile(): void {
+  this.userService.getPublicProfile(this.username!).subscribe({
+    next: (res: any) => {
+      const { profile, allowed } = res.data;
 
-  goToSettings(): void {
-    this.router.navigate(['/app/profile/settings']);
-  }
+      if (!allowed) {
+        this.isPrivateProfile = true;
+        this.isLoading = false;
+        return;
+      }
 
-  identifyCar(): void {
-    this.router.navigate(['/app/ai-detection']);
-  }
+      this.user = profile;
+      this.userCar = profile.customization ?? null;
+      this.visitedAchievements = profile.logros ?? [];
 
-  private resetVehiclesFeed(): void {
-    this.userVehicles = [];
-    this.vehiclesPage = 1;
-    this.hasMoreVehicles = true;
-    this.hasLoadedVehicles = false;
-  }
+      this.userVehicles = profile.cars ?? [];
+      this.hasLoadedVehicles = true;
+      this.hasMoreVehicles = false; 
 
-  trackByVehicle = (_: number, vehicle: IVehiculo) =>
-    vehicle.id ?? `${vehicle.marca}-${vehicle.modelo}-${vehicle.anio}-${_}`;
+      this.isLoading = false;
+    },
+    error: () => {
+      this.alertService.error('Error al cargar el perfil público.');
+      this.isLoading = false;
+    },
+  });
+}
+
 
   private loadMoreVehicles(): void {
-    if (!this.user?.id || this.isVehiclesLoading || !this.hasMoreVehicles) {
-      return;
-    }
+    if (!this.user?.id || this.isVehiclesLoading || !this.hasMoreVehicles) return;
 
     this.isVehiclesLoading = true;
 
@@ -142,56 +149,90 @@ export class UserProfileComponent implements OnInit, AfterViewInit, OnDestroy {
           const vehicles = res.data ?? [];
           this.userVehicles = [...this.userVehicles, ...vehicles];
 
-          const meta = res.meta;
-          const currentPage =
-            (meta?.pageNumber as number | undefined) ?? this.vehiclesPage;
-          const totalPages = meta?.totalPages as number | undefined;
-
-          if (totalPages !== undefined) {
-            this.hasMoreVehicles = currentPage < totalPages;
-          } else {
-            this.hasMoreVehicles = vehicles.length === this.vehiclesPageSize;
-          }
-
-          this.vehiclesPage = currentPage + 1;
+          this.hasMoreVehicles = vehicles.length === this.vehiclesPageSize;
+          this.vehiclesPage++;
           this.hasLoadedVehicles = true;
           this.isVehiclesLoading = false;
         },
-        error: (err) => {
-          console.error('Error al cargar vehículos:', err);
-          this.alertService.error('No se pudieron cargar los vehículos.');
-          this.hasLoadedVehicles = true;
+        error: () => {
+          this.alertService.error('Error al cargar vehículos.');
           this.isVehiclesLoading = false;
+          this.hasLoadedVehicles = true;
         },
       });
   }
 
-  onFileSelected(event: any): void {
-    const file = event.target.files[0];
-    if (!file) {
-      return;
-    }
+  
+  private loadMoreVehiclesPublic(id: number): void {
+    if (this.isVehiclesLoading || !this.hasMoreVehicles) return;
 
-    const reader = new FileReader();
-    reader.onload = (e: any) => (this.selectedImage = e.target.result);
-    reader.readAsDataURL(file);
+    this.isVehiclesLoading = true;
+
+    this.vehicleService
+      .getVehiclesByUser(id, this.vehiclesPage, this.vehiclesPageSize)
+      .subscribe({
+        next: (res) => {
+          const vehicles = res.data ?? [];
+          this.userVehicles = [...this.userVehicles, ...vehicles];
+
+          this.hasMoreVehicles = vehicles.length === this.vehiclesPageSize;
+          this.vehiclesPage++;
+          this.hasLoadedVehicles = true;
+          this.isVehiclesLoading = false;
+        },
+        error: () => {
+          this.alertService.error('Error al cargar vehículos públicos.');
+          this.isVehiclesLoading = false;
+          this.hasLoadedVehicles = true;
+        },
+      });
+  }
+
+ 
+  loadUserCar(): void {
+    this.customizationService.getMyCustomization$().subscribe({
+      next: (res: any) => {
+        this.userCar = res.data || null;
+      },
+      error: () => {}
+    });
+  }
+
+ 
+  trackByVehicle = (_: number, vehicle: IVehiculo) =>
+    vehicle.id ?? `${vehicle.marca}-${vehicle.modelo}-${vehicle.anio}-${_}`;
+
+
+  goToSettings(): void {
+    if (!this.isVisitor) {
+      this.router.navigate(['/app/profile/settings']);
+    }
+  }
+
+  identifyCar(): void {
+    if (!this.isVisitor) {
+      this.router.navigate(['/app/ai-detection']);
+    }
+  }
+
+  private resetVehiclesFeed(): void {
+    this.userVehicles = [];
+    this.vehiclesPage = 1;
+    this.hasMoreVehicles = true;
+    this.hasLoadedVehicles = false;
   }
 
   private setupIntersectionObserver(): void {
-    if (typeof window === 'undefined' || typeof IntersectionObserver === 'undefined') {
-      return;
-    }
-
-    this.intersectionObserver?.disconnect();
-
-    if (!this.vehiclesAnchor) {
-      return;
-    }
+    if (!this.vehiclesAnchor || this.isPrivateProfile) return;
 
     this.intersectionObserver = new IntersectionObserver((entries) => {
       entries.forEach((entry) => {
         if (entry.isIntersecting) {
-          this.loadMoreVehicles();
+          if (this.isVisitor) {
+            this.loadMoreVehiclesPublic(this.user.id);
+          } else {
+            this.loadMoreVehicles();
+          }
         }
       });
     });
