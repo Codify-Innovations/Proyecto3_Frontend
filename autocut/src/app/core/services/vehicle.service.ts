@@ -4,6 +4,7 @@ import { IVehiculo } from '../interfaces';
 import { BaseService } from './base-service';
 import { AlertService } from './alert.service';
 import { AuthService } from '../../pages/features/auth/auth.service';
+import { LoggerService } from './utils/logger.service';
 
 @Injectable({
   providedIn: 'root',
@@ -13,7 +14,7 @@ export class VehicleService extends BaseService<IVehiculo> {
 
   private alertService = inject(AlertService);
   private authService = inject(AuthService);
-
+  private logger: LoggerService = inject(LoggerService);
   isSaving = signal<boolean>(false);
   get isSaving$() {
     return this.isSaving;
@@ -74,7 +75,7 @@ export class VehicleService extends BaseService<IVehiculo> {
           'top',
           ['error-snackbar']
         );
-        console.error('❌ Error en VehicleRegistrationService:', err);
+        this.logger.error('❌ Error en VehicleRegistrationService:', err);
       },
     });
   }

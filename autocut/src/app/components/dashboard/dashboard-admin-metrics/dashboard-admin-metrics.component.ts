@@ -40,7 +40,8 @@ export class DashboardAdminMetricsComponent implements OnInit {
     this.endDate = '';
   }
 
-  private chartTimeout: any = null;
+  private chartTimeout: ReturnType<typeof setTimeout> | null = null;
+
 
   ngOnInit(): void {
     this.mode = 'range';
@@ -67,6 +68,7 @@ export class DashboardAdminMetricsComponent implements OnInit {
 
     if (this.chartTimeout) {
       clearTimeout(this.chartTimeout);
+      this.chartTimeout = null;
     }
   }
 

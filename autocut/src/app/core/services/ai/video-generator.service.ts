@@ -1,11 +1,14 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import axios from 'axios';
+import { LoggerService } from '../utils/logger.service';
+import { environment } from '../../../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class VideoGeneratorService {
+  private logger: LoggerService = inject(LoggerService);
+  private apiUrl = `${environment.iaApiUrl}/video`;
 
-  private apiUrl = 'http://127.0.0.1:8000/api/video';
-
+  
   async generateVideo(
     imageUrls: string[],
     style: string,
@@ -24,7 +27,7 @@ export class VideoGeneratorService {
       return response.data;
 
     } catch (error) {
-      console.error('❌ Error generando video PRO:', error);
+      this.logger.error('Error generando video PRO:', error);
       throw error;
     }
   }

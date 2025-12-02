@@ -2,6 +2,8 @@ import { Component, OnInit, OnDestroy, inject } from '@angular/core';
 import { NotificationService } from '../../services/notificacion.service';
 import { AlertService } from '../../services/alert.service';
 import { AuthService } from '../../../pages/features/auth/auth.service';
+import { INotificacion } from '../../interfaces';
+import { LoggerService } from '../../services/utils/logger.service';
 
 @Component({
   selector: 'app-notification-manager',
@@ -12,8 +14,8 @@ export class NotificationManagerComponent implements OnInit, OnDestroy {
   private notisService = inject(NotificationService);
   private alertService = inject(AlertService);
   private authService = inject(AuthService);
-
-  private pollingInterval: any;
+  private logger: LoggerService = inject(LoggerService);
+  private pollingInterval: ReturnType<typeof setInterval> | null = null;
   private userId: number = 0;
 
   ngOnInit(): void {
@@ -35,7 +37,7 @@ export class NotificationManagerComponent implements OnInit, OnDestroy {
     this.notisService.getNoLeidas(this.userId).subscribe({
       next: (res) => {
         const notificaciones = res.data;
-        notificaciones.forEach((n: any) => {
+        notificaciones.forEach((n: INotificacion) => {
 
           this.alertService.displayAlert(
             'success',
@@ -46,12 +48,11 @@ export class NotificationManagerComponent implements OnInit, OnDestroy {
           );
 
           this.notisService.marcarLeida(n.id).subscribe(() => {
-            console.log('[NOTI] Notificación marcada como leída:', n.id);
           });
         });
       },
       error: (err) => {
-        console.error('[NOTI] ERROR al obtener notificaciones:', err);
+        this.logger.error('[NOTI] ERROR al obtener notificaciones:', err);
       }
     });
   }

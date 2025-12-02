@@ -9,6 +9,7 @@ import { CarSelectorComponent } from '../components/selector/car/car-selector.co
 import { CarConfigs } from '../config/car-configs';
 import { VehicleCustomizationService } from '../services/vehicle-customization.service';
 import { IVehicleCustomization } from '../../../../core/interfaces';
+import { LoggerService } from '../../../../core/services/utils/logger.service';
 
 @Component({
   selector: 'app-vehicle-customizer-page',
@@ -27,7 +28,7 @@ import { IVehicleCustomization } from '../../../../core/interfaces';
 export class VehicleCustomizerPage implements OnInit {
   private customizationService = inject(VehicleCustomizationService);
   private cdr = inject(ChangeDetectorRef);
-
+  private logger: LoggerService = inject(LoggerService);
   selectedModel: keyof typeof CarConfigs = 'Nissan';
   bodyColor = '';
   glassTint = false;
@@ -56,17 +57,15 @@ export class VehicleCustomizerPage implements OnInit {
           this.wheelStyle = config.rines || '';
           this.frontLight = config.lucesFront || '';
 
-          console.log('Configuración previa cargada:', config);
         } else {
           this.selectedModel = 'Nissan';
-          console.log('No se encontró configuración previa, cargando modelo estándar.');
         }
 
         this.loaded = true;
         this.cdr.detectChanges();
       },
       error: (err) => {
-        console.warn('No se pudo cargar la configuración previa:', err);
+        this.logger.warn('No se pudo cargar la configuración previa:', err);
         this.selectedModel = 'Nissan'; 
         this.loaded = true;
         this.cdr.detectChanges();

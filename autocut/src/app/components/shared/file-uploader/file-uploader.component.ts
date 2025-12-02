@@ -45,7 +45,7 @@ export class FileUploaderComponent {
     });
   }
 
-  onFileChange(event: any) {
+  onFileChange(event: Event) {
     const input = event.target as HTMLInputElement;
     const files = input.files;
 
@@ -54,8 +54,6 @@ export class FileUploaderComponent {
 
 
     if (!files || files.length === 0) return;
-    console.log(files);
-    console.log(this.selectedFiles);
     const filesArray = Array.from(files);
 
     const isValid = this.fileValidatorFn(filesArray, this.alertService);
@@ -85,8 +83,6 @@ export class FileUploaderComponent {
     const files = event.dataTransfer?.files;
     if (!files || files.length === 0) return;
     const filesArray = Array.from(files);
-    console.log(files);
-    console.log(this.selectedFiles);
     const isValid = this.fileValidatorFn(filesArray, this.alertService);
     if (!isValid) {
       return;

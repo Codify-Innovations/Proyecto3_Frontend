@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 import emailjs from '@emailjs/browser';
 import { TranslateModule, TranslateService } from '@ngx-translate/core';
+import { LoggerService } from '../../../../core/services/utils/logger.service';
 
 @Component({
   selector: 'app-landing-page',
@@ -12,11 +13,11 @@ import { TranslateModule, TranslateService } from '@ngx-translate/core';
 })
 export class LandingPageComponent {
   public translate: TranslateService = inject(TranslateService);
-
-  // ✅ Estado del menú responsive
+  private logger: LoggerService = inject(LoggerService);
+  // Estado del menú responsive
   menuOpen = false;
 
-  // ✅ Cerrar menú al hacer clic en un enlace
+  // Cerrar menú al hacer clic en un enlace
   closeMenu(): void {
     this.menuOpen = false;
   }
@@ -161,9 +162,6 @@ export class LandingPageComponent {
     this.successMessage = '';
     this.errorMessage = '';
 
-    console.log(
-      Object.fromEntries(new FormData(event.target as HTMLFormElement))
-    );
 
     emailjs
       .sendForm(
@@ -178,7 +176,7 @@ export class LandingPageComponent {
         (event.target as HTMLFormElement).reset();
       })
       .catch((error: any) => {
-        console.error('Error al enviar el mensaje:', error);
+        this.logger.error('Error al enviar el mensaje:', error);
         this.isSending = false;
         this.errorMessage = this.translate.instant('CONTACT.STATUS.ERROR');
       });
