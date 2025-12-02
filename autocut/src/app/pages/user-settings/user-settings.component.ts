@@ -6,6 +6,7 @@ import { AlertService } from '../../core/services/alert.service';
 import { Router } from '@angular/router';
 import { VehicleCustomizationService } from '../../pages/features/vehicle-3D/services/vehicle-customization.service';
 import { UserCarViewerComponent } from '../../pages/features/vehicle-3D/user-car-viewer/user-car-viewer.component';
+import { LoggerService } from '../../core/services/utils/logger.service';
 
 @Component({
   selector: 'app-user-settings',
@@ -19,7 +20,7 @@ export class UserSettingsComponent implements OnInit {
   private alertService = inject(AlertService);
   private router = inject(Router);
   private customizationService = inject(VehicleCustomizationService);
-
+  private logger: LoggerService = inject(LoggerService);
   form!: FormGroup;
   isLoading = false;
   avatarUrl = 'https://cdn-icons-png.flaticon.com/512/149/149071.png';
@@ -67,10 +68,10 @@ export class UserSettingsComponent implements OnInit {
     this.customizationService.getMyCustomization$().subscribe({
       next: (res: any) => {
         this.userCar = res.data || null;
-        console.log('Carro del usuario:', this.userCar);
+        this.logger.log('Carro del usuario:', this.userCar);
       },
       error: (err) => {
-        console.warn('No se pudo cargar el carro del usuario:', err);
+        this.logger.warn('No se pudo cargar el carro del usuario:', err);
       },
     });
   }
@@ -107,7 +108,7 @@ export class UserSettingsComponent implements OnInit {
         this.isLoading = false;
       },
       error: (err) => {
-        console.error('Error:', err);
+        this.logger.error('Error:', err);
         const duplicate = err?.error?.message?.includes('Duplicate entry');
         const msg = duplicate
           ? 'El correo ya está en uso por otro usuario.'

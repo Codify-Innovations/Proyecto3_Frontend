@@ -1,6 +1,7 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { IResponse, IReporteHistorial } from '../interfaces';
+import { LoggerService } from './utils/logger.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +9,7 @@ import { IResponse, IReporteHistorial } from '../interfaces';
 export class ReportsHistoryService {
 
   private http = inject(HttpClient);
-
+  private logger: LoggerService = inject(LoggerService);
   private readonly source = 'api/reportes/historial';
 
   historial = signal<IReporteHistorial[]>([]);
@@ -24,7 +25,7 @@ export class ReportsHistoryService {
       },
       error: err => {
         this.loading.set(false);
-        console.error('Error loading report history:', err);
+        this.logger.error('Error loading report history:', err);
       }
     });
   }

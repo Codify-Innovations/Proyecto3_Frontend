@@ -7,6 +7,7 @@ import { FileUploaderComponent } from '../../../components/shared/file-uploader/
 import { ShareButtonComponent } from '../../../components/shared/share/share-button.component';
 import { VideoGeneratorService } from '../../../core/services/ai/video-generator.service';
 import { GeneratedVideoService } from '../../../core/services/generated-video.service';
+import { LoggerService } from '../../../core/services/utils/logger.service';
 
 @Component({
   selector: 'app-ia-generator',
@@ -16,6 +17,7 @@ import { GeneratedVideoService } from '../../../core/services/generated-video.se
 })
 export class IaGeneratorComponent {
 
+  private logger: LoggerService = inject(LoggerService);
   alertService = inject(AlertService);
   iaService = inject(VideoGeneratorService);
   uploaderService = inject(UploaderService);
@@ -40,7 +42,6 @@ export class IaGeneratorComponent {
       const uploaded = this.uploaderService.uploaded$();
 
       if (uploaded && urls && urls.length > 0) {
-        console.log("📸 URLs recibidas desde Cloudinary:", urls);
         this.URLs = [...urls];
       }
     });
@@ -99,7 +100,6 @@ export class IaGeneratorComponent {
   }
 
   onFileUpload(files: File[]) {
-    console.log("📥 Archivos seleccionados:", files);
 
     if (!files || files.length === 0) return;
 
@@ -146,8 +146,6 @@ export class IaGeneratorComponent {
         this.musicUrl
       );
 
-      console.log("🎯 Respuesta del backend:", result);
-
       const url =
         result?.video_url ||
         result?.cloudinary_url ||
@@ -172,7 +170,7 @@ export class IaGeneratorComponent {
       });
 
     } catch (error) {
-      console.error("❌ Error generando video:", error);
+      this.logger.error("❌ Error generando video:", error);
       this.alertService.displayAlert(
         'error',
         '❌ Error generando el video.',

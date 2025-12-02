@@ -215,3 +215,12 @@ export interface IReporteHistorial {
   tamanioBytes: number;
 }
 
+export interface INotificacion {
+  id: number;
+  usuario: number;
+  mensaje: string;
+  tipo: string | null;
+  fecha: string;
+  leida: boolean;
+}
+

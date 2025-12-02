@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { inject, Injectable } from '@angular/core';
+import { LoggerService } from './utils/logger.service';
 
 @Injectable({
   providedIn: 'root'
@@ -7,7 +8,7 @@ export class ShareService {
 
   // MENSAJE PERSONALIZADO
   private baseMessage = "Hey, mira mi nuevo contenido generado en Autocut!";
-
+  private logger: LoggerService = inject(LoggerService);
   // FACEBOOK — NO PERMITE TEXTO EXTRA, SOLO URL
   openFacebookShare(url: string) {
     try {
@@ -16,7 +17,7 @@ export class ShareService {
         '_blank'
       );
     } catch (e) {
-      console.error('Error abriendo Facebook:', e);
+      this.logger.error('Error abriendo Facebook:', e);
     }
   }
 
@@ -53,7 +54,7 @@ export class ShareService {
         title: 'Mira esto!',
         text: this.baseMessage,
         url: url
-      }).catch(err => console.error('Error TikTok Share:', err));
+      }).catch(err => this.logger.error('Error TikTok Share:', err));
     } else {
       alert("TikTok solo permite compartir desde móvil.");
     }

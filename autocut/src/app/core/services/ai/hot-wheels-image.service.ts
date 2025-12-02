@@ -3,6 +3,7 @@ import { Injectable, inject } from '@angular/core';
 import Bytez from 'bytez.js';
 import { environment } from '../../../../environments/environment';
 import { UploaderService } from '../cloudinary/uploader.service';
+import { LoggerService } from '../utils/logger.service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,13 +13,13 @@ export class HotWheelsImageService {
   private bytezSdk = new Bytez(environment.bytezApiKey);
   private readonly modelId = 'stabilityai/stable-diffusion-xl-base-1.0';
   private readonly uploadFolder = 'ai-identification-hotwheels';
-
+  private logger: LoggerService = inject(LoggerService);
   async generateImage(prompt: string): Promise<string> {
     const model = this.bytezSdk.model(this.modelId);
     const { error, output } = await model.run(prompt);
 
     if (error) {
-      console.error('Bytez API error:', error);
+      this.logger.error('Bytez API error:', error);
       throw new Error(`Bytez API error: ${error}`);
     }
 

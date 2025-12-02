@@ -35,7 +35,6 @@ export class AchievementService extends BaseService<IUsuarioLogro> {
 
     effect(() => {
       const user = this.auth.currentUser();
-      console.log('User changed:', user);
 
       if (user) {
         this.clearAchievements();
@@ -59,7 +58,6 @@ export class AchievementService extends BaseService<IUsuarioLogro> {
       .subscribe({
         next: (res) => {
           this.achievements.set(res.data ?? []);
-          console.log(res);
           this.loading.set(false);
         },
         error: () => {

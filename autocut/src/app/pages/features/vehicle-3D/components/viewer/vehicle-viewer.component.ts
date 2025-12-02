@@ -1,6 +1,7 @@
 import {
   Component,
   ElementRef,
+  inject,
   Input,
   OnChanges,
   OnInit,
@@ -12,6 +13,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three-stdlib';
 import { CarLoaderService } from '../../services/car-loader.service';
 import { CarConfigs } from '../../config/car-configs';
+import { LoggerService } from '../../../../../core/services/utils/logger.service';
 
 @Component({
   selector: 'app-vehicle-viewer',
@@ -40,7 +42,7 @@ export class VehicleViewerComponent implements OnInit, OnChanges {
   private carModel!: THREE.Group;
   private materials: Map<string, THREE.MeshStandardMaterial> = new Map();
   private activeConfig: any = null;
-
+  private logger: LoggerService = inject(LoggerService);
   constructor(private carLoader: CarLoaderService) {}
 
   async ngOnInit(): Promise<void> {
@@ -118,9 +120,9 @@ export class VehicleViewerComponent implements OnInit, OnChanges {
       // Aplicar la configuración guardada (si existe)
       this.applySavedConfiguration();
 
-      console.log(`Modelo ${this.selectedModel} cargado con configuración inicial.`);
+      this.logger.log(`Modelo ${this.selectedModel} cargado con configuración inicial.`);
     } catch (error) {
-      console.error('Error cargando modelo:', error);
+      this.logger.error('Error cargando modelo:', error);
     } finally {
       this.loading = false;
     }
