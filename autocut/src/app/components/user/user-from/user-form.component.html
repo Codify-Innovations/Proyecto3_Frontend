@@ -8,7 +8,7 @@
       id="email" 
       formControlName="email" 
       type="email"
-      disabled
+      [disabled]="true"
       class="w-full border rounded-md px-4 py-2 focus:ring focus:ring-red-200 disabled:bg-gray-100 disabled:cursor-not-allowed"
     />
     @if (userForm.controls['email'].invalid && (userForm.controls['email'].dirty || userForm.controls['email'].touched)) {
