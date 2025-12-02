@@ -1,4 +1,106 @@
-<app-user-profile 
-    [isVisitor]="true"
-    [username]="username">
-</app-user-profile>
+<div class="min-h-screen flex flex-col items-center bg-[#F5F5F5]">
+
+  <div *ngIf="loading()" class="mt-20 text-center">
+    <p class="text-lg text-gray-600">Cargando perfil...</p>
+  </div>
+
+
+  <div *ngIf="!loading() && error()" 
+       class="max-w-xl mx-auto mt-20 p-10 text-center bg-red-50 border border-red-200 rounded-2xl shadow">
+    <h2 class="text-3xl font-bold text-red-700 mb-2">Cuenta privada</h2>
+    <p class="text-gray-600 text-lg">{{ error() }}</p>
+  </div>
+
+
+  <div *ngIf="!loading() && profile()"
+       class="relative w-full max-w-5xl bg-white mt-10 rounded-2xl shadow-md p-10 border border-[#E0E0E0] flex flex-col items-center">
+
+    <app-user-car-viewer
+      *ngIf="profile().customization"
+      [model]="profile().customization.modelo"
+      [color]="profile().customization.carroceria"
+      [glassTint]="profile().customization.vidriosPolarizados"
+      [interior]="profile().customization.interior"
+      [frontLight]="profile().customization.lucesFront"
+      [wheelStyle]="profile().customization.rines"
+      class="mb-6"
+    ></app-user-car-viewer>
+
+    <h2 class="text-3xl font-bold text-[#1C1C1C] mb-1">
+      {{ '@' + (profile().username?.split('@')[0] || profile().email?.split('@')[0]) }}
+    </h2>
+
+    <p class="text-lg text-[#424242] font-medium">
+      {{ profile().email }}
+    </p>
+    <div class="flex items-center gap-2 mt-2">
+      <span
+        class="inline-block w-2 h-2 rounded-full"
+        [ngClass]="profile().visibility === 'private' ? 'bg-red-500' : 'bg-green-500'"
+      ></span>
+
+      <span class="text-sm text-[#757575] font-medium">
+        {{ profile().visibility === 'private' ? 'Perfil privado' : 'Perfil público' }}
+      </span>
+    </div>
+    <p class="text-center text-[#757575] max-w-2xl mt-4">
+      {{ profile().bio || 'Este usuario no ha agregado una biografía.' }}
+    </p>
+  </div>
+  <div class="w-full max-w-6xl mt-14 px-4 flex flex-col items-center" *ngIf="profile()">
+    <h3 class="text-2xl font-semibold text-[#1C1C1C] mb-6 text-center">Badges</h3>
+
+    <div *ngIf="profile().logros && profile().logros.length > 0; else noBadges"
+         class="flex flex-wrap justify-center gap-6">
+
+      <div
+        *ngFor="let badge of profile().logros"
+        class="flex flex-col items-center bg-white border border-[#E0E0E0] rounded-xl shadow-sm hover:shadow-md transition p-4 w-44"
+      >
+        <p class="text-[#1C1C1C] font-semibold text-sm text-center">
+          {{ badge.logro.name }}
+        </p>
+        <p class="text-[#757575] text-xs text-center mt-1">
+          {{ badge.logro.description || 'Insignia obtenida por logros automotrices.' }}
+        </p>
+      </div>
+
+    </div>
+
+    <ng-template #noBadges>
+      <p class="text-gray-500 text-center mt-4 text-lg">
+        Este usuario aún no tiene insignias.
+      </p>
+    </ng-template>
+  </div>
+
+  <div class="w-full max-w-6xl mt-14 mb-10 px-4" *ngIf="profile()?.cars">
+    <h3 class="text-2xl font-semibold text-[#1C1C1C] mb-6">Colecciones</h3>
+
+    <div *ngIf="profile().cars.length > 0"
+         class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+
+      <div class="border border-[#E0E0E0] rounded-xl bg-white shadow-sm hover:shadow-md transition p-4 flex flex-col items-center"
+           *ngFor="let car of profile().cars">
+
+        <div class="w-48 h-36 bg-[#F5F5F5] rounded-md mb-4 flex items-center justify-center">
+          <img *ngIf="car.url" [src]="car.url"
+               class="w-full h-full object-cover rounded-md" />
+          <span *ngIf="!car.url" class="text-gray-400 text-sm">Imagen no disponible</span>
+        </div>
+
+        <p class="font-semibold text-[#1C1C1C]">{{ car.modelo }}</p>
+        <p class="text-[#757575] text-sm">{{ car.marca }}</p>
+        <p class="text-[#757575] text-sm">{{ car.anio }}</p>
+      </div>
+
+    </div>
+
+    <div *ngIf="profile().cars.length === 0"
+         class="text-center py-20 text-gray-500">
+      <p>No hay colecciones disponibles para este usuario.</p>
+    </div>
+
+  </div>
+
+</div>
