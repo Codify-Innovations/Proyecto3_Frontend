@@ -26,7 +26,7 @@ import { ReportsComponent } from './pages/features/reports/reports.component';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'landing-autocut',
+    redirectTo: 'landing',
     pathMatch: 'full',
   },
   {
