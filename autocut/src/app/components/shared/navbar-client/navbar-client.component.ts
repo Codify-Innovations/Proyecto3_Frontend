@@ -38,7 +38,6 @@ export class NavbarClientComponent {
         { label: 'Dashboard', route: '/app/admin-dashboard' },
         { label: 'Gestión de usuarios', route: '/app/users' },
         { label: 'Reportes', route: '/app/admin-reports' },
-        { label: 'Ajustes', route: '/app/settings' },
       ];
     } else {
       // MENU PARA USUARIOS NORMALES

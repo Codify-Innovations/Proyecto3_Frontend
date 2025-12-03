@@ -69,6 +69,7 @@ export const routes: Routes = [
       {
         path: 'admin-dashboard',
         component: AdminDashboardComponent,
+        canActivate: [AdminRoleGuard],
         data: {
           authorities: [IRoleType.admin, IRoleType.superAdmin],
           name: 'Dashboard Admin',
@@ -78,6 +79,7 @@ export const routes: Routes = [
       {
         path: 'admin-reports',
         component: ReportsComponent,
+        canActivate: [AdminRoleGuard],
         data: {
           authorities: [IRoleType.admin, IRoleType.superAdmin],
           name: 'Reports Admin',
