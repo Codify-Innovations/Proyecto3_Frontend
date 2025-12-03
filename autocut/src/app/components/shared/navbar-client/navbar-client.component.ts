@@ -23,6 +23,8 @@ export class NavbarClientComponent {
 
   public menuItems: { label: string; route: string }[] = [];
 
+  public isSuperAdmin: boolean = false;
+
   constructor() {
     this.buildMenu();
   }
@@ -30,17 +32,19 @@ export class NavbarClientComponent {
   private buildMenu() {
     const user = this.authService.getUser();
     const authorities = user?.authorities?.map(a => a.authority) || [];
-    const isSuperAdmin = authorities.includes(IRoleType.superAdmin);
 
-    if (isSuperAdmin) {
-      // MENU PARA SUPER ADMIN
+
+    this.isSuperAdmin = authorities.includes(IRoleType.superAdmin);
+
+    if (this.isSuperAdmin) {
+
       this.menuItems = [
         { label: 'Dashboard', route: '/app/admin-dashboard' },
         { label: 'Gestión de usuarios', route: '/app/users' },
         { label: 'Reportes', route: '/app/admin-reports' },
       ];
     } else {
-      // MENU PARA USUARIOS NORMALES
+
       this.menuItems = [
         { label: 'Dashboard', route: '/app/dashboard' },
         { label: 'Detector IA', route: '/app/ai-detection' },
@@ -63,7 +67,6 @@ export class NavbarClientComponent {
     }
   }
 
-  
   toggleProfileDropdown(event: Event): void {
     event.stopPropagation();
     this.isProfileDropdownOpen = !this.isProfileDropdownOpen;
@@ -85,4 +88,3 @@ export class NavbarClientComponent {
     this.router.navigateByUrl('/login');
   }
 }
-
