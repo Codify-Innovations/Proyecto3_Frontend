@@ -3,6 +3,7 @@ import { Component, inject, OnInit } from '@angular/core';
 import { IRankingUser, IResponse } from '../../../core/interfaces';
 import { RankingService } from '../../../core/services/ranking.service';
 import { HttpErrorResponse } from '@angular/common/http';
+import { LoggerService } from '../../../core/services/utils/logger.service';
 
 @Component({
   selector: 'app-dashboard-ranking',
@@ -12,7 +13,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 })
 export class DashboardRankingComponent implements OnInit {
   private rankingService = inject(RankingService);
-
+  private logger = inject(LoggerService);
   topUsers: IRankingUser[] = [];
   isLoading = true;
   hasError = false;
@@ -33,7 +34,7 @@ export class DashboardRankingComponent implements OnInit {
         this.isLoading = false;
       },
       error: (err: HttpErrorResponse) => {
-        console.error(err.message);
+        this.logger.error(err.message);
         this.hasError = true;
         this.isLoading = false;
       }
