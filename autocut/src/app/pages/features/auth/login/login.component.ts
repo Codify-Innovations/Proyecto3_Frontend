@@ -3,7 +3,7 @@ import { Component, ViewChild, AfterViewInit, inject } from '@angular/core';
 import { FormsModule, NgModel, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../../pages/features/auth/auth.service';
-import { environment } from '../../../../../environments/environment.example';
+import { environment } from '../../../../../environments/environment';
 import { AlertService } from '../../../../core/services/alert.service';
 import { finalize } from 'rxjs';
 import { IRoleType } from '../../../../core/interfaces';

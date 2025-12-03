@@ -2,6 +2,7 @@ import { Injectable, inject, signal, effect } from '@angular/core';
 import { UploaderService } from '../cloudinary/uploader.service';
 import { AlertService } from '../alert.service';
 import { IMediaTypeConfig, MediaType } from '../../interfaces';
+import { LoggerService } from '../utils/logger.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,7 @@ export class VideoEditorMediaService {
   private uploaderService = inject(UploaderService);
   private alertService = inject(AlertService);
   private cesdk: any = null;
-  
+  private logger: LoggerService = inject(LoggerService);
   // Estado
   private uploadedFiles = new Map<string, string>(); // blob URL -> Cloudinary URL
   private pendingUploads = new Map<string, File>(); // blob URL -> File
@@ -75,7 +76,7 @@ export class VideoEditorMediaService {
         }
       });
     } catch (error) {
-      console.error('Error replacing blob URLs:', error);
+      this.logger.error('Error replacing blob URLs:', error);
     }
   }
 
@@ -166,9 +167,8 @@ export class VideoEditorMediaService {
       // Upload to Cloudinary in the VideoEditor folder
       this.uploaderService.uploadFiles([file], 'VideoEditor');
       
-      console.log(`Uploading ${mediaType} to Cloudinary: ${fileName} from blob: ${blobUrl}`);
     } catch (error) {
-      console.error(`Error uploading ${mediaType} to Cloudinary:`, error);
+      this.logger.error(`Error uploading ${mediaType} to Cloudinary:`, error);
       const errorMessages: Record<MediaType, string> = {
         video: 'el video',
         image: 'la imagen',
@@ -196,7 +196,7 @@ export class VideoEditorMediaService {
         }
       });
     } catch (error) {
-      console.error('Error updating scene with Cloudinary URLs:', error);
+      this.logger.error('Error updating scene with Cloudinary URLs:', error);
     }
   }
 
@@ -235,7 +235,6 @@ export class VideoEditorMediaService {
         this.pendingUploads.delete(currentUri);
         this.pendingUploads$.set(new Map(this.pendingUploads));
         cloudinaryUrls.shift();
-        console.log(`Updated ${config.mediaType} block ${blockId} with Cloudinary URL: ${cloudinaryUrl}`);
       }
     }
   }
@@ -260,7 +259,7 @@ export class VideoEditorMediaService {
       if (cloudinaryUrl) {
         this.cesdk.engine.block.setString(fillId, config.propertyPath, cloudinaryUrl);
       } else {
-        console.warn(`No Cloudinary URL found for ${config.mediaType} blob: ${currentUri}`);
+        this.logger.warn(`No Cloudinary URL found for ${config.mediaType} blob: ${currentUri}`);
       }
     }
   }

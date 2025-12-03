@@ -2,20 +2,21 @@ import { inject, Injectable, signal } from '@angular/core';
 import { BaseService } from '../base-service';
 import { AlertService } from '../alert.service';
 import { IResponse } from '../../interfaces';
-import { HttpEventType } from '@angular/common/http';
+import { HttpErrorResponse, HttpEvent, HttpEventType } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
+import { LoggerService } from '../utils/logger.service';
 
 @Injectable({
   providedIn: 'root',
 })
-export class UploaderService extends BaseService<any> {
+export class UploaderService extends BaseService<IResponse<string[]>> {
   protected override source: string = 'api/files';
   private alertService: AlertService = inject(AlertService);
-
+  private logger: LoggerService = inject(LoggerService);
   isUploading = signal<boolean>(false);
 
   uploadProgress = signal<number>(0);
-  private uploaded = signal<any | null>(null);
+  private uploaded = signal<boolean | null>(null);
   get uploaded$() {
     return this.uploaded;
   }
@@ -35,11 +36,11 @@ export class UploaderService extends BaseService<any> {
   this.uploaded.set(false);
   this.uploadProgress.set(0); 
 
-  this.http.post(`${this.source}/upload`, formData, {
+  this.http.post<IResponse<string[]>>(`${this.source}/upload`, formData, {
     reportProgress: true,
     observe: 'events'
   }).subscribe({
-    next: (event: any) => {
+    next: (event: HttpEvent<IResponse<string[]>>) => {
       if (event.type === HttpEventType.UploadProgress) {
         const total = event.total ?? 1;
         const progress = Math.round((event.loaded / total) * 100);
@@ -47,9 +48,9 @@ export class UploaderService extends BaseService<any> {
       }
 
       if (event.type === HttpEventType.Response) {
-        const response = event.body as IResponse<any>;
+        const response = event.body
 
-        if (response.data && Array.isArray(response.data)) {
+        if (response?.data && Array.isArray(response.data)) {
           this.urlSignal.set(response.data);
         }
 
@@ -59,7 +60,7 @@ export class UploaderService extends BaseService<any> {
       }
     },
 
-    error: (err: any) => {
+    error: (err) => {
       this.isUploading.set(false);
       this.uploaded.set(false);
       this.uploadProgress.set(0);
@@ -75,7 +76,7 @@ export class UploaderService extends BaseService<any> {
         ['error-snackbar']
       );
 
-      console.error('❌ Error en upload:', err);
+      this.logger.error('Error en upload:', err);
     },
   });
 }

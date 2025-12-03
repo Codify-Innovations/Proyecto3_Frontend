@@ -13,6 +13,7 @@ import { VehiclePreviewModalComponent } from '../vehicle-preview-modal/vehicle-p
 import { TranslateColorPipe } from '../../../../core/pipes/translate-color.pipe';
 import { ShareButtonComponent } from '../../../../components/shared/share/share-button.component';
 import { HotWheelsImageService } from '../../../../core/services/ai/hot-wheels-image.service';
+import { LoggerService } from '../../../../core/services/utils/logger.service';
 
 @Component({
   selector: 'app-vehicle-identification',
@@ -33,7 +34,7 @@ export class VehicleIdentificationComponent {
   public iaService = inject(VehicleIdentificationService);
   private hotWheelsImageService = inject(HotWheelsImageService);
   public isSaving = false;
-
+  private logger: LoggerService = inject(LoggerService);
   public categories = Object.values(VehicleCategory);
   public colors = Object.values(VehicleColor);
 
@@ -152,7 +153,6 @@ export class VehicleIdentificationComponent {
 
       this.vehicleService.addVehicle(payload);
 
-      console.log('Vehículo a guardar:', payload);
 
       this.resetData();
       this.iaService.analysisResult$.set(null);
@@ -164,7 +164,7 @@ export class VehicleIdentificationComponent {
         'top',
         ['error-snackbar']
       );
-      console.error('Error generando imagen Hot Wheels:', error);
+      this.logger.error('Error generando imagen Hot Wheels:', error);
     } finally {
       this.isSaving = false;
     }

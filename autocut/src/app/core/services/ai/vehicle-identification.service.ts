@@ -2,15 +2,18 @@ import { inject, Injectable, signal } from '@angular/core';
 import { BaseService } from '../base-service';
 import { AlertService } from '../alert.service';
 import { IResponse } from '../../interfaces';
+import { LoggerService } from '../utils/logger.service';
+import { environment } from '../../../../environments/environment';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
 })
-export class VehicleIdentificationService extends BaseService<any> {
-  protected override source: string = 'http://127.0.0.1:8000/api';
-
+export class VehicleIdentificationService {
+  private apiBase = environment.iaApiUrl;
+  private http = inject(HttpClient);
   private alertService: AlertService = inject(AlertService);
-
+  private logger: LoggerService = inject(LoggerService);
   isAnalyzing = signal<boolean>(false);
   get isAnalyzing$() {
     return this.isAnalyzing;
@@ -24,7 +27,10 @@ export class VehicleIdentificationService extends BaseService<any> {
   analyzeVehicle(imageUrl: string): void {
     this.isAnalyzing.set(true);
 
-    this.addCustomSource('vehicle_identification', { image_url: imageUrl }).subscribe({
+    this.http.post<IResponse<any>>(
+      `${this.apiBase}/vehicle_identification`,
+      { image_url: imageUrl }
+    ).subscribe({
       next: (response: IResponse<any>) => {
         this.isAnalyzing.set(false);
 
@@ -59,7 +65,7 @@ export class VehicleIdentificationService extends BaseService<any> {
           'top',
           ['error-snackbar']
         );
-        console.error('❌ Error en VehicleIaService:', err);
+        this.logger.error('Error en VehicleIaService:', err);
       },
     });
   }

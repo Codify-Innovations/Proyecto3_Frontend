@@ -2,6 +2,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { AlertService } from './alert.service';
 import { IAdminMetricas, IResponse } from '../interfaces';
+import { LoggerService } from './utils/logger.service';
 
 @Injectable({
     providedIn: 'root',
@@ -9,7 +10,7 @@ import { IAdminMetricas, IResponse } from '../interfaces';
 export class AdminMetricsService {
     private http = inject(HttpClient);
     private alertService = inject(AlertService);
-
+    private logger: LoggerService = inject(LoggerService);
     private readonly source = 'api/metricas/admin';
 
     private metricas = signal<IAdminMetricas | null>(null);
@@ -58,7 +59,7 @@ export class AdminMetricsService {
                         'top',
                         ['error-snackbar']
                     );
-                    console.error('❌ Error en AdminMetricasService:', err);
+                    this.logger.error('❌ Error en AdminMetricasService:', err);
                 },
             });
     }
@@ -95,7 +96,7 @@ export class AdminMetricsService {
                         'top',
                         ['error-snackbar']
                     );
-                    console.error('❌ Error en AdminMetricasService (GLOBAL):', err);
+                    this.logger.error('❌ Error en AdminMetricasService (GLOBAL):', err);
                 },
             });
     }

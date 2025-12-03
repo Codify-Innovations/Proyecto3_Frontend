@@ -10,6 +10,7 @@ import {
   IRoleType,
   IUser,
 } from '../../../core/interfaces';
+import { LoggerService } from '../../../core/services/utils/logger.service';
 
 @Injectable({
   providedIn: 'root',
@@ -17,7 +18,7 @@ import {
 export class AuthService {
   private http = inject(HttpClient);
   private oauthService = inject(OAuthService);
-
+  private logger: LoggerService = inject(LoggerService);
   private accessToken!: string;
   private expiresIn!: number;
   private user: IUser = { email: '', authorities: [] };
@@ -35,7 +36,7 @@ export class AuthService {
       await this.oauthService.loadDiscoveryDocumentAndTryLogin();
       this.load();
     } catch (error) {
-      console.warn('AuthService init error:', error);
+      this.logger.warn('AuthService init error:', error);
     }
   }
 
@@ -78,7 +79,7 @@ export class AuthService {
       if (!idToken) throw new Error('No se obtuvo el ID Token de Google');
       await this.handleGoogleLoginResponse(idToken);
     } catch (error) {
-      console.error('Error durante login con Google:', error);
+      this.logger.error('Error durante login con Google:', error);
       throw error;
     }
   }
@@ -112,7 +113,7 @@ export class AuthService {
     try {
       this.oauthService.logOut();
     } catch (e) {
-      console.warn('Error cerrando sesión con Google:', e);
+      this.logger.warn('Error cerrando sesión con Google:', e);
     }
   }
 

@@ -4,6 +4,7 @@ import { AlertService } from '../../../../core/services/alert.service';
 import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 import { IVehicleCustomization } from '../../../../core/interfaces';
+import { LoggerService } from '../../../../core/services/utils/logger.service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,7 +13,7 @@ export class VehicleCustomizationService extends BaseService<IVehicleCustomizati
   protected override source: string = 'vehicles/customizations';
   private alertService = inject(AlertService);
   private router = inject(Router);
-
+  private logger: LoggerService = inject(LoggerService);
   // Señal reactiva que almacena la configuración del usuario
   private customizationSignal = signal<IVehicleCustomization | null>(null);
   get customization$() {
@@ -42,7 +43,7 @@ saveCustomization(customization: IVehicleCustomization): void {
         }, 800); // pequeño delay opcional para que se vea la alerta
       },
       error: (err: any) => {
-        console.error('Error guardando la configuración:', err);
+        this.logger.error('Error guardando la configuración:', err);
         this.alertService.displayAlert(
           'error',
           'Ocurrió un error al guardar la configuración.',
@@ -66,7 +67,7 @@ saveCustomization(customization: IVehicleCustomization): void {
         this.customizationSignal.set(response.data);
       },
       error: (err: any) => {
-        console.error('Error obteniendo la configuración del usuario:', err);
+        this.logger.error('Error obteniendo la configuración del usuario:', err);
       },
     });
   }

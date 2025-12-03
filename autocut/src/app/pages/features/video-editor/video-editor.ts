@@ -2,6 +2,7 @@ import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import CreativeEditorSDK, { Configuration } from '@cesdk/cesdk-js';
 import { VideoEditorMediaService } from '../../../core/services/video-editor/video-editor-media.service';
 import { environment } from '../../../../environments/environment';
+import { LoggerService } from '../../../core/services/utils/logger.service';
 
 @Component({
   selector: 'app-video-editor',
@@ -13,7 +14,7 @@ export class VideoEditorComponent {
   @ViewChild('cesdk_container') containerRef: ElementRef = {} as ElementRef;
   private cesdk: any = null;
   private mediaService = inject(VideoEditorMediaService);
-
+  private logger: LoggerService = inject(LoggerService);
   async ngAfterViewInit(): Promise<void> {
     try {
       const config: Configuration = {
@@ -62,7 +63,7 @@ export class VideoEditorComponent {
 
       this.setupExportImportHandlers();
     } catch (error) {
-      console.error('Error initializing Creative Editor SDK:', error);
+      this.logger.error('Error initializing Creative Editor SDK:', error);
     }
   }
 
