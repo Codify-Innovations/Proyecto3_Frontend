@@ -3,10 +3,10 @@ import { Component, ViewChild, AfterViewInit, inject } from '@angular/core';
 import { FormsModule, NgModel, NgForm } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../../../../pages/features/auth/auth.service';
-import { environment } from '../../../../../environments/environment';
 import { AlertService } from '../../../../core/services/alert.service';
 import { finalize } from 'rxjs';
 import { IRoleType } from '../../../../core/interfaces';
+import { environment } from '../../../../../environments/environment';
 
 declare const google: any;
 
@@ -90,7 +90,7 @@ export class LoginComponent implements AfterViewInit {
     const authorities = user?.authorities?.map(a => a.authority) || [];
 
     if (authorities.includes(IRoleType.superAdmin)) {
-      this.router.navigateByUrl('/app/users');
+      this.router.navigateByUrl('/app/admin-dashboard');
       return;
     }
 
