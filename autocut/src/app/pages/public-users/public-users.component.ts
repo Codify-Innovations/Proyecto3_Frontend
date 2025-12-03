@@ -30,10 +30,12 @@ export class PublicUsersComponent implements OnInit {
       next: (res: any) => {
         const list = res.data || [];
 
-        const mapped = list.map((u: any) => ({
-          ...u,
-          publicName: u.username
-        }));
+        const mapped = list
+          .filter((u: any) => !u.username.toLowerCase().includes('admin'))
+          .map((u: any) => ({
+            ...u,
+            publicName: u.username
+          }));
 
         this.users.set(mapped);
         this.loading.set(false);
